@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link href="styles.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Schedule</title>
+</head>
+<body>
+    
+    <header class="ramaHeader">
+        <div class="headerBlock titleBlock">
+            <h1 class="titleText">Didasko Instance Schedule</h1>
+            <nav class="ramaNav">
+                <label><a class="active">Schedule</a></label>
+                <label><a href="academics.html">Academics</a></label>
+                <label><a href="instances.html">Instances</a></label>
+                <label><a href="subjects.html">Subjects</a></label>
+            </nav>
+        </div>
+        
+        <img src="./logo.png"
+            alt="Latrobe logo" class="headerBlock imgBlock latrobeLogo  ">
+        
+    </header>
+    <div class="Container">
+        <div class="ScheduleDisplay">
+                <div class = "lvls">
+                <input id="lvl1" type="radio" name="Level" class="radio" value="yearLevel1" checked/>
+                <label class="radiolabel lvl1label" for="lvl1">Level 1</label>
+
+                <input id="lvl2" type="radio" name="Level" class="radio" value="yearLevel2" />
+                <label class="radiolabel lvl2label"  for="lvl2">Level 2</label>
+
+                <input id="lvl3" type="radio" name="Level" class="radio" value="yearLevel3"/>
+                <label class="radiolabel lvl3label"  for ="lvl3">Level 3</label>
+                
+                <select name="year" class="selectbox yearPicker" id="scheduleYearPicker">
+                </select>
+                </div>
+        
+                <table id="scheduleTable"> 
+                    <tr class="tableRow">
+                        <th class="scheduleLabel">Subjects:</th>
+                        <th>Jan</th>
+                        <th>Feb</th>
+                        <th>Mar</th>
+                        <th>Apr</th>
+                        <th>May</th>
+                        <th>Jun</th>
+                        <th>Jul</th>
+                        <th>Aug</th>
+                        <th>Sep</th>
+                        <th>Oct</th>
+                        <th>Nov</th>
+                        <th>Dec</th>
+                    </tr>
+                    
+                </table>
+
+            <div  class="Scheduleinstanceinfo">
+                <div class="scheduleForm">
+                    <h2> View Instance Allocation</h2>
+                    <label for="JsAllocation" class="nameLabel">Academic Name</label>
+                    <br>
+                    <input type="text" name="JsAllocation" id="academicCombo" class="comboBox" list="academicList" placeholder="Enter Academic">
+                    <br>
+                    <select name="year" class="selectbox yearPicker" id="insAllYear"></select>
+
+                    <select name="month" class="selectbox" id="insAllMonth">
+                        <option>January</option>
+                        <option>February</option>
+                        <option>March</option>
+                        <option>April</option>
+                        <option>May</option>
+                        <option>June</option>
+                        <option>July</option>
+                        <option>August</option> 
+                        <option>September</option>
+                        <option>October</option>
+                        <option>November</option> 
+                        <option>December</option> 
+                    </select>
+                    <button class="submitButton">Submit</button>
+                    <br>
+                    <h3 class="formSectionHeader">Allocations</h3>
+                        <br>
+                        <ul class="formList">
+                            <li><h4>Main</h4></li>
+                                <ul id="mainAllocations" class="formList">
+                                </ul>
+                            <li><h4>Support</h4></li>
+                                <ul id="supportAllocations" class="formList">
+                                </ul>
+                        </ul>
+                </div>
+                <div class="scheduleForm">
+                    <h2> View Instance Info</h2>
+                    <h3 class="formSectionHeader">Instance Name</h3>
+                    <br>
+                    <input type="text" name="JsInfo" id="instanceCombo" class="comboBox" list="instanceList" placeholder="Enter Instance">
+                        <br>
+                        <h3 class="formSectionHeader"> Student Enrolments: 
+                            <span id="enrolments">20</span>
+                        </h3>
+                        <br>
+                        <h3 class="formSectionHeader">Academics</h3>
+                        <br>
+                        <ul class="formList">
+                            <li><h4>Main</h4></li>
+                                <ul id="mainList" class="formList">
+                                </ul>
+                            <li><h4>Support</h4></li>
+                                <ul id="supportList" class="formList">
+                                </ul>
+                        </ul>
+                        
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer">
+            <p>Copyright 2023 - Didasko</p>   
+        </div>
+    </footer>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script> -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="./schedule.js"></script>
+</body>
+
+</html>
