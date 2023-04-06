@@ -2,7 +2,7 @@ const sqlConfig = {
     user: 'rama',//change me to SQL authenticated user you setup
     password: 'password',//change me
     database: 'didasko',
-    server: 'RAMA-DESKTOP',//change
+    server: 'localhost',//change
     pool: {
       max: 10,
       min: 0,

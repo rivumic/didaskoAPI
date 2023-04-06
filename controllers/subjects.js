@@ -24,7 +24,7 @@ const updateSubject = async (req, res) => {
         var queryString = `update subjects set id=\'${req.body.id}\', yearLevel=${req.body.yearLevel} where id=\'${req.params.id}\'`
         var query = await sql.query(queryString)
         if(query.rowsAffected[0]===0){
-            res.status(404).json({message:'No record found with that name'})
+            return res.status(404).json({message:'No record found with that name'})
         }
         return res.status(200).json(query)
     }
