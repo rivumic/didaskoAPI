@@ -145,13 +145,14 @@ nav a:hover:not(.active){
 }  
 /*Schedule Page*/
 .container{
-  margin: auto;
+  margin-inline: auto;
+  margin-top: 1em;
   width: 75%;
   max-width: 1100px;
   min-width: 800px;
   padding: 10px;
   font-size: large;
-  font-family: sans-serif;  
+  font-family: sans-serif;
 }
 /*schedule calendar*/
 .lvls{
@@ -184,6 +185,7 @@ nav a:hover:not(.active){
 .submitButton{
   display: block;
   margin-inline: auto;
+  margin-block: 1em;
 }
 .selectbox {
   width: 138px;
@@ -242,18 +244,10 @@ background-color: red;
   margin-block: 4em;
   text-align: center;
 }
-.scheduleForm{
-  padding: 10px 15px;
-  background: #FFFFFF;
-  border: 3px solid #004A80;
-  border-radius: 5px;
-}
 .scheduleInstanceInfo select{
   margin-block: 5%;
 }
 .scheduleInstanceInfo label, .formSectionHeader{
-  font-style: normal;
-  line-height: 10px;
   font-size: 20px;
   font-weight: bold;
   padding-left: 10px;
@@ -264,6 +258,7 @@ background-color: red;
 }
 .formLabel{
   font-weight: bold;
+  color: #3C3C3C;
 }
 .formField {
   width: 15em;
@@ -287,24 +282,101 @@ background-color: red;
 /*Subjects Page*/
 .flexContainer {
   display: flex;
+  margin-inline: auto;
+  margin-top: 1em;
+  margin-bottom: 5em;
   flex-direction: row;
   flex-wrap: wrap;  
   justify-content: space-evenly;
-  margin: auto;
   width: 85%;
-  padding: 10px;
 }
 .pageForm{
-  width: 350px;
-  margin: 10px; 
-  padding-left: 25px;
-  padding-bottom: 5px;
-  border: 2.5px solid #004A80;
-  padding-left: 10px;
-  border-width: 2px;
+  padding: 10px 15px;
+  border: 3px solid #004A80;
   border-radius: 6px;
+  height:fit-content;
 }
-#formName {
+.formTitle {
   text-align: center;
   margin-block: .5em;
+}
+
+/*specific to academics page*/
+.checkboxContainer{
+  width: 313px;
+  display: flex;
+  justify-content:flex-start;
+  flex-wrap: wrap;
+  padding: 4px;
+  border-style: solid;
+  border-color: #004A80;
+  border-radius: 6px;
+  border-width: 2px;
+  margin-bottom: .75em;
+}
+.academicsCheckbox{
+  display: none;
+}
+.checkboxLabel{
+  width: 6em;
+  height: 2em;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2px;
+  border: solid 1px #000000;
+  background-color:#F0F0F0;
+  transition: all 0.1s;
+}
+.checkboxLabel:hover, .academicsCheckbox:checked + .checkboxLabel{
+  background-color: #004A80;
+  color: #ffffff;
+}
+/*available academics form*/
+#AvailableAcademicsTB {
+  border-collapse: collapse;
+  width: 100%;
+}
+#AvailableAcademicsTB th{
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+}
+#AvailableAcademicsTB td, #AvailableAcademicsTB th {
+  border-right: 1px solid #ddd;
+  padding: 8px;
+}
+/*subDev Deletion Form*/
+.subDevContainer{
+  display: flex;
+  width: 308px;
+  justify-content:flex-start;
+  flex-wrap: wrap;
+  padding: 4px;
+  border-style: solid;
+  border-color: #004A80;
+  border-radius: 6px;
+  border-width: 2px;
+  margin-bottom: .75em;
+}
+.subDevCheckboxLabel {
+  height: 9em;
+  width: 9em;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 2px;
+  border: solid 1px #000000;
+  background-color:#F0F0F0;
+  transition: all 0.1s;
+}
+.subDevCheckbox{
+  display: none;
+}
+.deletion label:hover, .subDevCheckbox:checked + label {
+  background-color: #800000;
+  color: #ffffff;
 }
