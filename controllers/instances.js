@@ -57,11 +57,16 @@ const updateInstance = async(req, res) =>{
 const deleteInstance = async(req, res) =>{
     queries.deleteRow('instances', 'id', req, res)    
 }
+const manageInstances = (req, res) =>{
+    //if authenticated
+    res.status(200).sendFile('C:\\Users\\Rama Nicholson\\Documents\\Units\\3.8 Project B\\didaskoAPICopy\\public\\instances.html')
+}
 module.exports = {
     getAllInstances,
     getInstancesSchedule,
     getSomeInstances,
     newInstance,
     updateInstance,
-    deleteInstance
+    deleteInstance,
+    manageInstances
 }

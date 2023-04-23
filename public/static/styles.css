@@ -1,0 +1,310 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+}
+
+/*Login Page*/
+#loginPage {
+  background-color: #004A80;
+  height:min-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loginBox {
+  width: 95%;
+  max-width: 900px;
+  margin-block: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  background: linear-gradient(to top, white 50%,white 50%);
+  border-radius: 10px;
+  padding: 40px 25px;
+  border: 4px solid #3C3C3C;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.75);
+}
+.loginBox h2{
+  text-align: center;
+  font-size: 5.5em;
+  color: #3C3C3C;
+}
+
+.loginBox input{
+  color: #000000;
+}
+.loginField{
+  width: 90%;
+  padding: 10px;
+  margin-block: 15px;
+  border: 2px solid #004A80;
+  border-radius: 6px;
+  display: block;
+  font-size: 2.5em;
+}
+
+.loginBox select{
+  color: #fff;
+  background:#004A80;
+}
+
+.loginBtnn{
+  font-size: 2em;
+  cursor: pointer;
+  background: #004A80;
+  width: 25%;
+  padding: 10px 15px;
+  color: #fff;
+  -webkit-transition: 0.3s linear;
+  transition: 0.3s linear;
+  border-radius: 19.5px;
+}
+.loginBtnn a{
+  text-decoration: none;
+  color: #ffffff;
+}
+.loginBox label{
+  color: #3C3C3C;
+  align-self:normal;
+  font-size: 2.5em;
+}
+img.latrobeLogo{
+  width: 100%;
+  max-width: 350px;
+  min-width: 150px;
+}
+
+.imgcontainerlogo {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+@media (min-width: 650px) {
+  .loginBox > h2{
+     font-size: 4em;
+  }
+  .loginField, .loginBtnn, .loginField > label{
+    font-size: 1.5em;
+  }
+  
+}
+
+/*Main Pages Header*/
+.ramaHeader{
+  background-color: #004A80;
+  padding: 15px;
+  min-height: 106px;
+  text-align: center;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content:center;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.titleBlock{
+  margin-block: auto;
+  margin-inline: 1em;
+  color: white;
+}
+.titleText{
+  font-family: 'Roboto Serif', serif;
+  font-size: 4rem;
+  margin-block: .3em;
+}
+nav{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: .5em;
+  color: #fff;
+}
+nav a{
+  font-family: 'Roboto Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  color: white;
+  margin-inline: 15px;
+}
+nav a:hover:not(.active){
+  color: #000000;
+}
+/*Footer*/
+.footer{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: #004A80;
+  color: white;
+  text-align: center;
+  font-size:large;
+}  
+/*Schedule Page*/
+.container{
+  margin: auto;
+  width: 75%;
+  max-width: 1100px;
+  min-width: 800px;
+  padding: 10px;
+  font-size: large;
+  font-family: sans-serif;  
+}
+/*schedule calendar*/
+.lvls{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px
+}
+.radio {
+  display:none;
+}
+.radiolabel, .submitButton{
+  padding: 10px 36px;
+  background-color: white;
+  color:black;
+  border: 2px solid #8B8B8B;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 19.5px;
+}
+#lvl1:checked ~ .lvl1label,
+#lvl2:checked ~ .lvl2label,
+#lvl3:checked ~ .lvl3label,
+#allYears:checked ~ .allYearsLabel,
+  .submitButton:hover{
+  background-color: #004A80;
+  color: #fff;
+  font-weight: bold;
+}
+.submitButton{
+  display: block;
+  margin-inline: auto;
+}
+.selectbox {
+  width: 138px;
+  height: 39px;
+  text-align: center;
+  background:#004A80;
+  border: 2px solid #004A80;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 18px;
+}
+#scheduleTable{
+  width: 100%;
+}
+.tableRow{
+  display: flex;
+  width: 100%;
+  margin-block: 1em;
+  flex-flow:row;
+  justify-items: center;
+  justify-content: space-between;
+}
+.scheduleBox {
+  height: 34px;
+  width: 34px;
+  border-radius: 6px;
+}
+.graybox {
+  background-color: gray;
+}
+.greenbox {
+  background-color: green;
+}
+.redbox {
+background-color: red;
+}
+.hidden{
+  display: none;
+}
+.scheduleLabel{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  color: white;
+  background: #004A80;
+  border-radius: 5px;
+  text-align: center;
+  padding: 7px;
+}
+/*other forms on schedule page*/
+.scheduleInstanceInfo{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-block: 4em;
+  text-align: center;
+}
+.scheduleForm{
+  padding: 10px 15px;
+  background: #FFFFFF;
+  border: 3px solid #004A80;
+  border-radius: 5px;
+}
+.scheduleInstanceInfo select{
+  margin-block: 5%;
+}
+.scheduleInstanceInfo label, .formSectionHeader{
+  font-style: normal;
+  line-height: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  padding-left: 10px;
+  color: #3C3C3C;
+  display: block;
+  margin-top: 10%;
+  text-align: left;
+}
+.formLabel{
+  font-weight: bold;
+}
+.formField {
+  width: 15em;
+  height: 46px;
+  padding: 2px 4px;
+  background: #F0F0F0;
+  border-style: solid;
+  border-color: #004A80;
+  border-radius: 6px;
+  border-width: 2px;
+  font-size: 20px;
+  margin-bottom: .75em;
+}
+.formList{
+  list-style-type: none;
+  text-align: left;
+}
+#enrolments{
+  color: black;
+}
+/*Subjects Page*/
+.flexContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;  
+  justify-content: space-evenly;
+  margin: auto;
+  width: 85%;
+  padding: 10px;
+}
+.pageForm{
+  width: 350px;
+  margin: 10px; 
+  padding-left: 25px;
+  padding-bottom: 5px;
+  border: 2.5px solid #004A80;
+  padding-left: 10px;
+  border-width: 2px;
+  border-radius: 6px;
+}
+#formName {
+  text-align: center;
+  margin-block: .5em;
+}

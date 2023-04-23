@@ -35,6 +35,8 @@ const updateSubject = async (req, res) => {
 const deleteSubject = async (req, res) =>{
     queries.deleteRow('subjects', 'id', req, res)
 }
+
+
 module.exports = {
     getAllSubjects,
     newSubject,

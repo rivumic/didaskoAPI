@@ -1,14 +1,15 @@
 const express = require('express')
 const router = express.Router();
+const auth = require('../auth/authMiddleware')
 //controllers
 const {getAllAssignments,
     getSomeAssignments,
     updateAssignments
 } = require('../controllers/assignments')
 //routes
-router.route('/').get(getAllAssignments);
+router.route('/').get(auth.isAuth, getAllAssignments);
 //below won't work with queries.js function unless param name changed to id
-router.route('/:id').get(getSomeAssignments).patch(updateAssignments);
+router.route('/:id').get(auth.isAuth, getSomeAssignments).patch(auth.isManager, updateAssignments);
 
 module.exports = router
 //app.get('didasko/assignments/') * from assignments

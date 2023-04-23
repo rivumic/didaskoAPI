@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <link href="styles.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Subject</title>
+</head>
+<body>
+    <header class="ramaHeader">
+        <div class="headerBlock titleBlock">
+            <h1 class="titleText">Didasko Instance Schedule</h1>
+            <nav class="ramaNav">
+                <label><a href="/">Schedule</a></label>
+                <label><a href="academics">Academics</a></label>
+                <label><a href="instances">Instances</a></label>
+                <label><a class="active">Subjects</a></label>
+                
+            </nav>
+        </div>
+        
+        <img src="./logo.png"
+            alt="Latrobe logo" class="headerBlock imgBlock latrobeLogo  ">
+    </header>
+    <main class="flexContainer">
+        <div class="pageForm">
+            <h2 id="formName">Add New Subject</h2>
+            <form class="scheduleform" action="" method="post">
+                <p class="formLabel">Subject Name</p>
+                <input class="formField"type="text" name="Subject" placeholder="Subject Name">
+                <p class="formLabel">Year Level</p>
+                <select class="formField" name="YearLevel">
+                    <option> 1 </option>
+                    <option> 2 </option>
+                    <option> 3 </option>
+                    </select>
+                <button class="submitButton" type="submit" name="Submit">&nbsp;Add&nbsp;</button>  
+            </form> 
+        </div>
+        <div class="pageForm">
+            <h2 id="formName">Edit Subject</h2>
+            <form class="scheduleform" action="" method="post">
+                <p class="formLabel">Subject</p>
+                <input type="text" class="subjectSelector formField" class="formField" list="subjectList" placeholder="Choose Subject">
+                <p class="formLabel"> New Subject Name</p>
+                <input class="formField" type="text" name="UserInput" placeholder="New Subject Name">
+                <p class="formLabel">Year Level</p>
+                <select class="formField" name="YearLevel">
+                    <option> 1 </option>
+                    <option> 2 </option>
+                    <option> 3 </option>
+                    </select>
+                <button class="submitButton" type="submit" name="Submit">&nbsp;Save&nbsp;</button>
+            </form>
+        </div>
+        <div class="pageForm">
+            <h2 id="formName">Delete Subject</h2>
+            <form class="scheduleform" action="" method="post">
+                <input type="text" class="subjectSelector formField" class="formField" list="subjectList" placeholder="Choose Subject">
+                <button class="submitButton" type="submit" name="Submit">&nbsp;Delete&nbsp;</button>
+            </form>
+        </div>
+    </main>
+</body>
+<footer>
+    <div class="footer">
+        <nav class="ramaNav">
+            <label><a href="/logout">Logout</a></label>
+        </nav>
+        <p>Copyright 2023 - Didasko</p>   
+    </div>   
+</footer>
+</html>

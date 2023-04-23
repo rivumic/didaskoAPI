@@ -7,40 +7,42 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <title>Schedule</title>
 </head>
 <body>
     
     <header class="ramaHeader">
-        <div class="headerBlock titleBlock">
+        <!-- next div included class headerBlock -->
+        <div class=" titleBlock">
             <h1 class="titleText">Didasko Instance Schedule</h1>
             <nav class="ramaNav">
                 <label><a class="active">Schedule</a></label>
-                <label><a href="academics.html">Academics</a></label>
-                <label><a href="instances.html">Instances</a></label>
-                <label><a href="subjects.html">Subjects</a></label>
+                <label><a href="academics">Academics</a></label>
+                <label><a href="instances">Instances</a></label>
+                <label><a href="subjects">Subjects</a></label>
             </nav>
         </div>
         
         <img src="./logo.png"
-            alt="Latrobe logo" class="headerBlock imgBlock latrobeLogo  ">
+            alt="Latrobe logo" class="latrobeLogo">
         
     </header>
-    <div class="Container">
+    <main class="container">
         <div class="ScheduleDisplay">
                 <div class = "lvls">
-                <input id="lvl1" type="radio" name="Level" class="radio" value="yearLevel1" checked/>
-                <label class="radiolabel lvl1label" for="lvl1">Level 1</label>
+                    <input id="allYears" type="radio" name="Level" class="radio" value="all"/>
+                    <label class="radiolabel allYearsLabel" for="allYears">Show All</label>
+                    
+                    <input id="lvl1" type="radio" name="Level" class="radio" value="yearLevel1" checked/>
+                    <label class="radiolabel lvl1label" for="lvl1">Level 1</label>
 
-                <input id="lvl2" type="radio" name="Level" class="radio" value="yearLevel2" />
-                <label class="radiolabel lvl2label"  for="lvl2">Level 2</label>
+                    <input id="lvl2" type="radio" name="Level" class="radio" value="yearLevel2" />
+                    <label class="radiolabel lvl2label"  for="lvl2">Level 2</label>
 
-                <input id="lvl3" type="radio" name="Level" class="radio" value="yearLevel3"/>
-                <label class="radiolabel lvl3label"  for ="lvl3">Level 3</label>
-                
-                <select name="year" class="selectbox yearPicker" id="scheduleYearPicker">
-                </select>
+                    <input id="lvl3" type="radio" name="Level" class="radio" value="yearLevel3"/>
+                    <label class="radiolabel lvl3label"  for ="lvl3">Level 3</label>
+                    
+                    <select name="year" class="selectbox yearPicker" id="scheduleYearPicker"></select>
                 </div>
         
                 <table id="scheduleTable"> 
@@ -62,12 +64,12 @@
                     
                 </table>
 
-            <div  class="Scheduleinstanceinfo">
+            <div  class="scheduleInstanceInfo">
                 <div class="scheduleForm">
                     <h2> View Instance Allocation</h2>
-                    <label for="JsAllocation" class="nameLabel">Academic Name</label>
+                    <label for="JsAllocation">Academic Name</label>
                     <br>
-                    <input type="text" name="JsAllocation" id="academicCombo" class="comboBox" list="academicList" placeholder="Enter Academic">
+                    <input type="text" id="academicCombo" class="formField" list="academicList" placeholder="Enter Academic">
                     <br>
                     <select name="year" class="selectbox yearPicker" id="insAllYear"></select>
 
@@ -87,14 +89,21 @@
                     </select>
                     <button class="submitButton">Submit</button>
                     <br>
-                    <h3 class="formSectionHeader">Allocations</h3>
+                    <h3 class="formSectionHeader">Monthly Workload</h3>
                         <br>
                         <ul class="formList">
-                            <li><h4>Main</h4></li>
+                            <li><h4>Active Main Allocations</h4></li>
                                 <ul id="mainAllocations" class="formList">
                                 </ul>
-                            <li><h4>Support</h4></li>
+                            <li><h4>Active Support Allocations</h4></li>
                                 <ul id="supportAllocations" class="formList">
+                                </ul>
+                                <li><h4>Active Subject Development</h4></li>
+                                <ul id="subDevList" class="formList">
+                                </ul>
+                            <li><h4>Month Load</h4></li>
+                                <ul class="formList">
+                                    <li id="showLoad"></li>
                                 </ul>
                         </ul>
                 </div>
@@ -102,10 +111,10 @@
                     <h2> View Instance Info</h2>
                     <h3 class="formSectionHeader">Instance Name</h3>
                     <br>
-                    <input type="text" name="JsInfo" id="instanceCombo" class="comboBox" list="instanceList" placeholder="Enter Instance">
+                    <input type="text" id="instanceCombo" class="formField" list="instanceList" placeholder="Enter Instance">
                         <br>
                         <h3 class="formSectionHeader"> Student Enrolments: 
-                            <span id="enrolments">20</span>
+                            <span id="enrolments"></span>
                         </h3>
                         <br>
                         <h3 class="formSectionHeader">Academics</h3>
@@ -122,9 +131,12 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
     <footer>
         <div class="footer">
+            <nav class="ramaNav">
+                <label><a href="/logout">Logout</a></label>
+            </nav>
             <p>Copyright 2023 - Didasko</p>   
         </div>
     </footer>

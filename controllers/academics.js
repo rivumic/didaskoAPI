@@ -57,18 +57,74 @@ const updateAcademic = async(req, res) =>{
 const deleteAcademic = async(req, res) =>{
     queries.deleteRow('academics', 'id', req, res)    
 }
+const getOneLoad = async (req, res) =>{
+    try{
+        const yearMonth = `${req.params.year}-${req.params.month}-01`
+        //subDev
+        const subDevCountQuery = `select * from subDev where academicId = '${req.params.id}' and ('${yearMonth}' BETWEEN startDate and endDate)`
+        const subDevCount = (await sql.query(subDevCountQuery)).recordset
+        var load = 0;
+        if(subDevCount){
+            subDevCount.forEach(()=>{
+                load++
+            }) 
+        }
+        
+        //instance Load
+        const instanceAssignCountQuery = `select instanceId, count(assignments.instanceId) as assignedAcademics 
+        from assignments where instanceid IN(select id from instances 
+        where (startDate between dateadd(month, -2, '${yearMonth}') and '${yearMonth}') 
+        and id IN(select instanceId from assignments where academicId ='${req.params.id}')) group by instanceId;`
+        const instanceInfoByAssignQuery = `select id, academicId, main, enrolments, startDate
+        from assignments join instances on instanceId=id 
+        where academicId='${req.params.id}' and (startDate between dateadd(month, -2, '${yearMonth}')and '${yearMonth}');`;
+        instanceAssignCount = (await sql.query(instanceAssignCountQuery)).recordset
+        instanceInfoByAssign = (await sql.query(instanceInfoByAssignQuery)).recordset
+        // console.log(instanceAssignCount)
+        // console.log(instanceInfoByAssign)
+        if(instanceAssignCount&&instanceInfoByAssign){
+            instanceMap = new Map()
+            instanceAssignCount.forEach((row)=>{
+                instanceMap.set(row.instanceId, row.assignedAcademics);
+            })
+    
+            instanceInfoByAssign.forEach((row)=>{
+                var instanceLoad = (1+((parseInt(row.enrolments/20))*.2))/instanceMap.get(row.id);
+                if (instanceLoad<1){
+                    if(row.main){
+                        instanceLoad=1
+                    }else{
+                        instanceLoad=0.5
+                    }
+                }
+                load+=instanceLoad
+                console.log('load for:', row.academicId, 'teaching', row.id, 'is:', instanceLoad)
+                console.log('load totals are currently:', load)
+            })
+        }
+        
+        var result = {result: load}
+        return res.status(200).json(result)
+        
+    }catch(err){
+        console.log(err.message)
+        res.status(500).json({message: err.message})
+    }
+}
 const getQuals = async(req, res) =>{
     queries.conditionalGet('qualifications', 'academicId', req, res)
 }
 const getLoad = async(req, res) =>{
     try{
         const yearMonth = `${req.body.year}-${req.body.month}-01`;
-        const countQuery = `select qualifications.academicId, subDev.subId as dev 
+        //subDev Load
+        const subDevCountQuery = `select qualifications.academicId, subDev.subId as dev 
             from qualifications full outer join subDev on qualifications.academicId=subDev.academicId 
             where qualifications.subId='${req.body.subId}' and ('${yearMonth}' BETWEEN startDate and endDate or subDev.subId is null);`
-        const countLoad = (await sql.query(countQuery)).recordset
+        const subDevCount = (await sql.query(subDevCountQuery)).recordset
+        
         var load = new Map()
-        countLoad.forEach((row)=>{
+        subDevCount.forEach((row)=>{
             if(row.dev){var dev=1}else{var dev=0};
 
             if (load.has(row.academicId)){
@@ -78,24 +134,26 @@ const getLoad = async(req, res) =>{
             }
         })
         //instance load
-        const instanceListQuery = `select instanceId, count(assignments.instanceId) as assignedAcademics 
+        const instanceAssignCountQuery = `select instanceId, count(assignments.instanceId) as assignedAcademics 
         from assignments where instanceid IN(select id from instances 
-        where ('${yearMonth}' between startDate and dateadd(month, 3, startDate)) 
+        where (startDate between dateadd(month, -2, '${yearMonth}') and '${yearMonth}') 
         and id IN(select instanceId from assignments where academicId IN(
         select academicId from qualifications where subId='${req.body.subId}'))) group by instanceId;`;
-        const assignmentsListQuery = `select id, academicId, main, enrolments, startDate
+        
+        const instanceInfoByAssignQuery = `select id, academicId, main, enrolments, startDate
         from assignments join instances on instanceId=id 
         where academicId IN (select academicId from qualifications where subid='${req.body.subId}') 
-        and ('${yearMonth}' between startDate and dateadd(month, 2, startDate)) order by enrolments;`;
-        const instanceList = (await sql.query(instanceListQuery)).recordset
-        const assignmentsList = (await sql.query(assignmentsListQuery)).recordset
+        and (startDate between dateadd(month, -2, '${yearMonth}') and '${yearMonth}');`;
+        
+        const instanceAssignCount = (await sql.query(instanceAssignCountQuery)).recordset
+        const instanceInfoByAssign = (await sql.query(instanceInfoByAssignQuery)).recordset
+
         var instanceMap = new Map()
-        instanceList.forEach((row)=>{
+        instanceAssignCount.forEach((row)=>{
             instanceMap.set(row.instanceId, row.assignedAcademics);
         })
-        //id(instance), academicId, main, enrolments
-        assignmentsList.forEach((row)=>{
-            var instanceLoad = (1+(row.enrolments/20)+(+row.main))/instanceMap.get(row.id);
+        instanceInfoByAssign.forEach((row)=>{
+            var instanceLoad = (1+((parseInt(row.enrolments/20))*.2))/instanceMap.get(row.id);
             if (instanceLoad<1){
                 if(row.main){
                     instanceLoad=1
@@ -120,6 +178,7 @@ module.exports = {
     createAcademic,
     updateAcademic,
     deleteAcademic,
+    getOneLoad,
     getQuals,
     getLoad
 }
