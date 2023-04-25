@@ -1,8 +1,9 @@
+require('dotenv').config()
 const sqlConfig = {
-    user: 'rama',//change me to SQL authenticated user you setup
-    password: 'password',//change me
-    database: 'didasko',
-    server: 'localhost',//change
+    user: process.env.user,
+    password: process.env.password,
+    database: process.env.didasko,
+    server: process.env.server,
     pool: {
       max: 10,
       min: 0,

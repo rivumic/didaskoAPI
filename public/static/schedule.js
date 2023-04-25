@@ -90,7 +90,7 @@ const viewInsAllocation = async ()=>{
     if(academics.includes(academicValue)){
         try{
             subDevs = (await axios.get(`/didasko/subDev/${academicValue}`)).data
-            load = (await axios.get(`didasko/academics/load/${academicValue}/${chosenYear}/${chosenMonth+1}`)).data
+            load = (await axios.get(`/didasko/academics/load/${academicValue}/${chosenYear}/${chosenMonth+1}`)).data
         }catch(err){
             console.log(err)
         }

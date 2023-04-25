@@ -22,10 +22,8 @@
                 <label><a href="subjects">Subjects</a></label>
             </nav>
         </div>
-        
         <img src="./logo.png"
             alt="Latrobe logo" class="latrobeLogo">
-        
     </header>
     <main class="container">
         <div class="ScheduleDisplay">
@@ -61,7 +59,6 @@
                         <th>Nov</th>
                         <th>Dec</th>
                     </tr>
-                    
                 </table>
 
             <div class="scheduleInstanceInfo">
@@ -88,18 +85,17 @@
                         <option>December</option> 
                     </select>
                     <button class="submitButton">Submit</button>
-                    <br>
                     <h3 class="formSectionHeader">Monthly Workload</h3>
                         <br>
                         <ul class="formList">
                             <li><h4>Active Main Allocations</h4></li>
-                                <ul id="mainAllocations" class="formList">
+                                <ul id="mainAllocations" class="formList listContainer">
                                 </ul>
                             <li><h4>Active Support Allocations</h4></li>
-                                <ul id="supportAllocations" class="formList">
+                                <ul id="supportAllocations" class="formList listContainer">
                                 </ul>
                                 <li><h4>Active Subject Development</h4></li>
-                                <ul id="subDevList" class="formList">
+                                <ul id="subDevList" class="formList listContainer">
                                 </ul>
                             <li><h4>Month Load</h4></li>
                                 <ul class="formList">
@@ -109,29 +105,22 @@
                 </div>
                 <div class="pageForm">
                     <h2> View Instance Info</h2>
-                    <h3 class="formSectionHeader">Instance Name</h3>
-                    <br>
+                    <p class="formLabel" style="text-align: left;">Enter Instance Name</p>
                     <input type="text" id="instanceCombo" class="formField" list="instanceList" placeholder="Enter Instance">
-                        <br>
+                        <ul class="formList">
+                            <li><p class="formLabel">Main Allocations:</p></li>
+                                <ul id="mainList" class="formList listContainer">
+                                </ul>
+                            <li><p class="formLabel">Support Allocations:</p></li>
+                                <ul id="supportList" class="formList listContainer">
+                                </ul>
+                        </ul>
                         <h3 class="formSectionHeader"> Student Enrolments: 
                             <span id="enrolments"></span>
                         </h3>
-                        <br>
-                        <h3 class="formSectionHeader">Academics</h3>
-                        <br>
-                        <ul class="formList">
-                            <li><h4>Main</h4></li>
-                                <ul id="mainList" class="formList">
-                                </ul>
-                            <li><h4>Support</h4></li>
-                                <ul id="supportList" class="formList">
-                                </ul>
-                        </ul>
-                        
                 </div>
             </div>
         </div>
-    </main>
     <footer>
         <div class="footer">
             <nav class="ramaNav">
@@ -140,15 +129,14 @@
             <p>Copyright 2023 - Didasko</p>   
         </div>
     </footer>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"></script> -->
+    </main>
+    
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
       integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
       crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+      referrerpolicy="no-referrer">
+    </script>
     <script src="./schedule.js"></script>
 </body>
 

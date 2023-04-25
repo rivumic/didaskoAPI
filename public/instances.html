@@ -11,7 +11,7 @@
 <body>
     <header class="ramaHeader">
         <div class="headerBlock titleBlock">
-            <h1 class="titleText">Didasko Instance ScheduledSubject</h1>
+            <h1 class="titleText">Didasko Instance Schedule</h1>
             <nav class="ramaNav">
                 <label><a href="/">Schedule</a></label>
                 <label><a href="academics">Academics</a></label>
@@ -19,137 +19,138 @@
                 <label><a href="subjects">Subjects</a></label>
             </nav>
         </div>
+        <img src="./logo.png"
+            alt="Latrobe logo" class="latrobeLogo">
         </header>
     <main class="flexContainer">
         <div class="pageForm"><h2 class="formTitle">Add New Instance</h2>
-            <form class="" action="" method="post">
-                <p class="formLabel"> Instance Name</p>
-                <input class="formField" type="text" name="UserInput" placeholder="Instance Name">
-                <p class="formLabel">Subject</p>
-                <select class="formField" name="ChooseSubject">
-                    <option> IT Fundamentals </option>
-                    <option> Internet Client Engineering </option>
-                    <option> Industry Project 3B </option>
-                    </select>
-                    <p class="formLabel">Year</p>
-                <select class="formField" name="ChooseYear">
-                    <option>2023</option>
-                    <option>2024</option>
-                    <option>2025</option>
-                    </select>
-                    <p class="formLabel">Month</p>
-                <select class="formField" name="ChooseMonth">
-                    <option> January </option>
-                    <option> February </option>
-                    <option> March </option>
-                    <option> April </option>
-                    <option> May </option>
-                    <option> June </option>
-                    <option> July </option>
-                    <option> August </option>
-                    <option> September </option>
-                    <option> October </option>
-                    <option> November </option>
-                    <option> December </option>
-                    </select>
-                    <p class="formLabel">Student Enrolments</p>
-                    <input class="formField" type="text" name="UserInput" placeholder="Student Enrolments">
-                <button class="submitButton" type="submit" name="Submit">Save</button>
-            </form>
+            <p class="formLabel">Subject</p>
+            <input id="newInsSub"class="formField" type="text" name="ChooseSubject" list="subjectList" placeholder="Choose Subject">
+            <p class="formLabel">Year</p>
+            <select id="newInsYear"class="formField" name="ChooseYear">
+                <!-- Need a good solution here     -->
+            </select>
+            <p class="formLabel">Month</p>
+            <select id="newInsMonth"class="formField" name="ChooseMonth">
+                <option>January</option>
+                <option>February</option>
+                <option>March</option>
+                <option>April</option>
+                <option>May</option>
+                <option>June</option>
+                <option>July</option>
+                <option>August</option>
+                <option>September</option>
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
+                </select>
+            <p class="formLabel">Student Enrolments</p>
+            <input id="newInsEnrolments" class="formField" type="number" name="UserInput" min="0" max="400" placeholder="10">
+
+            <button id="newInsButton"class="submitButton" type="submit" name="Submit">Save</button>
         </div>
         <div class="pageForm">
             <h2 class="formTitle">Edit Instance</h2>
-            <form class="" action="" method="post">
-                <p class="formLabel">Choose Instance</p>
-                <select class="formField" name="ChooseInstance">
-                    <option>CSE1ITX_2023_January IT Fundamentals</option>
-                    <option>CSE2ICX_2024_August Internet Client Engineering</option>
-                    <option>CSE3PBX_2025_February Industry Project 3B </option>
-                    </select>
-                <p class="formLabel">Instance Name</p>
-                <input class="formField" type="text" name="UserInput" placeholder="Instance Name">
-                <p class="formLabel">Subject</p>
-                <select class="formField" name="ChooseSubject">
-                    <option> IT Fundamentals </option>
-                    <option> Internet Client Engineering </option>
-                    <option> Industry Project 3B </option>
-                    </select>
-                    <p class="formLabel">Year</p>
-                <select class="formField" name="ChooseYear">
-                    <option>2023</option>
-                    <option>2024</option>
-                    <option>2025</option>
-                    </select>
-                    <p class="formLabel">Month</p>
-                    <select class="formField" name="ChooseMonth">
-                        <option> January </option>
-                        <option> February </option>
-                        <option> March </option>
-                        <option> April </option>
-                        <option> May </option>
-                        <option> June </option>
-                        <option> July </option>
-                        <option> August </option>
-                        <option> September </option>
-                        <option> October </option>
-                        <option> November </option>
-                        <option> December </option>
-                        </select>
-                        <p class="formLabel">Student Enrolments</p>
-                        <input class="formField" type="text" name="UserInput" placeholder="Student Enrolments">
-    
-                        <button class="submitButton" type="submit" name="Submit">Add</button>
-                </form>
-            </div>
-        <div class="pageForm"><h2 class="formTitle">View Instance Allocation</h2>
-            <form class="" action="" method="post">
-                <p class="formLabel">Academic</p>
-                <select class="formField" name="Academic">
-                    <option> Ben Arther </option>
-                    <option> Ted Moseby </option>
-                    <option> Jessica Lange </option>
-                </select>
-                <p class="formLabel">Year</p>
-                <select class="formField" name="ChooseYear">
-                    <option> 2021 </option>
-                    <option> 2022 </option>
-                    <option> 2023 </option>
-                </select>
-                <p class="formLabel">Month</p>
-                <select class="formField" name="ChooseMonth">
-                    <option> January </option>
-                    <option> February </option>
-                    <option> March </option>
-                    <option> April </option>
-                    <option> May </option>
-                    <option> June </option>
-                    <option> July </option>
-                    <option> August </option>
-                    <option> September </option>
-                    <option> October </option>
-                    <option> November </option>
-                    <option> December </option>
-                </select>
-                <button class="submitButton" type="submit" name="Submit">Delete</button>
-                <p class="formLabel">CSE1PGX_2021_February</p>
-                <p class="formLabel">CSE1PGX_2021_March</p>
-                <p class="formLabel">CSE1OFX_2021_February</p>
-                <p class="formLabel">CSE1OFX_2021_March</p>
-                <p class="formLabel">CSE1IOX_2021_February</p>
-                <p class="formLabel">CSE1IOX_2021_February</p>
-            </form>
+            <p class="formLabel">Choose Instance</p>
+            <input id="editInsOldIns"class="formField" type="text" list="instanceList" name="ChooseInstance">
+            <p class="formLabel">New Subject</p>
+            <input id="editInsNewSubject" type="text" class="formField" list="subjectList" name="ChooseSubject">
+            <p class="formLabel">Year</p>
+            <select id="editInsNewYear" class="formField" name="ChooseYear">
+                <!-- Solution pls -->
+            </select>
+            <p class="formLabel">Month</p>
+            <select id="editInsNewMonth" class="formField" name="ChooseMonth">
+                <option>January</option>
+                <option>February</option>
+                <option>March</option>
+                <option>April</option>
+                <option>May</option>
+                <option>June</option>
+                <option>July</option>
+                <option>August</option>
+                <option>September</option>
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
+            </select>
+            <p class="formLabel">Student Enrolments</p>
+            <input id="editInsEnrolments" class="formField" type="number" name="UserInput" min="0" max="400" placeholder="10">
+
+            <button class="submitButton" type="submit" name="Submit">Add</button>
         </div>
-        <div class="pageForm"><h2 class="formTitle">Delete Instance</h2>
-            <form class="" action="" method="post">
-                <p class="formLabel">Instance</p>
-                <select class="formField" name="ChooseInstance">
-                    <option> CSE1ITX_2023_January IT Fundamentals </option>
-                    <option> CSE2ICX_2024_August Internet Client Engineering </option>
-                    <option> CSE3PBX_2025_February Industry Project 3B </option>
-                    </select>
+        <div class="pageForm">
+            <h2 class="formTitle">View Instance Allocation</h2>
+            <p class="formLabel">Academic</p>
+            <input id="viewInsAcademic" type="text" list="academicList" class="formField" name="Academic" placeholder="Choose Academic">
+            <p class="formLabel">Year</p>
+            <select id="viewInsYear" class="formField" name="ChooseYear">
+                <!-- DIFFERENT FROM OTHERS SAME AS SCHEDULE
+                DIFFERENT FROM OTHERS SAME AS SCHEDULE
+                DIFFERENT FROM OTHERS SAME AS SCHEDULE
+                DIFFERENT FROM OTHERS SAME AS SCHEDULE
+                DIFFERENT FROM OTHERS SAME AS SCHEDULE -->
+            </select>
+            <p class="formLabel">Month</p>
+            <select id="viewInsMonth" class="formField" name="ChooseMonth">
+                <option> January </option>
+                <option> February </option>
+                <option> March </option>
+                <option> April </option>
+                <option> May </option>
+                <option> June </option>
+                <option> July </option>
+                <option> August </option>
+                <option> September </option>
+                <option> October </option>
+                <option> November </option>
+                <option> December </option>
+            </select>
+            <button id="viewInsMonth" class="submitButton" type="submit" name="Submit">Submit</button>
+            <ul class="formList">
+                <li><h4>Active Main Allocations</h4></li>
+                    <ul id="mainAllocations" class="formList listContainer">
+                    </ul>
+                <li><h4>Active Support Allocations</h4></li>
+                    <ul id="supportAllocations" class="formList listContainer">
+                    </ul>
+                    <li><h4>Active Subject Development</h4></li>
+                    <ul id="subDevList" class="formList listContainer">
+                    </ul>
+                <li><h4>Month Load</h4></li>
+                    <ul class="formList">
+                        <li id="showLoad"></li>
+                    </ul>
+            </ul>
+        </div>
+        <div class="pageForm">
+            <h2 class="formTitle"> View Instance Info</h2>
+            <p class="formLabel">Instance Name</p>
+            <input id="insInfoName" type="text" id="instanceCombo" class="formField" list="instanceList" placeholder="Enter Instance">
+            <ul class="formList">
+                <li><h4>Main</h4></li>
+                    <ul id="mainList" class="formList listContainer">
+                    </ul>
+                <li><h4>Support</h4></li>
+                    <ul id="supportList" class="formList listContainer">
+                    </ul>
+            </ul>
+            <h3 class="formSectionHeader"> Student Enrolments: 
+                <span id="enrolments"></span>
+            </h3>
+        </div>
+        <div class="pageForm">
+            <h2 class="formTitle">Delete Instance</h2>
+            <p class="formLabel">Instance</p>
+            <select class="formField" name="ChooseInstance">
+                <option> CSE1ITX_2023_January IT Fundamentals </option>
+                <option> CSE2ICX_2024_August Internet Client Engineering </option>
+                <option> CSE3PBX_2025_February Industry Project 3B </option>
+            </select>
 
             <button class="submitButton" type="submit" name="Submit">Delete</button>
-            </form></div>
+        </div>
     </main>
 </body>
 <footer>
@@ -160,4 +161,11 @@
         <p>Copyright 2023 - Didasko</p>   
     </div>   
 </footer>
+<script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+      integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer">
+    </script>
+    <script src="./instances.js"></script>
 </html>

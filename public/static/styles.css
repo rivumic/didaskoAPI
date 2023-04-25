@@ -276,6 +276,17 @@ background-color: red;
   list-style-type: none;
   text-align: left;
 }
+.listContainer{
+  background-color: #F0F0F0;
+  padding-inline: 4px;
+  padding-block:.5em;
+  border-style: solid;
+  border-color: #004A80;
+  border-radius: 6px;
+  border-width: 2px;
+  margin-bottom: .75em;
+}
+  
 #enrolments{
   color: black;
 }
@@ -295,6 +306,8 @@ background-color: red;
   border: 3px solid #004A80;
   border-radius: 6px;
   height:fit-content;
+  margin-inline: 2em;
+  margin-bottom: 3em;
 }
 .formTitle {
   text-align: center;
@@ -328,10 +341,12 @@ background-color: red;
   border: solid 1px #000000;
   background-color:#F0F0F0;
   transition: all 0.1s;
+  user-select: none;
 }
 .checkboxLabel:hover, .academicsCheckbox:checked + .checkboxLabel{
   background-color: #004A80;
   color: #ffffff;
+  cursor: pointer;
 }
 /*available academics form*/
 #AvailableAcademicsTB {
@@ -372,6 +387,7 @@ background-color: red;
   border: solid 1px #000000;
   background-color:#F0F0F0;
   transition: all 0.1s;
+  user-select: none;
 }
 .subDevCheckbox{
   display: none;
@@ -379,4 +395,5 @@ background-color: red;
 .deletion label:hover, .subDevCheckbox:checked + label {
   background-color: #800000;
   color: #ffffff;
+  cursor: pointer;
 }
