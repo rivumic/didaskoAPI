@@ -1,6 +1,7 @@
 //express
 const express = require('express')
 const session = require('express-session')
+require('dotenv').config()
 //sql-related
 const sql = require('mssql')
 const sqlConfig = require('./db/sqlConfig')
@@ -18,7 +19,6 @@ const academics = require('./routes/academics')
 const assignments = require('./routes/assignments')
 const subDev = require('./routes/subDev')
 //
-
 const app = express()
 
 //middleware

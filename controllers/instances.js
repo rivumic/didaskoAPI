@@ -7,7 +7,7 @@ const getAllInstances = async(req, res) =>{
 
 const getInstancesSchedule = async(req,res)=>{
     try{
-        var query = `select id, subId, enrolments, datepart(yyyy, startDate) as year, datepart(m, startDate) as month from instances order by year, subId, month;`;
+        var query = `select id, subId, enrolments, datepart(yyyy, startDate) as year, datepart(m, startDate) as month from instances order by year, month, subId;`;
         var data = await sql.query(query)
         res.status(200).json(data.recordset)
     }

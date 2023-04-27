@@ -181,6 +181,7 @@ const viewInsInfo = ()=>{
                 }
                 
             }else{
+                console.log('instance name not found in list')
             }
         });
     }
@@ -205,7 +206,7 @@ const loadSchedule = async ()=>{
             }
             byYear.get(instancesSchedule[o].year).set(instancesSchedule[o].id, instancesSchedule[o])
         }
-
+        //sets year selection fields with years that have instances in them
         yearOptions(byYear.keys())
 
         for (var i = 0;i<assignments.length;i++){

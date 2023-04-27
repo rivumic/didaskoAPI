@@ -2,7 +2,7 @@ require('dotenv').config()
 const sqlConfig = {
     user: process.env.user,
     password: process.env.password,
-    database: process.env.didasko,
+    database: process.env.database,
     server: process.env.server,
     pool: {
       max: 10,

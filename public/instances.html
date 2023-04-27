@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Instances</title>
 </head>
 <body>
@@ -23,15 +24,15 @@
             alt="Latrobe logo" class="latrobeLogo">
         </header>
     <main class="flexContainer">
+<!-- Add New Instance Add New Instance Add New Instance Add New Instance Add New Instance Add New Instance Add New Instance         -->
         <div class="pageForm"><h2 class="formTitle">Add New Instance</h2>
             <p class="formLabel">Subject</p>
             <input id="newInsSub"class="formField" type="text" name="ChooseSubject" list="subjectList" placeholder="Choose Subject">
             <p class="formLabel">Year</p>
             <select id="newInsYear"class="formField" name="ChooseYear">
-                <!-- Need a good solution here     -->
             </select>
             <p class="formLabel">Month</p>
-            <select id="newInsMonth"class="formField" name="ChooseMonth">
+            <select id="newInsMonth"class="formField" name="ChooseMonth" placeholder="Choose Month">
                 <option>January</option>
                 <option>February</option>
                 <option>March</option>
@@ -48,20 +49,19 @@
             <p class="formLabel">Student Enrolments</p>
             <input id="newInsEnrolments" class="formField" type="number" name="UserInput" min="0" max="400" placeholder="10">
 
-            <button id="newInsButton"class="submitButton" type="submit" name="Submit">Save</button>
+            <button id="newInsButton"class="submitButton" type="submit" name="Submit">Add</button>
         </div>
+<!--  Edit Instance Edit Instance Edit Instance Edit Instance Edit Instance Edit Instance Edit Instance Edit Instance -->
         <div class="pageForm">
             <h2 class="formTitle">Edit Instance</h2>
             <p class="formLabel">Choose Instance</p>
-            <input id="editInsOldIns"class="formField" type="text" list="instanceList" name="ChooseInstance">
+            <input id="editInsOldIns"class="formField" type="text" list="instanceList" name="ChooseInstance" placeholder="Choose Instance">
             <p class="formLabel">New Subject</p>
-            <input id="editInsNewSubject" type="text" class="formField" list="subjectList" name="ChooseSubject">
+            <input id="editInsNewSubject" type="text" class="formField" list="subjectList" name="ChooseSubject" placeholder="Choose Subject">
             <p class="formLabel">Year</p>
-            <select id="editInsNewYear" class="formField" name="ChooseYear">
-                <!-- Solution pls -->
-            </select>
+            <select id="editInsNewYear" class="formField" name="ChooseYear"></select>
             <p class="formLabel">Month</p>
-            <select id="editInsNewMonth" class="formField" name="ChooseMonth">
+            <select id="editInsNewMonth" class="formField" name="ChooseMonth" placeholder="Choose Month">
                 <option>January</option>
                 <option>February</option>
                 <option>March</option>
@@ -78,14 +78,15 @@
             <p class="formLabel">Student Enrolments</p>
             <input id="editInsEnrolments" class="formField" type="number" name="UserInput" min="0" max="400" placeholder="10">
 
-            <button class="submitButton" type="submit" name="Submit">Add</button>
+            <button id="editInsButton" class="submitButton" type="submit" name="Submit">Save</button>
         </div>
+<!-- View Instance Allocation View Instance Allocation View Instance Allocation View Instance Allocation View Instance Allocation -->
         <div class="pageForm">
             <h2 class="formTitle">View Instance Allocation</h2>
             <p class="formLabel">Academic</p>
-            <input id="viewInsAcademic" type="text" list="academicList" class="formField" name="Academic" placeholder="Choose Academic">
+            <input id="viewAllocAcademic" type="text" list="academicList" class="formField" name="Academic" placeholder="Choose Academic">
             <p class="formLabel">Year</p>
-            <select id="viewInsYear" class="formField" name="ChooseYear">
+            <select id="viewAllocYear" class="formField" name="ChooseYear" placeholder="Choose Year">
                 <!-- DIFFERENT FROM OTHERS SAME AS SCHEDULE
                 DIFFERENT FROM OTHERS SAME AS SCHEDULE
                 DIFFERENT FROM OTHERS SAME AS SCHEDULE
@@ -93,63 +94,61 @@
                 DIFFERENT FROM OTHERS SAME AS SCHEDULE -->
             </select>
             <p class="formLabel">Month</p>
-            <select id="viewInsMonth" class="formField" name="ChooseMonth">
-                <option> January </option>
-                <option> February </option>
-                <option> March </option>
-                <option> April </option>
-                <option> May </option>
-                <option> June </option>
-                <option> July </option>
-                <option> August </option>
-                <option> September </option>
-                <option> October </option>
-                <option> November </option>
-                <option> December </option>
+            <select id="viewAllocMonth" class="formField" name="ChooseMonth" placeholder="Choose Month">
+                <option>January</option>
+                <option>February</option>
+                <option>March</option>
+                <option>April</option>
+                <option>May</option>
+                <option>June</option>
+                <option>July</option>
+                <option>August</option>
+                <option>September</option>
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
             </select>
-            <button id="viewInsMonth" class="submitButton" type="submit" name="Submit">Submit</button>
+            <button id="viewAllocButton" class="submitButton" type="submit" name="Submit">Submit</button>
             <ul class="formList">
                 <li><h4>Active Main Allocations</h4></li>
-                    <ul id="mainAllocations" class="formList listContainer">
+                    <ul id="viewAllocMain" class="formList listContainer">
                     </ul>
                 <li><h4>Active Support Allocations</h4></li>
-                    <ul id="supportAllocations" class="formList listContainer">
+                    <ul id="viewAllocSupp" class="formList listContainer">
                     </ul>
                     <li><h4>Active Subject Development</h4></li>
-                    <ul id="subDevList" class="formList listContainer">
+                    <ul id="viewAllocSubDev" class="formList listContainer">
                     </ul>
                 <li><h4>Month Load</h4></li>
                     <ul class="formList">
-                        <li id="showLoad"></li>
+                        <li id="viewAllocLoad"></li>
                     </ul>
             </ul>
         </div>
+<!-- View Instance Info View Instance Info View Instance Info View Instance Info View Instance Info View Instance Info View Instance Info -->
         <div class="pageForm">
-            <h2 class="formTitle"> View Instance Info</h2>
+            <h2 class="formTitle">View Instance Info</h2>
             <p class="formLabel">Instance Name</p>
-            <input id="insInfoName" type="text" id="instanceCombo" class="formField" list="instanceList" placeholder="Enter Instance">
+            <input id="insInfoName" type="text" class="formField" list="instanceList" placeholder="Choose Instance">
             <ul class="formList">
                 <li><h4>Main</h4></li>
-                    <ul id="mainList" class="formList listContainer">
+                    <ul id="insInfoMain" class="formList listContainer">
                     </ul>
                 <li><h4>Support</h4></li>
-                    <ul id="supportList" class="formList listContainer">
+                    <ul id="insInfoSupport" class="formList listContainer">
                     </ul>
             </ul>
             <h3 class="formSectionHeader"> Student Enrolments: 
-                <span id="enrolments"></span>
+                <span id="insInfoEnrolments"></span>
             </h3>
         </div>
+<!--  Delete Instance Delete Instance Delete Instance Delete Instance Delete Instance Delete Instance Delete Instance Delete Instance -->
         <div class="pageForm">
             <h2 class="formTitle">Delete Instance</h2>
             <p class="formLabel">Instance</p>
-            <select class="formField" name="ChooseInstance">
-                <option> CSE1ITX_2023_January IT Fundamentals </option>
-                <option> CSE2ICX_2024_August Internet Client Engineering </option>
-                <option> CSE3PBX_2025_February Industry Project 3B </option>
-            </select>
+            <input id="deleteIns" type="text" class="formField" list="instanceList" name="ChooseInstance" placeholder="Choose Instance">
 
-            <button class="submitButton" type="submit" name="Submit">Delete</button>
+            <button id="deleteButton" class="submitButton" type="submit" name="Submit">Delete</button>
         </div>
     </main>
 </body>
