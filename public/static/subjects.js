@@ -93,7 +93,7 @@ const addEventListeners = ()=>{
         toggleButton(editButton, 'Save')
     })
     //Delete Subject
-deleteButton.addEventListener('click', async ()=>{
+    deleteButton.addEventListener('click', async ()=>{
         toggleButton(deleteButton)
         if(deleteSubId.value){
                 var chosenSubject = comboValues.find((subject)=>{

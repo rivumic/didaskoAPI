@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
-    <link href="styles.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8"/>
+    <link href="styles.css" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -22,480 +22,269 @@
         </div>
         
         <img src="./logo.png"
-            alt="Latrobe logo" class="headerBlock imgBlock latrobeLogo  ">
+            alt="Latrobe logo" class="latrobeLogo">
     </header>
     <main class="flexContainer">
         <div class="pageForm">
-            <h2 class="formTitle">Assign Instance: Main Role</h2>
-            <form class="" action="" method="post">
-                <p class="formLabel">Academic</p>
-                <select class="formField"name="ChooseAcademic">
-                    <option> Ken Ryan </option>
-                    <option> Debbie Houston </option>
-                    <option> Charlie Cox</option>
-                </select>
+            <h2 class="formTitle">Assign Instance - Main</h2>
+            <p class="formLabel">Academic</p>
+            <input id="assignInstanceMainAcademicId" type="text" list="academicList" class="formField" placeholder="Choose Academic">
                 <p class="formLabel">Year</p>
-                <select class="formField"name="ChooseYear">
-                    <option> 2023</option>
-                    <option> 2024 </option>
-                    <option> 2025 </option>
-                </select>
+                <select id="assignInstanceMainYear" class="formField"></select>
                 <p class="formLabel">Month</p>
-                <select class="formField"name="ChooseMonth">
-                    <option> January </option>
-                    <option> February </option>
-                    <option> March </option>
-                    <option> April </option>
-                    <option> May </option>
-                    <option> June </option>
-                    <option> July </option>
-                    <option> August </option>
-                    <option> September </option>
-                    <option> October </option>
-                    <option> November </option>
-                    <option> December </option>
+                <select id="assignInstanceMainMonth" class="formField">
+                    <option>January</option>
+                    <option>February</option>
+                    <option>March</option>
+                    <option>April</option>
+                    <option>May</option>
+                    <option>June</option>
+                    <option>July</option>
+                    <option>August</option>
+                    <option>September</option>
+                    <option>October</option>
+                    <option>November</option>
+                    <option>December</option>
                     </select>
                 <h3 class="formLabel">Choose Instances</h3>
                 <p class="formLabel"> Year 1</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="AIMAtab11" name="choice1"/>  <label class="checkboxLabel" for="AIMAtab11">CSE1ITX</label>
-                    <input id="AIMAtab12" type="checkbox" class="academicsCheckbox" name="choice2"/>  <label class="checkboxLabel" for="AIMAtab12">CSE1PGX</label>
-                    <input id="AIMAtab13" type="checkbox" class="academicsCheckbox" name="choice3"/>  <label class="checkboxLabel" for="AIMAtab13">CSE1CFX</label>
-                    <input id="AIMAtab14" type="checkbox" class="academicsCheckbox" name="choice4"/>  <label class="checkboxLabel" for="AIMAtab14">CSE1OFX</label>
-                    <input id="AIMAtab15" type="checkbox" class="academicsCheckbox" name="choice5"/>  <label class="checkboxLabel" for="AIMAtab15">CSE1ISX</label>
-                    <input id="AIMAtab16" type="checkbox" class="academicsCheckbox" name="choice6"/>  <label class="checkboxLabel" for="AIMAtab16">CSE1SPX</label>
-                    <input id="AIMAtab17" type="checkbox" class="academicsCheckbox" name="choice7"/>   <label class="checkboxLabel" for="AIMAtab17">CSE1SIX</label>
-                    <input id="AIMAtab18" type="checkbox" class="academicsCheckbox" name="choice8"/>  <label class="checkboxLabel" for="AIMAtab18">CSE1IOX</label>
+                <div id="assignInstanceMainYear1" class="checkboxContainer">
                 </div> 
                 <p class="formLabel">Year 2</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="AIMAtab21" name="choice9"/>  <label class="checkboxLabel" for="AIMAtab21">CSE2NFX</label>
-                    <input id="AIMAtab22" type="checkbox" class="academicsCheckbox" name="choice10"/>  <label class="checkboxLabel" for="AIMAtab22">CSE2DCX</label>
-                    <input id="AIMAtab23" type="checkbox" class="academicsCheckbox" name="choice11"/>  <label class="checkboxLabel" for="AIMAtab23">CSE2ICX</label>
-                    <input id="AIMAtab24" type="checkbox" class="academicsCheckbox" name="choice12"/>  <label class="checkboxLabel" for="AIMAtab24">CSE2CNX</label>
-                    <input id="AIMAtab25" type="checkbox" class="academicsCheckbox" name="choice13"/>  <label class="checkboxLabel" for="AIMAtab25">CSE2SDX</label>
-                    <input id="AIMAtab26" type="checkbox" class="academicsCheckbox" name="choice14"/>  <label class="checkboxLabel" for="AIMAtab26">CSE2PMX</label>
-                    <input id="AIMAtab27" type="checkbox" class="academicsCheckbox" name="choice15"/>   <label class="checkboxLabel" for="AIMAtab27">CSE2VVX</label>
-                    <input id="AIMAtab28" type="checkbox" class="academicsCheckbox" name="choice16"/>  <label class="checkboxLabel" for="AIMAtab28">CSE2DMX</label>
-                    <input id="ASMAtab29" type="checkbox" class="academicsCheckbox" name="choice17"/>  <label class="checkboxLabel" for="AIMAtab29">CSE2MAX</label>
-                    <input id="AIMAtab210" type="checkbox" class="academicsCheckbox" name="choice18"/>  <label class="checkboxLabel" for="AIMAtab210">CSE2OSX</label>
-                    <input id="AIMAtab211" type="checkbox" class="academicsCheckbox" name="choice19"/>  <label class="checkboxLabel" for="AIMAtab211">CSE2ADX</label>
-                    <input id="AIMAtab212" type="checkbox" class="academicsCheckbox" name="choice20"/>  <label class="checkboxLabel" for="AIMAtab212">CSE2CPX</label>
-                    <input id="AIMAtab213" type="checkbox" class="academicsCheckbox" name="choice21"/>  <label class="checkboxLabel" for="AIMAtab213">CSE2MLX</label>
-                    <input id="AIMAtab214" type="checkbox" class="academicsCheckbox" name="choice22"/>  <label class="checkboxLabel" for="AIMAtab214">CSE2SAX</label>
-                    <input id="AIMAtab215" type="checkbox" class="academicsCheckbox" name="choice23"/>   <label class="checkboxLabel" for="AIMAtab215">CSE2ANX</label>
-                    <input id="AIMAtab216" type="checkbox" class="academicsCheckbox" name="choice24"/>  <label class="checkboxLabel" for="AIMAtab216">CSE2WDX</label>
+                <div id="assignInstanceMainYear2" class="checkboxContainer">
                 </div>
                 
                 <p class="formLabel">Year 3</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="AIMAtab31" name="choice25"/>  <label class="checkboxLabel" for="AIMAtab31">CSE3BGX</label>
-                    <input id="AIMAtab32" type="checkbox" class="academicsCheckbox" name="choice26"/>  <label class="checkboxLabel" for="AIMAtab32">CSE3CIX</label>
-                    <input id="AIMAtab33" type="checkbox" class="academicsCheckbox" name="choice27"/>  <label class="checkboxLabel" for="AIMAtab33">CSE3CSX</label>
-                    <input id="AIMAtab34" type="checkbox" class="academicsCheckbox" name="choice28"/>  <label class="checkboxLabel" for="AIMAtab34">CSE3NWX</label>
-                    <input id="AIMAtab35" type="checkbox" class="academicsCheckbox" name="choice29"/>  <label class="checkboxLabel" for="AIMAtab35">CSE3OTX</label>
-                    <input id="AIMAtab36" type="checkbox" class="academicsCheckbox" name="choice30"/>  <label class="checkboxLabel" for="AIMAtab36">CSE3WSX</label>
-                    <input id="AIMAtab37" type="checkbox" class="academicsCheckbox" name="choice31"/>   <label class="checkboxLabel" for="AIMAtab37">CSE3PAX</label>
-                    <input id="AIMAtab38" type="checkbox" class="academicsCheckbox" name="choice32"/>  <label class="checkboxLabel" for="AIMAtab38">CSE3PBX</label>
-                    <input id="AIMAtab39" type="checkbox" class="academicsCheckbox" name="choice33"/>  <label class="checkboxLabel" for="AIMAtab39">CSE3PEX</label>
-                    <input id="AIMAtab310" type="checkbox" class="academicsCheckbox" name="choice34"/>  <label class="checkboxLabel" for="AIMAtab310">CSE3ACX</label>
-                    <input id="AIMAtab311" type="checkbox" class="academicsCheckbox" name="choice35"/>  <label class="checkboxLabel" for="AIMAtab311">CSE3SOX</label>
-                    <input id="AIMAtab312" type="checkbox" class="academicsCheckbox" name="choice36"/>  <label class="checkboxLabel" for="AIMAtab312">CSE3BDX</label>
-                    <input id="AIMAtab313" type="checkbox" class="academicsCheckbox" name="choice37"/>  <label class="checkboxLabel" for="AIMAtab313">CSE3PCX</label>
-                    <input id="AIMAtab314" type="checkbox" class="academicsCheckbox" name="choice38"/>  <label class="checkboxLabel" for="AIMAtab314">CSE3CAX</label>
-                    <input id="AIMAtab315" type="checkbox" class="academicsCheckbox" name="choice39"/>   <label class="checkboxLabel" for="AIMAtab315">CSE3CBX</label>
+                <div id="assignInstanceMainYear3" class="checkboxContainer">
                 </div>
-                <button class="submitButton" type="submit" name="Submit">Save</button>
-            </form>
+                <button id="assignInstanceMainButton" class="submitButton" type="submit" name="Submit">Save</button>
         </div>
         <div class="pageForm">
-            <h2 class="formTitle">Assign Instance: Support Role</h2>
-            <form class="" action="" method="post">
-                <p class="formLabel">Academic</p>
-                <select class="formField"name="ChooseAcademic">
-                    <option> Ken Ryan </option>
-                    <option> Debbie Houston </option>
-                    <option> Charlie Cox</option>
-                </select>
+            <h2 class="formTitle">Assign Instance - Support</h2>
+            <p class="formLabel">Academic</p>
+            <input id="assignInstanceSupportAcademicId" type="text" list="academicList" class="formField" placeholder="Choose Academic">
                 <p class="formLabel">Year</p>
-                <select class="formField"name="ChooseYear">
-                    <option> 2023</option>
-                    <option> 2024 </option>
-                    <option> 2025 </option>
-                    </select>
+                <select id="assignInstanceSupportYear" class="formField"></select>
                 <p class="formLabel">Month</p>
-                <select class="formField"name="ChooseMonth">
-                    <option> January </option>
-                    <option> February </option>
-                    <option> March </option>
-                    <option> April </option>
-                    <option> May </option>
-                    <option> June </option>
-                    <option> July </option>
-                    <option> August </option>
-                    <option> September </option>
-                    <option> October </option>
-                    <option> November </option>
-                    <option> December </option>
-                </select>
+                <select id="assignInstanceSupportMonth" class="formField">
+                    <option>January</option>
+                    <option>February</option>
+                    <option>March</option>
+                    <option>April</option>
+                    <option>May</option>
+                    <option>June</option>
+                    <option>July</option>
+                    <option>August</option>
+                    <option>September</option>
+                    <option>October</option>
+                    <option>November</option>
+                    <option>December</option>
+                    </select>
                 <h3 class="formLabel">Choose Instances</h3>
                 <p class="formLabel"> Year 1</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="AISRtab11" name="choice1"/>  <label class="checkboxLabel" for="AISRtab11">CSE1ITX</label>
-                    <input id="AISRtab12" type="checkbox" class="academicsCheckbox" name="choice2"/>  <label class="checkboxLabel" for="AISRtab12">CSE1PGX</label>
-                    <input id="AISRtab13" type="checkbox" class="academicsCheckbox" name="choice3"/>  <label class="checkboxLabel" for="AISRtab13">CSE1CFX</label>
-                    <input id="AISRtab14" type="checkbox" class="academicsCheckbox" name="choice4"/>  <label class="checkboxLabel" for="AISRtab14">CSE1OFX</label>
-                    <input id="AISRtab15" type="checkbox" class="academicsCheckbox" name="choice5"/>  <label class="checkboxLabel" for="AISRtab15">CSE1ISX</label>
-                    <input id="AISRtab16" type="checkbox" class="academicsCheckbox" name="choice6"/>  <label class="checkboxLabel" for="AISRtab16">CSE1SPX</label>
-                    <input id="AISRtab17" type="checkbox" class="academicsCheckbox" name="choice7"/>   <label class="checkboxLabel" for="AISRtab17">CSE1SIX</label>
-                    <input id="AISRtab18" type="checkbox" class="academicsCheckbox" name="choice8"/>  <label class="checkboxLabel" for="AISRtab18">CSE1IOX</label>
-                </div>
-                  
+                <div id="assignInstanceSupportYear1" class="checkboxContainer">
+                </div> 
                 <p class="formLabel">Year 2</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="AISRtab21" name="choice9"/>  <label class="checkboxLabel" for="AISRtab21">CSE2NFX</label>
-                    <input id="AISRtab22" type="checkbox" class="academicsCheckbox" name="choice10"/>  <label class="checkboxLabel" for="AISRtab22">CSE2DCX</label>
-                    <input id="AISRtab23" type="checkbox" class="academicsCheckbox" name="choice11"/>  <label class="checkboxLabel" for="AISRtab23">CSE2ICX</label>
-                    <input id="AISRtab24" type="checkbox" class="academicsCheckbox" name="choice12"/>  <label class="checkboxLabel" for="AISRtab24">CSE2CNX</label>
-                    <input id="AISRtab25" type="checkbox" class="academicsCheckbox" name="choice13"/>  <label class="checkboxLabel" for="AISRtab25">CSE2SDX</label>
-                    <input id="AISRtab26" type="checkbox" class="academicsCheckbox" name="choice14"/>  <label class="checkboxLabel" for="AISRtab26">CSE2PMX</label>
-                    <input id="AISRtab27" type="checkbox" class="academicsCheckbox" name="choice15"/>   <label class="checkboxLabel" for="AISRtab27">CSE2VVX</label>
-                    <input id="AISRtab28" type="checkbox" class="academicsCheckbox" name="choice16"/>  <label class="checkboxLabel" for="AISRtab28">CSE2DMX</label>
-                    <input id="AISRtab29" type="checkbox" class="academicsCheckbox" name="choice17"/>  <label class="checkboxLabel" for="AISRtab29">CSE2MAX</label>
-                    <input id="AISRtab210" type="checkbox" class="academicsCheckbox" name="choice18"/>  <label class="checkboxLabel" for="AISRtab210">CSE2OSX</label>
-                    <input id="AISRtab211" type="checkbox" class="academicsCheckbox" name="choice19"/>  <label class="checkboxLabel" for="AISRtab211">CSE2ADX</label>
-                    <input id="AISRtab212" type="checkbox" class="academicsCheckbox" name="choice20"/>  <label class="checkboxLabel" for="AISRtab212">CSE2CPX</label>
-                    <input id="AISRtab213" type="checkbox" class="academicsCheckbox" name="choice21"/>  <label class="checkboxLabel" for="AISRtab213">CSE2MLX</label>
-                    <input id="AISRtab214" type="checkbox" class="academicsCheckbox" name="choice22"/>  <label class="checkboxLabel" for="AISRtab214">CSE2SAX</label>
-                    <input id="AISRtab215" type="checkbox" class="academicsCheckbox" name="choice23"/>   <label class="checkboxLabel" for="AISRtab215">CSE2ANX</label>
-                    <input id="AISRtab216" type="checkbox" class="academicsCheckbox" name="choice24"/>  <label class="checkboxLabel" for="AISRtab216">CSE2WDX</label>
+                <div id="assignInstanceSupportYear2" class="checkboxContainer">
                 </div>
                 
                 <p class="formLabel">Year 3</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="AISRtab31" name="choice25"/>  <label class="checkboxLabel" for="AISRtab31">CSE3BGX</label>
-                    <input id="AISRtab32" type="checkbox" class="academicsCheckbox" name="choice26"/>  <label class="checkboxLabel" for="AISRtab32">CSE3CIX</label>
-                    <input id="AISRtab33" type="checkbox" class="academicsCheckbox" name="choice27"/>  <label class="checkboxLabel" for="AISRtab33">CSE3CSX</label>
-                    <input id="AISRtab34" type="checkbox" class="academicsCheckbox" name="choice28"/>  <label class="checkboxLabel" for="AISRtab34">CSE3NWX</label>
-                    <input id="AISRtab35" type="checkbox" class="academicsCheckbox" name="choice29"/>  <label class="checkboxLabel" for="AISRtab35">CSE3OTX</label>
-                    <input id="AISRtab36" type="checkbox" class="academicsCheckbox" name="choice30"/>  <label class="checkboxLabel" for="AISRtab36">CSE3WSX</label>
-                    <input id="AISRtab37" type="checkbox" class="academicsCheckbox" name="choice31"/>   <label class="checkboxLabel" for="AISRtab37">CSE3PAX</label>
-                    <input id="AISRtab38" type="checkbox" class="academicsCheckbox" name="choice32"/>  <label class="checkboxLabel" for="AISRtab38">CSE3PBX</label>
-                    <input id="AISRtab39" type="checkbox" class="academicsCheckbox" name="choice33"/>  <label class="checkboxLabel" for="AISRtab39">CSE3PEX</label>
-                    <input id="AISRtab310" type="checkbox" class="academicsCheckbox" name="choice34"/>  <label class="checkboxLabel" for="AISRtab310">CSE3ACX</label>
-                    <input id="AISRtab311" type="checkbox" class="academicsCheckbox" name="choice35"/>  <label class="checkboxLabel" for="AISRtab311">CSE3SOX</label>
-                    <input id="AISRtab312" type="checkbox" class="academicsCheckbox" name="choice36"/>  <label class="checkboxLabel" for="AISRtab312">CSE3BDX</label>
-                    <input id="AISRtab313" type="checkbox" class="academicsCheckbox" name="choice37"/>  <label class="checkboxLabel" for="AISRtab313">CSE3PCX</label>
-                    <input id="AISRtab314" type="checkbox" class="academicsCheckbox" name="choice38"/>  <label class="checkboxLabel" for="AISRtab314">CSE3CAX</label>
-                    <input id="AISRtab315" type="checkbox" class="academicsCheckbox" name="choice39"/>   <label class="checkboxLabel" for="AISRtab315">CSE3CBX</label>
+                <div id="assignInstanceSupportYear3" class="checkboxContainer">
                 </div>
-                <button class="submitButton" type="submit" name="Submit">Save</button>
-            </form>
-        </div>
-        <div class="pageForm">
-            <h2 class="formTitle">Available Academics</h2>
-            <form class="" action="" method="post">
-                <p class="formLabel">Required Qualification</p>
-                <select class="formField"name="RequiredQualification">
-                    <option>CSE1ITX_2020_January</option>
-                    <option>CSE2ICX_2021_August </option>
-                    <option>CSE3PBX_2023_February </option>
-                </select>
-                <p class="formLabel">Year</p>
-                <select class="formField"name="ChooseYear">
-                    <option>2023</option>
-                    <option>2024</option>
-                    <option>2025</option>
-                </select>
-                <p class="formLabel">Month</p>
-                <select class="formField"name="ChooseMonth">
-                    <option> January </option>
-                    <option> February </option>
-                    <option> March </option>
-                    <option> April </option>
-                    <option> May </option>
-                    <option> June </option>
-                    <option> July </option>
-                    <option> August </option>
-                    <option> September </option>
-                    <option> October </option>
-                    <option> November </option>
-                    <option> December </option>
-                </select>
-                <br></br>
-                <button class="submitButton" type="submit" name="Submit">Search</button>
-                <br>
-                <table id="AvailableAcademicsTB">
-                    <tr>
-                        <th>Lecture</th>
-                        <th>Load</th>
-                    </tr>
-                    <tr>
-                        <td>Ken Adams</td>
-                        <td>3.5</td>
-                    </tr>
-                    <tr>
-                        <td>Karin Kanzuki</td>
-                        <td>3.5</td>
-                    </tr>
-                    <tr>
-                        <td>Dhalsim Bhat</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Fabio de la Vega</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>Mike Bison</td>
-                        <td>5.5</td>
-                    </tr>
-                    <tr>
-                        <td>Charlie Nash</td>
-                        <td>7</td>
-                    </tr>
-                </table>
-            </form>
+                <button id="assignInstanceSupportButton" class="submitButton" type="submit" name="Submit">Save</button>
         </div>
         <div class="rightcolumn">
             <div class="pageForm">
-                <h2 class="formTitle">Assign Subject Development</h2>
-                <form class="" action="" method="post">
-                    <p class="formLabel">Academic</p>
-                    <select class="formField"name="ChooseAcademic">
-                        <option> Ken Ryan </option>
-                        <option> Debbie Houston </option>
-                        <option> Charlie Cox</option>
-                        </select>
-                        <p class="formLabel"> Start Year</p>
-                    <select class="formField"name="ChooseYear">
-                        <option>2023</option>
-                        <option>2024</option>
-                        <option>2025</option>
-                        </select>
-                        <p class="formLabel"> Start Month</p>
-                    <select class="formField"name="ChooseMonth">
-                        <option> January </option>
-                        <option> February </option>
-                        <option> March </option>
-                        <option> April </option>
-                        <option> May </option>
-                        <option> June </option>
-                        <option> July </option>
-                        <option> August </option>
-                        <option> September </option>
-                        <option> October </option>
-                        <option> November </option>
-                        <option> December </option>
-                    </select>
-                    <p class="formLabel"> End Year</p>
-                    <select class="formField"name="ChooseYear">
-                        <option>2023</option>
-                        <option>2024</option>
-                        <option>2025</option>
-                        </select>
-                    <p class="formLabel"> End Month</p>
-                    <select class="formField"name="ChooseMonth">
-                        <option> January </option>
-                        <option> February </option>
-                        <option> March </option>
-                        <option> April </option>
-                        <option> May </option>
-                        <option> June </option>
-                        <option> July </option>
-                        <option> August </option>
-                        <option> September </option>
-                        <option> October </option>
-                        <option> November </option>
-                        <option> December </option>
-                    </select>
-                    <br></br>
-                    <button class="submitButton" type="submit" name="Submit">Add</button>
-                </form>
+                <h2 class="formTitle">View/Delete<br>Subject Development</h2>
+                <p class="formLabel">Academic</p>
+                <input id="subDevAcademicId" type="text" list="academicList" class="formField" placeholder="Choose Academic">
+                <div class="subDevContainer"></div>
+                <button id="subDevSubmitButton" class="submitButton" type="submit" name="Submit">Delete Selection</button>   
+                
+            </div>
+            <!-- View Instance Info View Instance Info View Instance Info View Instance Info View Instance Info View Instance Info View Instance Info -->
+            <div class="pageForm">
+                <h2 class="formTitle">View Instance Info</h2>
+                <p class="formLabel">Instance Name</p>
+                <input id="insInfoName" type="text" class="formField" list="instanceList" placeholder="Choose Instance">
+                <ul class="formList">
+                    <li><h4>Main</h4></li>
+                        <ul id="insInfoMain" class="formList listContainer">
+                        </ul>
+                    <li><h4>Support</h4></li>
+                        <ul id="insInfoSupport" class="formList listContainer">
+                        </ul>
+                </ul>
+                <h3 class="formSectionHeader"> Student Enrolments: 
+                    <span id="insInfoEnrolments"></span>
+                </h3>
+            </div>
+        </div>
+        
+        <div class="rightcolumn">
+            <div class="pageForm">
+                <h2 class="formTitle">Available Academics</h2>
+                <p class="formLabel">Select Qualification</p>
+                <input id="availableAcademicsQual"class="formField" type="text" list="subjectList" placeholder="Choose Subject">
+                <p class="formLabel">Year</p>
+                <select id="availableAcademicsYear" class="formField"name="ChooseYear"></select>
+                <p class="formLabel">Month</p>
+                <select id="availableAcademicsMonth" class="formField" name="ChooseMonth">
+                    <option>January</option>
+                    <option>February</option>
+                    <option>March</option>
+                    <option>April</option>
+                    <option>May</option>
+                    <option>June</option>
+                    <option>July</option>
+                    <option>August</option>
+                    <option>September</option>
+                    <option>October</option>
+                    <option>November</option>
+                    <option>December</option>
+                </select>
+                <button id="availableAcademicsButton" class="submitButton" type="submit" name="Submit">Search</button>
+                <table id="availableAcademicsTable">
+                    <tr>
+                        <th>Lecture</th>
+                        <th style="text-align: center;">Load</th>
+                    </tr>
+                </table>
             </div>
             <div class="pageForm">
                 <h2 class="formTitle">Delete Academic</h2>
-                <form class="" action="" method="post">
-                    <p class="formLabel">Academic</p>
-                    <select class="formField"name="ChooseAcademic">
-                        <option> Ken Ryan </option>
-                        <option> Debbie Houston </option>
-                        <option> Charlie Cox</option>
-                        </select>
-                    <br></br>
-                    <button class="submitButton" type="submit" name="Submit">Delete</button>
-                </form>
+                <p class="formLabel">Academic</p>
+                <input id="deleteAcademicId" type="text" list="academicList" class="formField" placeholder="Choose Academic">
+                <button id="deleteAcademicButton" class="submitButton" type="submit" name="Submit">Delete</button>
             </div>
         </div>
+        
+        <div class="rightcolumn">
+            <!-- View Instance Allocation View Instance Allocation View Instance Allocation View Instance Allocation View Instance Allocation -->
+            <div class="pageForm">
+                <h2 class="formTitle">View Instance Allocation</h2>
+                <p class="formLabel">Academic</p>
+                <input id="viewAllocAcademic" type="text" list="academicList" class="formField" placeholder="Choose Academic">
+                <p class="formLabel">Year</p>
+                <select id="viewAllocYear" class="formField" name="ChooseYear" placeholder="Choose Year"></select>
+                <p class="formLabel">Month</p>
+                <select id="viewAllocMonth" class="formField" name="ChooseMonth" placeholder="Choose Month">
+                    <option>January</option>
+                    <option>February</option>
+                    <option>March</option>
+                    <option>April</option>
+                    <option>May</option>
+                    <option>June</option>
+                    <option>July</option>
+                    <option>August</option>
+                    <option>September</option>
+                    <option>October</option>
+                    <option>November</option>
+                    <option>December</option>
+                </select>
+                <button id="viewAllocButton" class="submitButton" type="submit" name="Submit">Submit</button>
+                <ul class="formList">
+                    <li><h4>Active Main Allocations</h4></li>
+                        <ul id="viewAllocMain" class="formList listContainer">
+                        </ul>
+                    <li><h4>Active Support Allocations</h4></li>
+                        <ul id="viewAllocSupp" class="formList listContainer">
+                        </ul>
+                        <li><h4>Active Subject Development</h4></li>
+                        <ul id="viewAllocSubDev" class="formList listContainer">
+                        </ul>
+                    <li><h4>Month Load</h4></li>
+                        <ul class="formList">
+                            <li id="viewAllocLoad"></li>
+                        </ul>
+                </ul>
+            </div>
+        </div>
+
         <div class="pageForm">
             <h2 class="formTitle">Add New Academic</h2>
-            <form class="" action="" method="post">
+            
                 <p class="formLabel">Full Name</p>
-                <input type="text" class="formField" name="UserInput" placeholder="Full Name">
-                <h3 class="formLabel">Choose Subject</h3>
+                <input id="newAcademicId" type="text" class="formField" placeholder="Academic Name">
+                <h3 class="formLabel">Choose Subject Qualifications</h3>
                 <p class="formLabel"> Year 1</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="ANAtab11" name="choice1"/>  <label class="checkboxLabel" for="ANAtab11">CSE1ITX</label>
-                    <input id="ANAtab12" type="checkbox" class="academicsCheckbox" name="choice2"/>  <label class="checkboxLabel" for="ANAtab12">CSE1PGX</label>
-                    <input id="ANAtab13" type="checkbox" class="academicsCheckbox" name="choice3"/>  <label class="checkboxLabel" for="ANAtab13">CSE1CFX</label>
-                    <input id="ANAtab14" type="checkbox" class="academicsCheckbox" name="choice4"/>  <label class="checkboxLabel" for="ANAtab14">CSE1OFX</label>
-                    <input id="ANAtab15" type="checkbox" class="academicsCheckbox" name="choice5"/>  <label class="checkboxLabel" for="ANAtab15">CSE1ISX</label>
-                    <input id="ANAtab16" type="checkbox" class="academicsCheckbox" name="choice6"/>  <label class="checkboxLabel" for="ANAtab16">CSE1SPX</label>
-                    <input id="ANAtab17" type="checkbox" class="academicsCheckbox" name="choice7"/>   <label class="checkboxLabel" for="ANAtab17">CSE1SIX</label>
-                    <input id="ANAtab18" type="checkbox" class="academicsCheckbox" name="choice8"/>  <label class="checkboxLabel" for="ANAtab18">CSE1IOX</label>
+                <div id="newAcademicYear1" class="checkboxContainer">
                 </div>
                 <p class="formLabel">Year 2</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="ANAtab21" name="choice9"/>  <label class="checkboxLabel" for="ANAtab21">CSE2NFX</label>
-                    <input id="ANAtab22" type="checkbox" class="academicsCheckbox" name="choice10"/> <label class="checkboxLabel" for="ANAtab22">CSE2DCX</label>
-                    <input id="ANAtab23" type="checkbox" class="academicsCheckbox" name="choice11"/> <label class="checkboxLabel" for="ANAtab23">CSE2ICX</label>
-                    <input id="ANAtab24" type="checkbox" class="academicsCheckbox" name="choice12"/> <label class="checkboxLabel" for="ANAtab24">CSE2CNX</label>
-                    <input id="ANAtab25" type="checkbox" class="academicsCheckbox" name="choice13"/> <label class="checkboxLabel" for="ANAtab25">CSE2SDX</label>
-                    <input id="ANAtab26" type="checkbox" class="academicsCheckbox" name="choice14"/> <label class="checkboxLabel" for="ANAtab26">CSE2PMX</label>
-                    <input id="ANAtab27" type="checkbox" class="academicsCheckbox" name="choice15"/> <label class="checkboxLabel" for="ANAtab27">CSE2VVX</label>
-                    <input id="ANAtab28" type="checkbox" class="academicsCheckbox" name="choice16"/> <label class="checkboxLabel" for="ANAtab28">CSE2DMX</label>
-                    <input id="ANAtab29" type="checkbox" class="academicsCheckbox" name="choice17"/> <label class="checkboxLabel" for="ANAtab29">CSE2MAX</label>
-                    <input id="ANAtab210" type="checkbox" class="academicsCheckbox" name="choice18"/> <label class="checkboxLabel" for="ANAtab210">CSE2OSX</label>
-                    <input id="ANAtab211" type="checkbox" class="academicsCheckbox" name="choice19"/> <label class="checkboxLabel" for="ANAtab211">CSE2ADX</label>
-                    <input id="ANAtab212" type="checkbox" class="academicsCheckbox" name="choice20"/> <label class="checkboxLabel" for="ANAtab212">CSE2CPX</label>
-                    <input id="ANAtab213" type="checkbox" class="academicsCheckbox" name="choice21"/> <label class="checkboxLabel" for="ANAtab213">CSE2MLX</label>
-                    <input id="ANAtab214" type="checkbox" class="academicsCheckbox" name="choice22"/> <label class="checkboxLabel" for="ANAtab214">CSE2SAX</label>
-                    <input id="ANAtab215" type="checkbox" class="academicsCheckbox" name="choice23"/> <label class="checkboxLabel" for="ANAtab215">CSE2ANX</label>
-                    <input id="ANAtab216" type="checkbox" class="academicsCheckbox" name="choice24"/> <label class="checkboxLabel" for="ANAtab216">CSE2WDX</label>
+                <div id="newAcademicYear2" class="checkboxContainer">
                 </div>
                     
                 <p class="formLabel">Year 3</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="ANAtab31" name="choice25"/>  <label class="checkboxLabel" for="ANAtab31">CSE3BGX</label>
-                    <input id="ANAtab32" type="checkbox" class="academicsCheckbox" name="choice26"/>  <label class="checkboxLabel" for="ANAtab32">CSE3CIX</label>
-                    <input id="ANAtab33" type="checkbox" class="academicsCheckbox" name="choice27"/>  <label class="checkboxLabel" for="ANAtab33">CSE3CSX</label>
-                    <input id="ANAtab34" type="checkbox" class="academicsCheckbox" name="choice28"/>  <label class="checkboxLabel" for="ANAtab34">CSE3NWX</label>
-                    <input id="ANAtab35" type="checkbox" class="academicsCheckbox" name="choice29"/>  <label class="checkboxLabel" for="ANAtab35">CSE3OTX</label>
-                    <input id="ANAtab36" type="checkbox" class="academicsCheckbox" name="choice30"/>  <label class="checkboxLabel" for="ANAtab36">CSE3WSX</label>
-                    <input id="ANAtab37" type="checkbox" class="academicsCheckbox" name="choice31"/>  <label class="checkboxLabel" for="ANAtab37">CSE3PAX</label>
-                    <input id="ANAtab38" type="checkbox" class="academicsCheckbox" name="choice32"/>  <label class="checkboxLabel" for="ANAtab38">CSE3PBX</label>
-                    <input id="ANAtab39" type="checkbox" class="academicsCheckbox" name="choice33"/>  <label class="checkboxLabel" for="ANAtab39">CSE3PEX</label>
-                    <input id="ANAtab310" type="checkbox" class="academicsCheckbox" name="choice34"/> <label class="checkboxLabel" for="ANAtab310">CSE3ACX</label>
-                    <input id="ANAtab311" type="checkbox" class="academicsCheckbox" name="choice35"/> <label class="checkboxLabel" for="ANAtab311">CSE3SOX</label>
-                    <input id="ANAtab312" type="checkbox" class="academicsCheckbox" name="choice36"/> <label class="checkboxLabel" for="ANAtab312">CSE3BDX</label>
-                    <input id="ANAtab313" type="checkbox" class="academicsCheckbox" name="choice37"/> <label class="checkboxLabel" for="ANAtab313">CSE3PCX</label>
-                    <input id="ANAtab314" type="checkbox" class="academicsCheckbox" name="choice38"/> <label class="checkboxLabel" for="ANAtab314">CSE3CAX</label>
-                    <input id="ANAtab315" type="checkbox" class="academicsCheckbox" name="choice39"/> <label class="checkboxLabel" for="ANAtab315">CSE3CBX</label>
+                <div id="newAcademicYear3" class="checkboxContainer">
                 </div>
-                <button class="submitButton" type="submit" name="Submit">Add</button>
-            </form>
+                <button id="newAcademicButton" class="submitButton" type="submit" name="Submit">Add</button>
+            
+        </div>
+        <div class="pageForm">
+            <h2 class="formTitle">Assign Subject Development</h2>
+            
+            <p class="formLabel">Academic</p>
+            <input id="newSubDevAcademicId" type="text" list="academicList" class="formField" placeholder="Choose Academic">
+            <p class="formLabel">Select Subject</p>
+            <input id="newSubDevSubject"class="formField" type="text" list="subjectList" placeholder="Choose Subject">
+                <p class="formLabel"> Start Year</p>
+            <select id="newSubDevStartYear" class="formField"name="ChooseYear"></select>
+                <p class="formLabel"> Start Month</p>
+            <select id="newSubDevStartMonth" class="formField"name="ChooseMonth">
+                <option>January</option>
+                <option>February</option>
+                <option>March</option>
+                <option>April</option>
+                <option>May</option>
+                <option>June</option>
+                <option>July</option>
+                <option>August</option>
+                <option>September</option>
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
+            </select>
+            <p class="formLabel">End Year</p>
+            <select id="newSubDevEndYear" class="formField"name="ChooseYear"></select>
+            <p class="formLabel"> End Month</p>
+            <select id="newSubDevEndMonth" class="formField"name="ChooseMonth">
+                <option>January</option>
+                <option>February</option>
+                <option>March</option>
+                <option>April</option>
+                <option>May</option>
+                <option>June</option>
+                <option>July</option>
+                <option>August</option>
+                <option>September</option>
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
+            </select>
+            <button id="newSubDevButton" class="submitButton" type="submit" name="Submit">Add</button>   
         </div>
         <div class="pageForm">
             <h2 class="formTitle">Edit Academic</h2>
-            <form class="" action="" method="post">
+            
                 <p class="formLabel">Choose Academic</p>
-                <select class="formField"name="Choose Academic">
-                    <option>Ken Ryan</option>
-                    <option>Debbie Houston</option>
-                    <option>Charlie Cox</option>
-                    </select>
+                <input id="editOldAcademicId" type="text" list="academicList" class="formField" placeholder="Choose Academic">
+                
                 <p class="formLabel">New Name</p>
-                <input type="text" class="formField" name="UserInput" placeholder="Full Name">
-                <h3 class="formLabel">Choose Subject</h3>
+                <input id="editNewAcademicId" type="text" class="formField" name="UserInput" placeholder="Full Name">
+
+                <h3 class="formLabel">Choose Subject Qualifications</h3>
                 <p class="formLabel"> Year 1</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="EAtab11" name="choice1"/>  <label class="checkboxLabel" for="EAtab11">CSE1ITX</label>
-                    <input id="EAtab12" type="checkbox" class="academicsCheckbox" name="choice2"/>  <label class="checkboxLabel" for="EAtab12">CSE1PGX</label>
-                    <input id="EAtab13" type="checkbox" class="academicsCheckbox" name="choice3"/>  <label class="checkboxLabel" for="EAtab13">CSE1CFX</label>
-                    <input id="EAtab14" type="checkbox" class="academicsCheckbox" name="choice4"/>  <label class="checkboxLabel" for="EAtab14">CSE1OFX</label>
-                    <input id="EAtab15" type="checkbox" class="academicsCheckbox" name="choice5"/>  <label class="checkboxLabel" for="EAtab15">CSE1ISX</label>
-                    <input id="EAtab16" type="checkbox" class="academicsCheckbox" name="choice6"/>  <label class="checkboxLabel" for="EAtab16">CSE1SPX</label>
-                    <input id="EAtab17" type="checkbox" class="academicsCheckbox" name="choice7"/>   <label class="checkboxLabel" for="EAtab17">CSE1SIX</label>
-                    <input id="EAtab18" type="checkbox" class="academicsCheckbox" name="choice8"/>  <label class="checkboxLabel" for="EAtab18">CSE1IOX</label>  
+                <div id="editAcademicYear1" class="checkboxContainer">
+                </div>
+                <p class="formLabel">Year 2</p>
+                <div id="editAcademicYear2" class="checkboxContainer">
                 </div>
                     
-                <p class="formLabel">Year 2</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="EAtab21" name="choice9"/>  <label class="checkboxLabel" for="EAtab21">CSE2NFX</label>
-                    <input id="EAtab22" type="checkbox" class="academicsCheckbox" name="choice10"/> <label class="checkboxLabel" for="EAtab22">CSE2DCX</label>
-                    <input id="EAtab23" type="checkbox" class="academicsCheckbox" name="choice11"/> <label class="checkboxLabel" for="EAtab23">CSE2ICX</label>
-                    <input id="EAtab24" type="checkbox" class="academicsCheckbox" name="choice12"/> <label class="checkboxLabel" for="EAtab24">CSE2CNX</label>
-                    <input id="EAtab25" type="checkbox" class="academicsCheckbox" name="choice13"/> <label class="checkboxLabel" for="EAtab25">CSE2SDX</label>
-                    <input id="EAtab26" type="checkbox" class="academicsCheckbox" name="choice14"/> <label class="checkboxLabel" for="EAtab26">CSE2PMX</label>
-                    <input id="EAtab27" type="checkbox" class="academicsCheckbox" name="choice15"/> <label class="checkboxLabel" for="EAtab27">CSE2VVX</label>
-                    <input id="EAtab28" type="checkbox" class="academicsCheckbox" name="choice16"/> <label class="checkboxLabel" for="EAtab28">CSE2DMX</label>
-                    <input id="EAtab29" type="checkbox" class="academicsCheckbox" name="choice17"/> <label class="checkboxLabel" for="EAtab29">CSE2MAX</label>
-                    <input id="EAtab210" type="checkbox" class="academicsCheckbox" name="choice18"/> <label class="checkboxLabel" for="EAtab210">CSE2OSX</label>
-                    <input id="EAtab211" type="checkbox" class="academicsCheckbox" name="choice19"/> <label class="checkboxLabel" for="EAtab211">CSE2ADX</label>
-                    <input id="EAtab212" type="checkbox" class="academicsCheckbox" name="choice20"/> <label class="checkboxLabel" for="EAtab212">CSE2CPX</label>
-                    <input id="EAtab213" type="checkbox" class="academicsCheckbox" name="choice21"/> <label class="checkboxLabel" for="EAtab213">CSE2MLX</label>
-                    <input id="EAtab214" type="checkbox" class="academicsCheckbox" name="choice22"/> <label class="checkboxLabel" for="EAtab214">CSE2SAX</label>
-                    <input id="EAtab215" type="checkbox" class="academicsCheckbox" name="choice23"/> <label class="checkboxLabel" for="EAtab215">CSE2ANX</label>
-                    <input id="EAtab216" type="checkbox" class="academicsCheckbox" name="choice24"/> <label class="checkboxLabel" for="EAtab216">CSE2WDX</label>
-                </div>
-                
                 <p class="formLabel">Year 3</p>
-                <div class="checkboxContainer">
-                    <input type="checkbox" class="academicsCheckbox" id="EAtab31" name="choice25"/>  <label class="checkboxLabel" for="EAtab31">CSE3BGX</label>
-                    <input id="EAtab32" type="checkbox" class="academicsCheckbox" name="choice26"/>  <label class="checkboxLabel" for="EAtab32">CSE3CIX</label>
-                    <input id="EAtab33" type="checkbox" class="academicsCheckbox" name="choice27"/>  <label class="checkboxLabel" for="EAtab33">CSE3CSX</label>
-                    <input id="EAtab34" type="checkbox" class="academicsCheckbox" name="choice28"/>  <label class="checkboxLabel" for="EAtab34">CSE3NWX</label>
-                    <input id="EAtab35" type="checkbox" class="academicsCheckbox" name="choice29"/>  <label class="checkboxLabel" for="EAtab35">CSE3OTX</label>
-                    <input id="EAtab36" type="checkbox" class="academicsCheckbox" name="choice30"/>  <label class="checkboxLabel" for="EAtab36">CSE3WSX</label>
-                    <input id="EAtab37" type="checkbox" class="academicsCheckbox" name="choice31"/>  <label class="checkboxLabel" for="EAtab37">CSE3PAX</label>
-                    <input id="EAtab38" type="checkbox" class="academicsCheckbox" name="choice32"/>  <label class="checkboxLabel" for="EAtab38">CSE3PBX</label>
-                    <input id="EAtab39" type="checkbox" class="academicsCheckbox" name="choice33"/>  <label class="checkboxLabel" for="EAtab39">CSE3PEX</label>
-                    <input id="EAtab310" type="checkbox" class="academicsCheckbox" name="choice34"/> <label class="checkboxLabel" for="EAtab310">CSE3ACX</label>
-                    <input id="EAtab311" type="checkbox" class="academicsCheckbox" name="choice35"/> <label class="checkboxLabel" for="EAtab311">CSE3SOX</label>
-                    <input id="EAtab312" type="checkbox" class="academicsCheckbox" name="choice36"/> <label class="checkboxLabel" for="EAtab312">CSE3BDX</label>
-                    <input id="EAtab313" type="checkbox" class="academicsCheckbox" name="choice37"/> <label class="checkboxLabel" for="EAtab313">CSE3PCX</label>
-                    <input id="EAtab314" type="checkbox" class="academicsCheckbox" name="choice38"/> <label class="checkboxLabel" for="EAtab314">CSE3CAX</label>
-                    <input id="EAtab315" type="checkbox" class="academicsCheckbox" name="choice39"/> <label class="checkboxLabel" for="EAtab315">CSE3CBX</label>
+                <div id="editAcademicYear3" class="checkboxContainer">
                 </div>
-                <button class="submitButton" type="submit" name="Submit">Save</button>
-            </form>
-        </div>
-        <div class="pageForm">
-            <h2 class="formTitle">View/Delete<br>Subject Development</h2>
-            <form class="" action="" method="post">
-                <p class="formLabel">Required Qualification</p>
-                <select class="formField"name="RequiredQualification">
-                    <option>CSE1ITX_2020_January</option>
-                    <option>CSE2ICX_2021_August </option>
-                    <option>CSE3PBX_2023_February </option>
-                    </select>
-                    <p class="formLabel">Year</p>
-                <select class="formField"name="ChooseYear">
-                    <option>2023</option>
-                    <option>2024</option>
-                    <option>2025</option>
-                    </select>
-                    <p class="formLabel">Month</p>
-                    <select class="formField"name="ChooseMonth">
-                        <option> January </option>
-                        <option> February </option>
-                        <option> March </option>
-                        <option> April </option>
-                        <option> May </option>
-                        <option> June </option>
-                        <option> July </option>
-                        <option> August </option>
-                        <option> September </option>
-                        <option> October </option>
-                        <option> November </option>
-                        <option> December </option>
-                    </select>
-                    <br></br>
-                <button class="submitButton" type="submit" name="Submit">Search</button>
-                <br>
-                <div class="deletion subDevContainer">
-
-                <input type="checkbox" class="subDevCheckbox" id="DSAtab1" name="choice1"/>  <label class="subDevCheckboxLabel" for="DSAtab1"><h4 class="subDevHeading">CSE1PLR</h4><p class="subDevSubHeading">Start: <span class="subDevDate">Feb 2022</span></p><p class="subDevSubHeading">End: </spa class="subDevDate"n><span>March 2022</span></p></label> 
-                    <input id="DSAtab2" type="checkbox" class="subDevCheckbox" name="choice2"/>  <label class="subDevCheckboxLabel" for="DSAtab2"><h4 class="subDevHeading">CSE1PLR</h4><p class="subDevSubHeading">Start: <span class="subDevDate">Feb 2022</span></p><p class="subDevSubHeading">End: <span class="subDevDate">March 2022</span></p></label> 
-                    <input id="DSAtab3" type="checkbox" class="subDevCheckbox" name="choice3"/>  <label class="subDevCheckboxLabel" for="DSAtab3"><h4 class="subDevHeading">CSE1PLR</h4><p class="subDevSubHeading">Start: <span class="subDevDate">Feb 2022</span></p><p class="subDevSubHeading">End: <span class="subDevDate">March 2022</span></p></label>
-                    <input id="DSAtab4" type="checkbox" class="subDevCheckbox" name="choice4"/>  <label class="subDevCheckboxLabel" for="DSAtab4"><h4 class="subDevHeading">CSE1PLR</h4><p class="subDevSubHeading">Start: <span class="subDevDate">Feb 2022</span></p><p class="subDevSubHeading">End: <span class="subDevDate">March 2022</span></p></label>
-                    <input id="DSAtab5" type="checkbox" class="subDevCheckbox" name="choice5"/>  <label class="subDevCheckboxLabel" for="DSAtab5"><h4 class="subDevHeading">CSE1PLR</h4><p class="subDevSubHeading">Start: <span class="subDevDate">Feb 2022</span></p><p class="subDevSubHeading">End: <span class="subDevDate">March 2022</span></p></label>
-                    <input id="DSAtab6" type="checkbox" class="subDevCheckbox" name="choice6"/>  <label class="subDevCheckboxLabel" for="DSAtab6"><h4 class="subDevHeading">CSE1PLR</h4><p class="subDevSubHeading">Start: <span class="subDevDate">Feb 2022</span></p><p class="subDevSubHeading">End: <span class="subDevDate">March 2022</span></p></label>
-                    <input id="DSAtab7" type="checkbox" class="subDevCheckbox" name="choice7"/>   <label class="subDevCheckboxLabel" for="DSAtab7"><h4 class="subDevHeading">CSE1PLR</h4><p class="subDevSubHeading">Start: <span class="subDevDate">Feb 2022</span></p><p class="subDevSubHeading">End: <span class="subDevDate">March 2022</span></p></label>
-                    <input id="DSAtab8" type="checkbox" class="subDevCheckbox" name="choice8"/>  <label class="subDevCheckboxLabel" for="DSAtab8"><h4 class="subDevHeading">CSE1PLR</h4><p class="subDevSubHeading">Start: <span class="subDevDate">Feb 2022</span></p><p class="subDevSubHeading">End: <span class="subDevDate">March 2022</span></p><label>  
-                </div>
-                <button class="submitButton" type="submit" name="Submit">Delete Selection</button>   
-            </form>
+                <button id="editAcademicButton" class="submitButton" type="submit" name="Submit">Save</button>
+            
         </div>
     </main>
     <footer>

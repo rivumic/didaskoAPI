@@ -73,7 +73,7 @@
 }
 img.latrobeLogo{
   width: 100%;
-  max-width: 350px;
+  max-width: 200px;
   min-width: 150px;
 }
 
@@ -340,27 +340,33 @@ background-color: red;
   margin: 2px;
   border: solid 1px #000000;
   background-color:#F0F0F0;
-  transition: all 0.1s;
   user-select: none;
 }
-.checkboxLabel:hover, .academicsCheckbox:checked + .checkboxLabel{
+.checkboxLabel:hover{
+  border: solid 2px black;
+}
+
+.academicsCheckbox:checked + .checkboxLabel{
   background-color: #004A80;
   color: #ffffff;
   cursor: pointer;
 }
 /*available academics form*/
-#AvailableAcademicsTB {
+#availableAcademicsTable {
   border-collapse: collapse;
   width: 100%;
 }
-#AvailableAcademicsTB th{
+#availableAcademicsTable th{
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
 }
-#AvailableAcademicsTB td, #AvailableAcademicsTB th {
+#availableAcademicsTable td, #availableAcademicsTable th {
   border-right: 1px solid #ddd;
   padding: 8px;
+}
+.tableLoadValue{
+  text-align: center;
 }
 /*subDev Deletion Form*/
 .subDevContainer{
@@ -384,7 +390,8 @@ background-color: red;
   align-items: center;
   flex-direction: column;
   margin: 2px;
-  border: solid 1px #000000;
+  border: solid 2px #000000;
+  border-radius: 6px;
   background-color:#F0F0F0;
   transition: all 0.1s;
   user-select: none;
@@ -392,7 +399,11 @@ background-color: red;
 .subDevCheckbox{
   display: none;
 }
-.deletion label:hover, .subDevCheckbox:checked + label {
+.subDevContainer label:hover{
+  border: solid 3px black;
+  background-color: #d8d8d8;
+}
+.subDevCheckbox:checked + label {
   background-color: #800000;
   color: #ffffff;
   cursor: pointer;

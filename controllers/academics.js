@@ -35,11 +35,9 @@ const updateAcademic = async(req, res) =>{
             var data = await sql.query(updateName)
             results.push({data})
             name=req.body.id;
-            console.log('name is now changed to:', name)
         }
         if(req.body.quals){
             var deleteQuals = `delete from qualifications where academicId='${name}';`
-            console.log(deleteQuals)
             var query = await sql.query(deleteQuals)
             var quals=req.body.quals;
             var insert = '';
@@ -66,10 +64,9 @@ const getOneLoad = async (req, res) =>{
         var load = 0;
         if(subDevCount){
             subDevCount.forEach(()=>{
-                load++
+                load+=3
             }) 
         }
-        
         //instance Load
         const instanceAssignCountQuery = `select instanceId, count(assignments.instanceId) as assignedAcademics 
         from assignments where instanceid IN(select id from instances 
@@ -80,8 +77,6 @@ const getOneLoad = async (req, res) =>{
         where academicId='${req.params.id}' and (startDate between dateadd(month, -2, '${yearMonth}')and '${yearMonth}');`;
         instanceAssignCount = (await sql.query(instanceAssignCountQuery)).recordset
         instanceInfoByAssign = (await sql.query(instanceInfoByAssignQuery)).recordset
-        // console.log(instanceAssignCount)
-        // console.log(instanceInfoByAssign)
         if(instanceAssignCount&&instanceInfoByAssign){
             instanceMap = new Map()
             instanceAssignCount.forEach((row)=>{
@@ -90,16 +85,14 @@ const getOneLoad = async (req, res) =>{
     
             instanceInfoByAssign.forEach((row)=>{
                 var instanceLoad = (1+((parseInt(row.enrolments/20))*.2))/instanceMap.get(row.id);
-                if (instanceLoad<1){
-                    if(row.main){
-                        instanceLoad=1
-                    }else{
-                        instanceLoad=0.5
+                if (row.main<1){
+                    if(instanceLoad<1){
+                    instanceLoad=1
                     }
+                }else{
+                    if(instanceLoad<.2){instanceLoad=.3}
                 }
-                load+=instanceLoad
-                console.log('load for:', row.academicId, 'teaching', row.id, 'is:', instanceLoad)
-                console.log('load totals are currently:', load)
+            load+=instanceLoad;
             })
         }
         
@@ -107,7 +100,7 @@ const getOneLoad = async (req, res) =>{
         return res.status(200).json(result)
         
     }catch(err){
-        console.log(err.message)
+        console.log(err)
         res.status(500).json({message: err.message})
     }
 }
@@ -116,35 +109,33 @@ const getQuals = async(req, res) =>{
 }
 const getLoad = async(req, res) =>{
     try{
-        const yearMonth = `${req.body.year}-${req.body.month}-01`;
-        //subDev Load
-        const subDevCountQuery = `select qualifications.academicId, subDev.subId as dev 
-            from qualifications full outer join subDev on qualifications.academicId=subDev.academicId 
-            where qualifications.subId='${req.body.subId}' and ('${yearMonth}' BETWEEN startDate and endDate or subDev.subId is null);`
-        const subDevCount = (await sql.query(subDevCountQuery)).recordset
-        
+        const yearMonth = `${req.params.year}-${req.params.month}-01`;
         var load = new Map()
-        subDevCount.forEach((row)=>{
-            if(row.dev){var dev=1}else{var dev=0};
-
-            if (load.has(row.academicId)){
-                load.set(row.academicId, load.get(row.academicId)+dev)
-            }else{
-                load.set(row.academicId, dev)
-            }
+        const qualifiedAcademics = (await sql.query(`select * from qualifications where subId='${req.params.subId}'`)).recordset
+        qualifiedAcademics.forEach((qualification)=>{
+            load.set(qualification.academicId, 0)
         })
+        //subDev Load
+        const subDevCountQuery = `select * from subDev where '${yearMonth}' BETWEEN startDate and endDate;`
+        const subDevCount = (await sql.query(subDevCountQuery)).recordset
+        if(subDevCount){
+            subDevCount.forEach((subDev)=>{
+                if(load.has(subDev.academicId)){
+                    load.set(subDev.academicId, load.get(subDev.academicId)+3)
+                }
+            })
+        }
+
         //instance load
         const instanceAssignCountQuery = `select instanceId, count(assignments.instanceId) as assignedAcademics 
         from assignments where instanceid IN(select id from instances 
         where (startDate between dateadd(month, -2, '${yearMonth}') and '${yearMonth}') 
         and id IN(select instanceId from assignments where academicId IN(
-        select academicId from qualifications where subId='${req.body.subId}'))) group by instanceId;`;
-        
+        select academicId from qualifications where subId='${req.params.subId}'))) group by instanceId;`;        
         const instanceInfoByAssignQuery = `select id, academicId, main, enrolments, startDate
         from assignments join instances on instanceId=id 
-        where academicId IN (select academicId from qualifications where subid='${req.body.subId}') 
+        where academicId IN (select academicId from qualifications where subid='${req.params.subId}') 
         and (startDate between dateadd(month, -2, '${yearMonth}') and '${yearMonth}');`;
-        
         const instanceAssignCount = (await sql.query(instanceAssignCountQuery)).recordset
         const instanceInfoByAssign = (await sql.query(instanceInfoByAssignQuery)).recordset
 
@@ -154,16 +145,14 @@ const getLoad = async(req, res) =>{
         })
         instanceInfoByAssign.forEach((row)=>{
             var instanceLoad = (1+((parseInt(row.enrolments/20))*.2))/instanceMap.get(row.id);
-            if (instanceLoad<1){
-                if(row.main){
+            if (row.main<1){
+                if(instanceLoad<1){
                     instanceLoad=1
-                }else{
-                    instanceLoad=0.5
                 }
+            }else{
+                if(instanceLoad<.2){instanceLoad=.3}
             }
             load.set(row.academicId, load.get(row.academicId)+instanceLoad)
-            // console.log('load for:', row.academicId, 'teaching', row.id, 'is:', instanceLoad)
-            // console.log('load totals are currently:', load)
         })
         const result = Object.fromEntries(load)
         return res.status(200).json({result})

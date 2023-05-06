@@ -13,7 +13,7 @@ const createSubDev = async (req, res) =>{
             throw new Error('Incorrect date information supplied')
         }
         const result = await sql.query(`insert into subDev values('${req.params.subId}','${req.params.academicId}','${req.body.startDate}','${req.body.endDate}')`)
-        res.status(200).json({result})
+        res.status(201).json({result})
     }catch(err){
         res.status(500).json({message: err.message})
     }
@@ -23,10 +23,11 @@ const deleteSubDev = async (req, res) =>{
         var deleteQuery = '';
         const deleteList = req.body
         deleteList.forEach((subDev)=>{
-            deleteQuery+=`delete from subDev where academicId='${subDev.academicId}' and subId='${subDev.subId}'`
+            deleteQuery+=`delete from subDev where academicId='${subDev.academicId}' and subId='${subDev.subId}';`
         })
+        console.log(deleteQuery)
         const result = await sql.query(deleteQuery)
-        res.status(200).json({result})
+        res.status(204).json({result})
     }catch(err){
         res.status(500).json({message: err.message})
     }

@@ -13,6 +13,7 @@ const radioButtons = document.querySelectorAll('.radio')
 const table = document.querySelector('#scheduleTable')
 const instAllButton = document.querySelector('.submitButton')
 const insInfo = document.querySelector('#instanceCombo')
+var enrolments = document.getElementById('enrolments');
 const mainList = document.querySelector('#mainList')
 const supportList = document.querySelector('#supportList')
 const subDevList = document.querySelector('#subDevList')
@@ -149,22 +150,24 @@ const viewInsAllocation = async ()=>{
         showLoad.innerHTML=load.result.toFixed(1)
     }
 }
+
 //logic to view information about a certain instance
 const viewInsInfo = ()=>{
-    const input = document.getElementById('instanceCombo').value;
-    var enrolments = document.getElementById('enrolments');
+    const input = insInfo.value
     var mainListHTML = ``;
     var supportListHTML = ``;
     var relevantAcademics;
-    if(input){
         byYear.forEach(instanceMap => {
             if(instanceMap.has(input)){
+
                 enrolments.innerText=instanceMap.get(input).enrolments
+
                 relevantAcademics = assignments.filter((assignment)=>{
                     if(assignment.instanceId==input){
                         return true;
                     }
                 })
+
                 relevantAcademics.forEach((assignment)=>{
                     if(assignment.main){
                         mainListHTML += `<li>${assignment.academicId}</li>`;
@@ -179,12 +182,8 @@ const viewInsInfo = ()=>{
                 if(supportListHTML){supportList.innerHTML = supportListHTML;}else{
                     supportList.innerHTML = '<li>No allocations</li>'
                 }
-                
-            }else{
-                console.log('instance name not found in list')
             }
         });
-    }
 }
 const addListeners = ()=>{
     scheduleYearPicker.addEventListener('change', setScheduleView)

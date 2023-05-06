@@ -54,12 +54,11 @@ const toggleButton = (button, buttonText)=>{
 //helper method that sets the options for year field in view instance Allocation
 //sets options to only years that have instances in them
 const yearOptions = (years)=>{
-    var yearsHTML = ``;
     for( var year of years){
         viewAllocYear.innerHTML += `<option>${year}</option>`;
     }
 }
-//helper fucntion for refreshing comboBox values
+//helper function for refreshing comboBox values
 const setCombo = (data, listName)=>{
     var comboList = document.createElement('datalist')
     comboList.id = listName
@@ -236,10 +235,10 @@ const newInstance = async () =>{
                 if(response.status<300 && response.status>199){
                     console.log('success!')
                 }
-            }catch(err){console.log(`there was an error, error code: ${err}`)}
-            console.log('out of try catch')
-            populateCombos()            
-            console.log('populated combos')
+            }catch(err){
+                console.log(`there was an error, error code: ${err}`)
+            }
+            populateCombos()
         }else{
             console.log('instance is did not pass the instance regex')
         }

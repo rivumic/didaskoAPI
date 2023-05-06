@@ -14,7 +14,7 @@ const {getAllAcademics,
 //routes
 router.route('/').get(auth.isAuth, getAllAcademics).post(auth.isManager, createAcademic)
 router.route('/:id').patch(auth.isManager, updateAcademic).delete(auth.isManager, deleteAcademic)
-router.route('/load').get(getLoad)
+router.route('/quals/load/:subId/:year/:month').get(auth.isAuth, getLoad)
 router.route('/load/:id/:year/:month').get(auth.isAuth, getOneLoad)
 router.route('/quals/:id').get(auth.isAuth, getQuals)
 
