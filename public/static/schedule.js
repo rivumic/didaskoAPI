@@ -1,10 +1,4 @@
-// get * from subjects
-// get * from instances
-// get * from assignments
-
-// const academics = (await axios.get('/didasko/academics')).data
-//const instances = (await axios.get('/didasko/instances')).data
-
+//schedule elements
 const months = [ "January", "February", "March", "April", "May", "June", 
 "July", "August", "September", "October", "November", "December" ];
 const scheduleYearPicker = document.querySelector('#scheduleYearPicker')
@@ -12,17 +6,22 @@ const yearPickers = document.querySelectorAll('.yearPicker')
 const radioButtons = document.querySelectorAll('.radio')
 const table = document.querySelector('#scheduleTable')
 const instAllButton = document.querySelector('.submitButton')
-const insInfo = document.querySelector('#instanceCombo')
-var enrolments = document.getElementById('enrolments');
+
+//view allocation fields
+var academicCombo = document.getElementById('academicCombo')
 const mainList = document.querySelector('#mainList')
 const supportList = document.querySelector('#supportList')
 const subDevList = document.querySelector('#subDevList')
 const showLoad = document.querySelector('#showLoad')
+var insAllocYear = document.getElementById('insAllocYear');
+var insAllocMonth = document.getElementById('insAllocMonth');
+
+//instance info fields
+const insInfo = document.querySelector('#instanceCombo')
 const mainAllocations = document.querySelector('#mainAllocations')
 const supportAllocations = document.querySelector('#supportAllocations')
-var academicCombo = document.getElementById('academicCombo')
-var insAllYear = document.getElementById('insAllYear');
-var insAllMonth = document.getElementById('insAllMonth');
+var enrolments = document.getElementById('enrolments');
+
 
 var assignments;
 var instancesSchedule;
@@ -30,6 +29,41 @@ var academics = [];
 var byYear = new Map();
 var assignmentsMap = new Map()
 
+//disables button while form completes
+const toggleButton = (button, buttonText)=>{
+    if(button.disable){
+        button.disable=false;
+        button.innerHTML=buttonText;
+    }else{
+        button.disable=true;
+        button.innerHTML="<i class=\"fa fa-circle-o-notch fa-spin\"></i>"
+    }
+}
+//shows feedback to user either error or success message, permanent or temporary
+const showMessage = (isError, isFade, text, targetElement)=>{
+    if(isError){
+        targetElement.setAttribute('class', 'userMessage errorMessage')
+    }else{
+        targetElement.setAttribute('class', 'userMessage successMessage')
+    }
+
+    targetElement.innerText = text;
+
+    if(isFade){
+        setTimeout(()=>{
+            targetElement.classList.add('hidden')
+        }, 3000)
+    }
+}
+//helper function to convert a month index (e.g. Jan = 0) into an ISO compatible month string (Jan = 01, Dec = 12)
+const indexToISOMonthString = (monthIndex) =>{
+    if(monthIndex<=8){
+        var monthString = `0${monthIndex+1}`
+    }else{
+        var monthString = `${monthIndex+1}`
+    }
+    return monthString;
+}
 //takes array as input with elements being the years that have instances scheduled, e.g. [2022, 2023]
 //populates year selecting dropdowns with years included in input
 const yearOptions = (years)=>{
@@ -84,21 +118,23 @@ const setScheduleView = ()=>{
 //checks input in view instance allocation form and displays output, called via event listener
 const viewInsAllocation = async ()=>{
     var academicValue = academicCombo.value
-    const chosenMonth = months.findIndex((element=>{if(element===`${insAllMonth.value}`)return true}))
-    const chosenYear = insAllYear.value
+    const chosenMonthIndex = months.findIndex((element=>{if(element===`${insAllocMonth.value}`)return true}))
+    const chosenYear = insAllocYear.value
     var subDevs;
     var load;
     if(academics.includes(academicValue)){
         try{
             subDevs = (await axios.get(`/didasko/subDev/${academicValue}`)).data
-            load = (await axios.get(`/didasko/academics/load/${academicValue}/${chosenYear}/${chosenMonth+1}`)).data
+            load = (await axios.get(`/didasko/academics/load/${academicValue}/${chosenYear}/${chosenMonthIndex+1}`)).data
         }catch(err){
-            console.log(err)
+            showMessage(true, false, `There was an error, error code ${err}`, viewAllocMessage)
         }
+    }else{
+        showMessage(true, true, 'Academic not found, please try again.', viewAllocMessage)
     }
     
     var yearMonths = new Map()
-    for(var i = (chosenMonth-2);i<=(chosenMonth);i++){
+    for(var i = (chosenMonthIndex-2);i<=(chosenMonthIndex);i++){
         yearMonths.set(`_${chosenYear}_${months[i]}`, i)
     }
     
@@ -107,7 +143,6 @@ const viewInsAllocation = async ()=>{
     const allocations = assignments.filter((assignment)=>{
         if(assignment.academicId===academicValue){
             if (yearMonths.has(assignment.instanceId.substring(7))){
-                // console.log(assignment.instanceId.substring(7))
                 return true;
             }
         }
@@ -128,13 +163,9 @@ const viewInsAllocation = async ()=>{
         supportAllocations.innerHTML = '<li>No allocations</li>'
     }
     if(subDevs){
-        if(chosenMonth<=8){
-            var monthString = `0${chosenMonth+1}`
-        }else{
-            var monthString = `${chosenMonth+1}`
-        }
-        const currentMonth = new Date(`${chosenYear}-${monthString}-01`)
-        console.log('selected month: ', currentMonth.toISOString())
+        var monthString = indexToISOMonthString(chosenMonthIndex);
+        const currentMonth = new Date(`${chosenYear}-${monthString}-01`);
+        console.log('selected month: ', currentMonth.toISOString());
         var subDevListHTML = '';
         subDevs.forEach((row)=>{
             var startDate = new Date(row.startDate)

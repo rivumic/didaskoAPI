@@ -272,7 +272,28 @@ background-color: red;
   font-size: 20px;
   margin-bottom: .75em;
 }
+.userMessage{
+  width: 15em;
+  padding: 2px 4px;
+  background: #F0F0F0;
+  border-radius: 6px;
+  border-width: 2px;
+  font-size: 20px;
+  margin-bottom: .75em;
+  border-style: solid;
+  text-align: center;
+}
+.errorMessage{
+  border-color: #800000;
+  color: #800000;
+  
+}
+.successMessage{
+  border-color: #008000;
+  color: #008000;
+}
 .formList{
+  min-height: 1em;
   list-style-type: none;
   text-align: left;
 }
@@ -372,6 +393,7 @@ background-color: red;
 .subDevContainer{
   display: flex;
   width: 308px;
+  min-height: 46px;
   justify-content:flex-start;
   flex-wrap: wrap;
   padding: 4px;

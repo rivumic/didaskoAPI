@@ -2,14 +2,18 @@
 const addSubId = document.querySelector('#addSubId')
 const addYear = document.querySelector('#addyear')
 const addButton = document.querySelector('#addButton')
+const addMessage = document.querySelector('#addMessage')
 //edit Subject fields
 const editOldSubId = document.querySelector('#editOldSubId')
 const editNewSubId = document.querySelector('#editNewSubId')
 const editYear = document.querySelector('#editYear')
 const editButton = document.querySelector('#editButton')
+const editMessage = document.querySelector('#editMessage')
+
 //delete Subject fields
 const deleteSubId = document.querySelector('#deleteSubId')
 const deleteButton = document.querySelector('#deleteButton')
+const deleteMessage = document.querySelector('#deleteMessage')
 //Other constants
 const subRegex = new RegExp("CSE[123][A-Z][A-Z]X")
 
@@ -22,6 +26,22 @@ const toggleButton = (button, buttonText)=>{
     }else{
         button.disable=true;
         button.innerHTML="<i class=\"fa fa-circle-o-notch fa-spin\"></i>"
+    }
+}
+//shows feedback to user either error or success message, permanent or temporary
+const showMessage = (isError, isFade, text, targetElement)=>{
+    if(isError){
+        targetElement.setAttribute('class', 'userMessage errorMessage')
+    }else{
+        targetElement.setAttribute('class', 'userMessage successMessage')
+    }
+
+    targetElement.innerText = text;
+
+    if(isFade){
+        setTimeout(()=>{
+            targetElement.classList.add('hidden')
+        }, 3000)
     }
 }
 
@@ -52,21 +72,21 @@ const addEventListeners = ()=>{
                     try{
                         var response = (await axios.post('/didasko/subjects', {id: addSubId.value, yearLevel: addYear.value}))
                         if(response.status<300 && response.status>199){
-                            console.log('success!')
+                            showMessage(false, true, 'Subject added successfully', addMessage);
                         }
                     }catch(err){
-                        console.log(`There was an error, error code: ${err}`)
+                        showMessage(true, false, `There was an error, error code: ${err}`, addMessage)
                     }
-                    setCombos()
                 }else{
-                    console.log('title and level do not match')
+                    showMessage(true, false, 'Year in subject name and year level do not match.', addMessage)
                 }                
             }else{
-                console.log('it did not pass regex')
+                showMessage(true, false, 'The subject name does not match the required format, e.g. CSE1ITX.', addMessage)
             }
         }else{
-            console.log('No value entered')
+            showMessage(true, false, 'Please enter a subject Name.', addMessage)
         }
+        setCombos()
         toggleButton(addButton, 'Add')
     })
     //Edit Subject
@@ -81,15 +101,15 @@ const addEventListeners = ()=>{
                     try{
                         var response = (await axios.patch(`/didasko/subjects/${editOldSubId.value}`, {id: editNewSubId.value, yearLevel: editYear.value}))
                         if(response.status<300 && response.status>199){
-                            console.log('success!')
+                            showMessage(false, true, 'Subject edited successfully', editMessage);
                         }
                     }catch(err){
-                        console.log('there was an error:', err)
+                        showMessage(true, false, `There was an error, error code: ${err}`, editMessage)
                     }
-                    setCombos()
-                }else{console.log('New subject title does not match the yearLevel')}
-            }else{console.log('new subject title did not match the regex')}
-        }else{console.log('chosen preexisting subject was not found in subject List')}
+                }else{showMessage(true, false, 'Year level in subject name and year level do not match.', editMessage)}
+            }else{showMessage(true, false, 'New subject name does not match the required format, e.g. CSE1ITX.', editMessage)}
+        }else{showMessage(true, false, 'Subject not found, please refresh and try again.', editMessage)}
+        setCombos()
         toggleButton(editButton, 'Save')
     })
     //Delete Subject
@@ -100,21 +120,25 @@ const addEventListeners = ()=>{
                     if(subject.id===deleteSubId.value){return subject}
                 })
                 if(chosenSubject){
-                    try{
+                    if(window.confirm(`Are you want to delete the subject ${chosenSubject.id}?\n\nThis will delete all associated instances, assignments and subject development.`)){
+                        try{
                         var response = (await axios.delete(`/didasko/subjects/${deleteSubId.value}`))
                         if(response.status<300 && response.status>199){
-                            console.log('success!')
+                            showMessage(false, true, 'Subject deleted successfully.', deleteMessage);
                         }
-                    }catch(err){
-                        console.log(`There was an error, error code: ${err}`)
+                        }catch(err){
+                            showMessage(true, false, `There was an error, error code: ${err}`, deleteMessage)
+                        } 
+                    }else{
+                        showMessage(true, false, 'Subject deletion cancelled.', deleteMessage)    
                     }
-                    setCombos()
                 }else{
-                    console.log('it is not in the current subjects list')
+                    showMessage(true, false, 'Subject not found, please refresh and try again.', deleteMessage)
                 }
         }else{
-            console.log('No value entered')
+            showMessage(true, false, 'Please enter a subject Name.', deleteMessage)
         }
+        setCombos()
         toggleButton(deleteButton, 'Delete')
     })
 }

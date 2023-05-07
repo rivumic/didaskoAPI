@@ -58,6 +58,7 @@
                 <div id="assignInstanceMainYear3" class="checkboxContainer">
                 </div>
                 <button id="assignInstanceMainButton" class="submitButton" type="submit" name="Submit">Save</button>
+                <p id="assignInstanceMainMessage" class="hidden"></p>
         </div>
         <div class="pageForm">
             <h2 class="formTitle">Assign Instance - Support</h2>
@@ -92,6 +93,7 @@
                 <div id="assignInstanceSupportYear3" class="checkboxContainer">
                 </div>
                 <button id="assignInstanceSupportButton" class="submitButton" type="submit" name="Submit">Save</button>
+                <p id="assignInstanceSupportMessage" class="hidden"></p>
         </div>
         <div class="rightcolumn">
             <div class="pageForm">
@@ -100,7 +102,7 @@
                 <input id="subDevAcademicId" type="text" list="academicList" class="formField" placeholder="Choose Academic">
                 <div class="subDevContainer"></div>
                 <button id="subDevSubmitButton" class="submitButton" type="submit" name="Submit">Delete Selection</button>   
-                
+                <p id="subDevMessage" class="hidden"></p>
             </div>
             <!-- View Instance Info View Instance Info View Instance Info View Instance Info View Instance Info View Instance Info View Instance Info -->
             <div class="pageForm">
@@ -144,6 +146,7 @@
                     <option>December</option>
                 </select>
                 <button id="availableAcademicsButton" class="submitButton" type="submit" name="Submit">Search</button>
+                <p id="availableAcademicsMessage" class="hidden"></p>
                 <table id="availableAcademicsTable">
                     <tr>
                         <th>Lecture</th>
@@ -156,6 +159,7 @@
                 <p class="formLabel">Academic</p>
                 <input id="deleteAcademicId" type="text" list="academicList" class="formField" placeholder="Choose Academic">
                 <button id="deleteAcademicButton" class="submitButton" type="submit" name="Submit">Delete</button>
+                <p id="deleteAcademicMessage" class="hidden"></p>
             </div>
         </div>
         
@@ -183,6 +187,7 @@
                     <option>December</option>
                 </select>
                 <button id="viewAllocButton" class="submitButton" type="submit" name="Submit">Submit</button>
+                <p id="viewAllocMessage" class="hidden"></p>
                 <ul class="formList">
                     <li><h4>Active Main Allocations</h4></li>
                         <ul id="viewAllocMain" class="formList listContainer">
@@ -203,22 +208,23 @@
 
         <div class="pageForm">
             <h2 class="formTitle">Add New Academic</h2>
-            
-                <p class="formLabel">Full Name</p>
-                <input id="newAcademicId" type="text" class="formField" placeholder="Academic Name">
-                <h3 class="formLabel">Choose Subject Qualifications</h3>
-                <p class="formLabel"> Year 1</p>
-                <div id="newAcademicYear1" class="checkboxContainer">
-                </div>
-                <p class="formLabel">Year 2</p>
-                <div id="newAcademicYear2" class="checkboxContainer">
-                </div>
-                    
-                <p class="formLabel">Year 3</p>
-                <div id="newAcademicYear3" class="checkboxContainer">
-                </div>
-                <button id="newAcademicButton" class="submitButton" type="submit" name="Submit">Add</button>
-            
+        
+            <p class="formLabel">Full Name</p>
+            <input id="newAcademicId" type="text" class="formField" placeholder="Academic Name">
+            <h3 class="formLabel">Choose Subject Qualifications</h3>
+            <p class="formLabel"> Year 1</p>
+            <div id="newAcademicYear1" class="checkboxContainer">
+            </div>
+            <p class="formLabel">Year 2</p>
+            <div id="newAcademicYear2" class="checkboxContainer">
+            </div>
+                
+            <p class="formLabel">Year 3</p>
+            <div id="newAcademicYear3" class="checkboxContainer">
+            </div>
+            <button id="newAcademicButton" class="submitButton" type="submit" name="Submit">Add</button>
+            <p id="newAcademicMessage" class="hidden"></p>
+
         </div>
         <div class="pageForm">
             <h2 class="formTitle">Assign Subject Development</h2>
@@ -261,30 +267,32 @@
                 <option>November</option>
                 <option>December</option>
             </select>
-            <button id="newSubDevButton" class="submitButton" type="submit" name="Submit">Add</button>   
+            <button id="newSubDevButton" class="submitButton" type="submit" name="Submit">Add</button>
+            <p id="newSubDevMessage" class="hidden"></p>
         </div>
         <div class="pageForm">
             <h2 class="formTitle">Edit Academic</h2>
             
-                <p class="formLabel">Choose Academic</p>
-                <input id="editOldAcademicId" type="text" list="academicList" class="formField" placeholder="Choose Academic">
-                
-                <p class="formLabel">New Name</p>
-                <input id="editNewAcademicId" type="text" class="formField" name="UserInput" placeholder="Full Name">
-
-                <h3 class="formLabel">Choose Subject Qualifications</h3>
-                <p class="formLabel"> Year 1</p>
-                <div id="editAcademicYear1" class="checkboxContainer">
-                </div>
-                <p class="formLabel">Year 2</p>
-                <div id="editAcademicYear2" class="checkboxContainer">
-                </div>
-                    
-                <p class="formLabel">Year 3</p>
-                <div id="editAcademicYear3" class="checkboxContainer">
-                </div>
-                <button id="editAcademicButton" class="submitButton" type="submit" name="Submit">Save</button>
+            <p class="formLabel">Choose Academic</p>
+            <input id="editOldAcademicId" type="text" list="academicList" class="formField" placeholder="Choose Academic">
             
+            <p class="formLabel">New Name</p>
+            <input id="editNewAcademicId" type="text" class="formField" name="UserInput" placeholder="Full Name">
+
+            <h3 class="formLabel">Choose Subject Qualifications</h3>
+            <p class="formLabel"> Year 1</p>
+            <div id="editAcademicYear1" class="checkboxContainer">
+            </div>
+            <p class="formLabel">Year 2</p>
+            <div id="editAcademicYear2" class="checkboxContainer">
+            </div>
+                
+            <p class="formLabel">Year 3</p>
+            <div id="editAcademicYear3" class="checkboxContainer">
+            </div>
+            <button id="editAcademicButton" class="submitButton" type="submit" name="Submit">Save</button>
+
+            <p id="editAcademicMessage" class="hidden"></p>
         </div>
     </main>
     <footer>

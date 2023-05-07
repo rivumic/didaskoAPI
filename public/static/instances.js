@@ -6,6 +6,7 @@ const newInsYear = document.querySelector('#newInsYear')
 const newInsMonth = document.querySelector('#newInsMonth')
 const newInsEnrolments = document.querySelector('#newInsEnrolments')
 const newInsButton = document.querySelector('#newInsButton')
+const newInsMessage = document.querySelector('#newInsMessage')
 //edit instance elements
 const editInsOldIns = document.querySelector('#editInsOldIns')
 const editInsNewSubject = document.querySelector('#editInsNewSubject')
@@ -13,6 +14,7 @@ const editInsNewYear = document.querySelector('#editInsNewYear')
 const editInsNewMonth = document.querySelector('#editInsNewMonth')
 const editInsEnrolments = document.querySelector('#editInsEnrolments')
 const editInsButton = document.querySelector('#editInsButton')
+const editInsMessage = document.querySelector('#editInsMessage')
 //view Instance allocation elements
 const viewAllocAcademic = document.querySelector('#viewAllocAcademic')
 const viewAllocYear = document.querySelector('#viewAllocYear')
@@ -22,6 +24,7 @@ const viewAllocSupp = document.querySelector('#viewAllocSupp')
 const viewAllocSubDev = document.querySelector('#viewAllocSubDev')
 const viewAllocLoad = document.querySelector('#viewAllocLoad')
 const viewAllocButton = document.querySelector('#viewAllocButton')
+const viewAllocMessage = document.querySelector('#viewAllocMessage')
 //instance info elements
 const insInfoName = document.querySelector('#insInfoName')
 const insInfoMain = document.querySelector('#insInfoMain')
@@ -30,6 +33,7 @@ const insInfoEnrolments = document.querySelector('#insInfoEnrolments')
 //delete instance elements
 const deleteIns = document.querySelector('#deleteIns')
 const deleteButton = document.querySelector('#deleteButton')
+const deleteMessage = document.querySelector('#deleteMessage')
 
 const subRegex = new RegExp("CSE[123][A-Z][A-Z]X")
 const insRegex = new RegExp("CSE[123][A-Z][A-Z]X_20[0-9][0-9]_(January|February|March|April|May|June|July|August|September|October|November|December)")
@@ -50,6 +54,31 @@ const toggleButton = (button, buttonText)=>{
         button.disable=true;
         button.innerHTML="<i class=\"fa fa-circle-o-notch fa-spin\"></i>"
     }
+}
+//shows feedback to user either error or success message, permanent or temporary
+const showMessage = (isError, isFade, text, targetElement)=>{
+    if(isError){
+        targetElement.setAttribute('class', 'userMessage errorMessage')
+    }else{
+        targetElement.setAttribute('class', 'userMessage successMessage')
+    }
+
+    targetElement.innerText = text;
+
+    if(isFade){
+        setTimeout(()=>{
+            targetElement.classList.add('hidden')
+        }, 3000)
+    }
+}
+//helper function to convert a month index (e.g. Jan = 0) into an ISO compatible month string (Jan = 01, Dec = 12)
+const indexToISOMonthString = (monthIndex) =>{
+    if(monthIndex<=8){
+        var monthString = `0${monthIndex+1}`
+    }else{
+        var monthString = `${monthIndex+1}`
+    }
+    return monthString;
 }
 //helper method that sets the options for year field in view instance Allocation
 //sets options to only years that have instances in them
@@ -72,7 +101,6 @@ const setCombo = (data, listName)=>{
 //sets the option in field that select the year of in new/edit instance forms
 const populateYears = ()=>{
     var date = new Date()
-    console.log(date)
     for(var i=0;i<3;i++){
         newInsYear.innerHTML += `<option>${date.getFullYear()+i}</option>`;
     }
@@ -162,8 +190,10 @@ const viewInsAllocation = async ()=>{
             subDevs = (await axios.get(`/didasko/subDev/${chosenAcademic}`)).data
             load = (await axios.get(`/didasko/academics/load/${chosenAcademic}/${chosenYear}/${chosenMonthIndex+1}`)).data
         }catch(err){
-            console.log(err)
+            showMessage(true, false, `There was an error, error code ${err}`, viewAllocMessage)
         }
+    }else{
+        showMessage(true, true, 'Academic not found, please try again.', viewAllocMessage)
     }
     
     var yearMonths = new Map()
@@ -176,7 +206,6 @@ const viewInsAllocation = async ()=>{
     const allocations = assignmentValues.filter((assignment)=>{
         if(assignment.academicId===chosenAcademic){
             if (yearMonths.has(assignment.instanceId.substring(7))){
-                // console.log(assignment.instanceId.substring(7))
                 return true;
             }
         }
@@ -197,17 +226,12 @@ const viewInsAllocation = async ()=>{
         viewAllocSupp.innerHTML = '<li>No allocations</li>'
     }
     if(subDevs){
-        if(chosenMonthIndex<=8){
-            var monthString = `0${chosenMonthIndex+1}`
-        }else{
-            var monthString = `${chosenMonthIndex+1}`
-        }
+        var monthString = indexToISOMonthString(chosenMonthIndex)
         const currentMonth = new Date(`${chosenYear}-${monthString}-01`)
         var subDevListHTML = '';
         subDevs.forEach((row)=>{
             var startDate = new Date(row.startDate)
             var endDate = new Date(row.endDate)
-            console.log('start date of current subDev: ', startDate.toISOString(),'end date of current subDev: ', endDate.toISOString())
             if(startDate<=currentMonth && endDate>=currentMonth){
                 subDevListHTML+=`<li>${row.subId}</li>`
             }
@@ -221,30 +245,34 @@ const viewInsAllocation = async ()=>{
 const newInstance = async () =>{
     toggleButton(newInsButton)
     var startMonthIndex = months.findIndex((element)=>{if(element===`${newInsMonth.value}`)return true})
-    if(subRegex.test(newInsSub.value)){
+    if(subjectValues.some((subject)=>{if(subject.id==newInsSub.value){return true;}})){
         var instanceId = `${newInsSub.value}_${newInsYear.value}_${newInsMonth.value}`
         if(insRegex.test(instanceId)){
-            if((startMonthIndex+1)<=8){
-                var startMonth = `0${startMonthIndex+1}`
-            }else{
-                var startMonth = `${startMonthIndex+1}`
-            }
+            var startMonth = indexToISOMonthString(startMonthIndex)
             try{
-                var response = (await axios.post('/didasko/instances/', {id: instanceId, subId: newInsSub.value, startDate:`${newInsYear.value}-${startMonth}-01`, enrolments: newInsEnrolments.value})).data
-                console.log('response')
+                var body = {id: instanceId, subId: newInsSub.value, startDate:`${newInsYear.value}-${startMonth}-01`}
+                if(newInsEnrolments.value && (newInsEnrolments.value>=0 && newInsEnrolments.value<400)){
+                    body.enrolments=newInsEnrolments.value;
+                }else{
+                    body.enrolments=0; var enforcedEnrolments = true;}
+                var response = (await axios.post('/didasko/instances/', body))
                 if(response.status<300 && response.status>199){
-                    console.log('success!')
+                    if(enforcedEnrolments){
+                        showMessage(false, true, 'Instance added successfully.\nEnrolments must be between 0 and 399, enrolments were set to 0.', newInsMessage)
+                    }else{
+                        showMessage(false, true, 'Instance added successfully', newInsMessage)
+                    }
                 }
             }catch(err){
-                console.log(`there was an error, error code: ${err}`)
+                showMessage(true, false, `There was an error, error code: ${err}`, newInsMessage)
             }
-            populateCombos()
         }else{
-            console.log('instance is did not pass the instance regex')
+            showMessage(true, false, 'The instance name does not match the required format, e.g. CSE1ITX_2000_January.', newInsMessage)
         }
     }else{
-        console.log('subject id did not pass the subject regex')
+        showMessage(true, false, 'Subject not found, please try again.', newInsMessage)
     }
+    populateCombos()
     toggleButton(newInsButton, 'Add')
 }
 const editInstance = async () =>{
@@ -259,67 +287,74 @@ const editInstance = async () =>{
         })
         if(chosenSubject){
             var instanceId = `${editInsNewSubject.value}_${editInsNewYear.value}_${editInsNewMonth.value}`
-            if(insRegex.test(instanceId)){
-                var newInstanceMonthIndex = months.findIndex((element)=>{if(element===`${editInsNewMonth.value}`)return true})
-                if((newInstanceMonthIndex+1)<=8){
-                    var startMonth = `0${newInstanceMonthIndex+1}`
-                }else{
-                    var startMonth = `${newInstanceMonthIndex+1}`
-                }
-                var newInstance = {id: instanceId, subId: editInsNewSubject.value, startDate: `${editInsNewYear.value}-${startMonth}-01`}
-                if(editInsEnrolments.value){
-                    newInstance.enrolments = editInsEnrolments.value
-                }
-                try{
-                    var response = (axios.patch(`/didasko/instances/${editInsOldIns.value}`, newInstance)).data
-                    console.log(response)
-                    if(response.status<300 && response.status>199){
-                        console.log('success!')
-                    }
-                }catch(err){
-                    console.log(`There was an error, error ${err}`)
-                }
-                console.log('out of try catch')
-                populateCombos()
-                console.log('populated combos')
-            }
-            else{
-                console.log('new instance ID could not be validated')
-            }
+            var subId = editInsNewSubject.value;
         }else{
-            console.log('chosen subject was not found in list, please refresh and try again. The subject must already exist for a instance to be created.')
+            var subId = chosenInstance.id.substring(0, 7);
+            var instanceId = `${subId}_${editInsNewYear.value}_${editInsNewMonth.value}`
+            var noSubId = true;
+        }
+        
+        if(insRegex.test(instanceId)){
+            var newInstanceMonthIndex = months.findIndex((element)=>{if(element===`${editInsNewMonth.value}`)return true})
+            var startMonth = indexToISOMonthString(newInstanceMonthIndex)
+            var newInstance = {id: instanceId, subId: subId, startDate: `${editInsNewYear.value}-${startMonth}-01`}
+
+            if(editInsEnrolments.value){
+                newInstance.enrolments = editInsEnrolments.value
+            }
+
+            if(editInsEnrolments.value && (editInsEnrolments.value>=0 && editInsEnrolments.value>400)){
+                newInstance.enrolments=editInsEnrolments.value;
+            }else{
+                newInstance.enrolments=0; var enforcedEnrolments = true;}
+
+            try{
+                var response = (await axios.patch(`/didasko/instances/${editInsOldIns.value}`, newInstance))
+                if(response.status<300 && response.status>199){
+                    var successText = 'Instance saved successfully';
+                    if(noSubId){
+                        successText += '\nSubject not changed - omitted or not found.'
+                    }else{
+                        if (enforcedEnrolments){
+                            successText += '\nEnrolments unchanged - omitted, <0, or >400.'
+                        }
+                    }
+                    showMessage(false, true, successText, editInsMessage)
+                }
+            }catch(err){
+                showMessage(true, false, `There was an error, error code: ${err}`, editInsMessage)
+            }
+        }
+        else{
+            showMessage(true, false, 'The instance name does not match the required format, e.g. CSE1ITX_2000_January.', editInsMessage)
         }
     }else{
-        console.log('instance to edit was not found in the list, please refresh and try again')
+        showMessage(true, false, 'Instance not found, please try again.', editInsMessage)
     }
+    populateCombos()
     toggleButton(editInsButton, 'Save')
 }
 const deleteInstance = async () =>{
     toggleButton(deleteButton)
-    if(insRegex.test(deleteIns.value)){
-        var chosenInstance = instanceValues.find((instance)=>{
-            if(instance.id===deleteIns.value){return instance}})
-        if(chosenInstance){
-            if(confirm(`Are you sure you want to delete ${chosenInstance.id}?\nThis operation will also delete any associated academic assignments.`)){
-                try{
-                    var response = (await axios.delete(`/didasko/instances/${chosenInstance.id}`))
-                    if(response.status<300 && response.status>199){
-                        console.log('success!')
-                    }
-                }catch(err){
-                    console.log(`There was an error, error code: ${response.status}`)
-                    console.log(reponse)
+    var chosenInstance = instanceValues.find((instance)=>{
+        if(instance.id===deleteIns.value){return instance}})
+    if(chosenInstance){
+        if(confirm(`Are you sure you want to delete the instance ${chosenInstance.id}?\n\nContinuing will also delete associated all associated assignments.`)){
+            try{
+                var response = (await axios.delete(`/didasko/instances/${chosenInstance.id}`))
+                if(response.status<300 && response.status>199){
+                    showMessage(false, true, 'Instance deleted successfully.', deleteMessage)
                 }
-                populateCombos()
-            }else{
-                console.log('They did not really want to do it')
+            }catch(err){
+                showMessage(true, false, `There was an error, error code: ${response.status}`, deleteMessage)
             }
         }else{
-
+            showMessage(true, false, 'Instance deletion cancelled.', deleteMessage)
         }
     }else{
-        console.log('instance did not match the regex pattern')
+        showMessage(true, false, 'Instance not found, please try again.', deleteMessage)
     }
+    populateCombos()
     toggleButton(deleteButton, 'Delete')
 }
 

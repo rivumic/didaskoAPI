@@ -50,6 +50,8 @@
             <input id="newInsEnrolments" class="formField" type="number" name="UserInput" min="0" max="400" placeholder="10">
 
             <button id="newInsButton"class="submitButton" type="submit" name="Submit">Add</button>
+
+            <p id="newInsMessage" class="hidden"></p>
         </div>
 <!--  Edit Instance Edit Instance Edit Instance Edit Instance Edit Instance Edit Instance Edit Instance Edit Instance -->
         <div class="pageForm">
@@ -79,6 +81,7 @@
             <input id="editInsEnrolments" class="formField" type="number" name="UserInput" min="0" max="400" placeholder="10">
 
             <button id="editInsButton" class="submitButton" type="submit" name="Submit">Save</button>
+            <p id="editInsMessage" class="hidden"></p>
         </div>
 <!-- View Instance Allocation View Instance Allocation View Instance Allocation View Instance Allocation View Instance Allocation -->
         <div class="pageForm">
@@ -103,6 +106,7 @@
                 <option>December</option>
             </select>
             <button id="viewAllocButton" class="submitButton" type="submit" name="Submit">Submit</button>
+            <p id="viewAllocMessage" class="hidden"></p>
             <ul class="formList">
                 <li><h4>Active Main Allocations</h4></li>
                     <ul id="viewAllocMain" class="formList listContainer">
@@ -143,6 +147,7 @@
             <input id="deleteIns" type="text" class="formField" list="instanceList" name="ChooseInstance" placeholder="Choose Instance">
 
             <button id="deleteButton" class="submitButton" type="submit" name="Submit">Delete</button>
+            <p id="deleteMessage" class="hidden"></p>
         </div>
     </main>
 </body>

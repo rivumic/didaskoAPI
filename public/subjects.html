@@ -27,7 +27,7 @@
     <main class="flexContainer">
         <div class="pageForm">
             <h2 class="formTitle">Add New Subject</h2>
-                <p class="formLabel">Subject Name</p>
+                <p class="formLabel">Subject</p>
                 <input class="formField" id="addSubId" type="text" name="Subject" placeholder="Subject Name">
 
                 <p class="formLabel">Year Level</p>
@@ -37,7 +37,9 @@
                     <option> 3 </option>
                     </select>
 
-                <button id="addButton"class="submitButton" type="submit" name="Submit">Add</button>  
+                <button id="addButton"class="submitButton" type="submit" name="Submit">Add</button>
+                
+                <p id="addMessage" class="hidden"></p>
         </div>
         <div class="pageForm">
             <h2 class="formTitle">Edit Subject</h2>
@@ -52,11 +54,15 @@
                     <option> 3 </option>
                     </select>
                 <button id="editButton"class="submitButton" type="submit" name="Submit">Save</button>
+                <p id="editMessage" class="hidden"></p>
+
         </div>
         <div class="pageForm">
-            <h2 class="formTitle">Delete Subject</h2>
+                <h2 class="formTitle">Delete Subject</h2>
+                <p class="formLabel">Subject</p>
                 <input  type="text" id="deleteSubId" class="subjectSelector formField" list="subjectList" placeholder="Choose Subject">
                 <button id="deleteButton" class="submitButton" type="submit" name="Submit">Delete</button>
+                <p id="deleteMessage" class="hidden"></p>
         </div>
         <footer>
             <div class="footer">

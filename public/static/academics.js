@@ -9,6 +9,7 @@ const assignInstanceMainYear1 = document.querySelector('#assignInstanceMainYear1
 const assignInstanceMainYear2 = document.querySelector('#assignInstanceMainYear2');
 const assignInstanceMainYear3 = document.querySelector('#assignInstanceMainYear3');
 const assignInstanceMainButton = document.querySelector('#assignInstanceMainButton');
+const assignInstanceMainMessage = document.querySelector('#assignInstanceMainMessage');
 //assign support instance elements
 const assignInstanceSupportAcademicId = document.querySelector('#assignInstanceSupportAcademicId');
 const assignInstanceSupportYear = document.querySelector('#assignInstanceSupportYear');
@@ -17,28 +18,34 @@ const assignInstanceSupportYear1 = document.querySelector('#assignInstanceSuppor
 const assignInstanceSupportYear2 = document.querySelector('#assignInstanceSupportYear2');
 const assignInstanceSupportYear3 = document.querySelector('#assignInstanceSupportYear3');
 const assignInstanceSupportButton = document.querySelector('#assignInstanceSupportButton');
+const assignInstanceSupportMessage = document.querySelector('#assignInstanceSupportMessage');
 //view/delete sub dev elements
 const subDevAcademicId = document.querySelector('#subDevAcademicId');
 const subDevContainer = document.querySelector('.subDevContainer');
 const subDevSubmitButton = document.querySelector('#subDevSubmitButton');
+const subDevMessage = document.querySelector('#subDevSubmitMessage');
 //available academics elements
 const availableAcademicsQual = document.querySelector('#availableAcademicsQual');
 const availableAcademicsYear = document.querySelector('#availableAcademicsYear');
 const availabeAcademicsMonth = document.querySelector('#availableAcademicsMonth');
 const availableAcademicsButton = document.querySelector('#availableAcademicsButton');
+const availableAcademicsMessage = document.querySelector('#availableAcademicsMessage');
 const availableAcademicsTable = document.querySelector('#availableAcademicsTable');
 //delete academic elements
 const deleteAcademicId = document.querySelector('#deleteAcademicId');
 const deleteAcademicButton = document.querySelector('#deleteAcademicButton');
+const deleteAcademicMessage = document.querySelector('#deleteAcademicMessage');
 //view Instance allocation elements
-const viewAllocAcademic = document.querySelector('#viewAllocAcademic')
-const viewAllocYear = document.querySelector('#viewAllocYear')
-const viewAllocMonth = document.querySelector('#viewAllocMonth')
-const viewAllocMain = document.querySelector('#viewAllocMain')
-const viewAllocSupp = document.querySelector('#viewAllocSupp')
-const viewAllocSubDev = document.querySelector('#viewAllocSubDev')
-const viewAllocLoad = document.querySelector('#viewAllocLoad')
-const viewAllocButton = document.querySelector('#viewAllocButton')
+const viewAllocAcademic = document.querySelector('#viewAllocAcademic');
+const viewAllocYear = document.querySelector('#viewAllocYear');
+const viewAllocMonth = document.querySelector('#viewAllocMonth');
+const viewAllocButton = document.querySelector('#viewAllocButton');
+const viewAllocMessage = document.querySelector('#viewAllocMessage');
+const viewAllocMain = document.querySelector('#viewAllocMain');
+const viewAllocSupp = document.querySelector('#viewAllocSupp');
+const viewAllocSubDev = document.querySelector('#viewAllocSubDev');
+const viewAllocLoad = document.querySelector('#viewAllocLoad');
+
 //instance info elements
 const insInfoName = document.querySelector('#insInfoName')
 const insInfoMain = document.querySelector('#insInfoMain')
@@ -46,7 +53,8 @@ const insInfoSupport = document.querySelector('#insInfoSupport')
 const insInfoEnrolments = document.querySelector('#insInfoEnrolments')
 //new academic elements
 const newAcademicId = document.querySelector('#newAcademicId');
-const newAcademicButton = document.querySelector('#newAcademicButton')
+const newAcademicButton = document.querySelector('#newAcademicButton');
+const newAcademicMessage = document.querySelector('#newAcademicMessage');
 //assign sub dev elements
 const newSubDevAcademicId = document.querySelector('#newSubDevAcademicId');
 const newSubDevSubject = document.querySelector('#newSubDevSubject');
@@ -55,10 +63,12 @@ const newSubDevStartMonth = document.querySelector('#newSubDevStartMonth');
 const newSubDevEndYear = document.querySelector('#newSubDevEndYear');
 const newSubDevEndMonth = document.querySelector('#newSubDevEndMonth');
 const newSubDevButton = document.querySelector('#newSubDevButton');
+const newSubDevMessage = document.querySelector('#newSubDevMessage');
 //edit academic elements
 const editOldAcademicId = document.querySelector('#editOldAcademicId');
 const editNewAcademicId = document.querySelector('#editNewAcademicId');
 const editAcademicButton = document.querySelector('#editAcademicButton')
+const editAcademicMessage = document.querySelector('#editAcademicMessage')
 
 
 
@@ -81,7 +91,23 @@ const toggleButton = (button, buttonText)=>{
         button.innerHTML="<i class=\"fa fa-circle-o-notch fa-spin\"></i>"
     }
 }
+//shows feedback to user either error or success message, permanent or temporary
+const showMessage = (isError, isFade, text, targetElement)=>{
+    if(isError){
+        targetElement.setAttribute('class', 'userMessage errorMessage')
+    }else{
+        targetElement.setAttribute('class', 'userMessage successMessage')
+    }
 
+    targetElement.innerText = text;
+
+    if(isFade){
+        setTimeout(()=>{
+            targetElement.classList.add('hidden')
+        }, 3000)
+    }
+}
+//helper function to convert a month index (e.g. Jan = 0) into an ISO compatible month string (Jan = 01, Dec = 12)
 const indexToISOMonthString = (monthIndex) =>{
     if(monthIndex<=8){
         var monthString = `0${monthIndex+1}`
@@ -300,21 +326,19 @@ const availableAcademics = async ()=>{
         })
         if(chosenQual){
             try{
-                var response = (await axios.get(`/didasko/academics/quals/load/${chosenQual.id}/${availableAcademicsYear.value}/${chosenMonth}`)).data.result
-                console.log(response)
+                var response = (await axios.get(`/didasko/academics/quals/load/${chosenQual.id}/${availableAcademicsYear.value}/${chosenMonth}`))
                 availableAcademicsTable.innerHTML = '';
-                for (const academic in response){
-                    console.log(academic, response[academic])
-                    availableAcademicsTable.innerHTML += `<tr><td>${academic}</td><td class="tableLoadValue">${response[academic].toFixed(1)}</td></tr>`;
+                for (const academic in response.data.result){
+                    availableAcademicsTable.innerHTML += `<tr><td>${academic}</td><td class="tableLoadValue">${response.data.result[academic].toFixed(1)}</td></tr>`;
                 }
             }catch(err){
-                console.log(err)
+                showMessage(true, false, `There was an error: error code ${err}`, availableAcademicsMessage)
             }
         }else{
-            console.log('qualification is not a valid subject, try refreshing page or creating a subject with that id')
+            showMessage(true, false, 'Subject not found.', availableAcademicsMessage)
         }
     }else{
-        console.log('no input in qualification field')
+        showMessage(true, false, 'Please enter a qualification.', availableAcademicsMessage)
     }
     toggleButton(availableAcademicsButton, 'Search')
 }
@@ -370,7 +394,7 @@ const viewSubDev = async ()=>{
             }
         }
         catch(err){
-            console.log(err)
+            showMessage(true, false, `There was an error: error code ${err}`, subDevMessage)
         }
     }
 }
@@ -387,8 +411,10 @@ const viewInsAllocation = async ()=>{
             subDevs = (await axios.get(`/didasko/subDev/${chosenAcademic}`)).data
             load = (await axios.get(`/didasko/academics/load/${chosenAcademic}/${chosenYear}/${chosenMonthIndex+1}`)).data
         }catch(err){
-            console.log(err)
+            showMessage(true, false, `There was an error, error code ${err}`, viewAllocMessage)
         }
+    }else{
+        showMessage(true, true, 'Academic not found, please try again.', viewAllocMessage)
     }
     
     var yearMonths = new Map()
@@ -450,10 +476,10 @@ const addAcademic = async ()=>{
     try{
         var response = (await axios.post('/didasko/academics', {id: chosenAcademic, quals: quals}))
         if(response.status<300 && response.status>199){
-            console.log('success!')
+            showMessage(false, true, 'Academic created successfully.', newAcademicMessage)
         }
     }catch(err){
-        console.log('there was an error', err)
+        showMessage(true, false, `There was an error, error code: ${err}`, err, newAcademicMessage)
     }
     populateFields()
     toggleButton(newAcademicButton, 'Add')
@@ -478,16 +504,16 @@ const editAcademic = async ()=>{
         try{
             var response = (await axios.patch(`/didasko/academics/${chosenAcademic}`, {id: editNewAcademicId.value, quals: quals}))
             if(response.status<300 && response.status>199){
-                console.log('success!')
+                showMessage(false, true, 'Academic saved successfully.', editAcademicMessage)
             }
             editOldAcademicId.value = '';
             editOldAcademicId.value = '';
             fillQuals()
         }catch(err){
-            console.log('there was an error', err)
+            showMessage(true, false, `There was an error, error code: ${err}`, err, editAcademicMessage)
         }
     }else{
-        console.log('Academic to edit was not a valid academic.')
+        showMessage(true, false, `Academic not found, please try again.`, editAcademicMessage)
     }
     populateFields()
     toggleButton(editAcademicButton, 'Save')
@@ -496,18 +522,18 @@ const deleteAcademic = async ()=>{
     toggleButton(deleteAcademicButton, 'Delete')
     const chosenAcademic = deleteAcademicId.value;
     if(chosenAcademic && academicNames.includes(chosenAcademic)){
-        if(window.confirm(`Are you sure you want to delete the academic: "${chosenAcademic}"?\nContinuing will delete all qualifications, instance assignments and subject development workloads associated with them.`)){
+        if(window.confirm(`Are you sure you want to delete the academic: "${chosenAcademic}"?\n\nContinuing will delete all associated qualifications, assignments and subject development.`)){
             try{
                 var response = (await axios.delete(`/didasko/academics/${chosenAcademic}`))
                 if(response.status<300 && response.status>199){
-                    console.log('success!')
+                    showMessage(false, true, 'Academic deleted successfully.', deleteAcademicMessage)
                 }
                 deleteAcademicId.value = '';
             }catch(err){
                 if(response.status==404){
-                    console.log('No academic was found with that name, please refresh')
+                    showMessage(true, false, 'Academic not found, please try again.', deleteAcademicMessage)
                 }else{
-                    console.log('there was an error', err)
+                    showMessage(true, false, `There was an error, error code: ${err}`, deleteAcademicMessage)
                 }
             }
         }
@@ -516,7 +542,7 @@ const deleteAcademic = async ()=>{
     toggleButton(deleteAcademicButton, 'Delete')
 }
 //assign support instance allocations
-const assignInstances = async (button, academicId, yearField, monthField, assignType)=>{
+const assignInstances = async (button, academicId, yearField, monthField, errorField, assignType)=>{
     toggleButton(button)
     var isMain;
     if(assignType=='Main'){
@@ -530,7 +556,6 @@ const assignInstances = async (button, academicId, yearField, monthField, assign
     if(academicNames.includes(chosenAcademic)){
         selectedInstances = [];
         document.querySelectorAll(`input.assignInstance${assignType}Checkbox[type="checkbox"]:checked`).forEach((checkbox)=>{
-            console.log({instanceId: `${checkbox.id.substring(checkbox.id.length-7)}_${year}_${month}`, academicId: chosenAcademic, main: isMain})
             selectedInstances.push({instanceId: `${checkbox.id.substring(checkbox.id.length-7)}_${year}_${month}`, academicId: chosenAcademic, main: isMain})
         })
         var startDate = new Date(`${year}-${indexToISOMonthString(months.findIndex((monthName)=>{if(monthName===`${month}`){return true;}}))}-01`)
@@ -538,13 +563,13 @@ const assignInstances = async (button, academicId, yearField, monthField, assign
         try{
             var response = (await axios.patch(`/didasko/assignments/${chosenAcademic}`, body))
             if(response.status<300 && response.status>199){
-                console.log('success!')
+                showMessage(false, true, 'Instances assign successfully.', errorField)
             }
         }catch(err){
-            console.log('There was an error', err)
+            showMessage(true, false, `There was an error, error code: ${err}`, errorField)
         }
     }else{
-        console.log('Academic name not in array')
+        showMessage(true, false, 'Academic not found, please try again.', errorField)
     }
     populateFields();
     toggleButton(button, 'Save');
@@ -563,16 +588,16 @@ const addSubDev = async ()=>{
             try{
                 var response = (await axios.post(`/didasko/subDev/${chosenAcademic}/${chosenSubject}`, body))
                 if(response.status<300 && response.status>199){
-                    console.log('success!')
+                    showMessage(false, true, 'Subject development added successfully.', newSubDevMessage)
                 }
             }catch(err){
-                console.log('There was an error', err)
+                showMessage(true, false, `There was an error, error code: ${err}`, newSubDevMessage)
             }
         }else{
-            console.log('The start date was not before the end date.')
+            showMessage(true, false, 'The start date must be after the end date.', newSubDevMessage)
         }
     }else{
-        console.log('The academic name and/or subject name could not be verified.')
+        showMessage(true, false, 'The academic name and/or subject name could not be verified, please try again.', newSubDevMessage)
     }
     viewSubDev();
     populateFields();
@@ -595,13 +620,17 @@ const deleteSubDev = async ()=>{
             try{
                 var response = (await axios.patch(`/didasko/subDev/`, body))
                 if(response.status<300 && response.status>199){
-                    console.log('success!')
+                    showMessage(false, true, 'success!', subDevMessage)
                 }
             }catch(err){
-                console.log('There was an error', err)
+                showMessage(true, false, `There was an error, error code: ${err}`, subDevMessage)
             }
-        }else{console.log('No subDev selection to delete supplied')}
-    }else{console.log('no academic found with that name, please refresh page')}
+        }else{
+            showMessage(true, true, 'No subject development selection supplied, click a subject to select it.'), subDevMessage
+        }
+    }else{
+        showMessage(true, false, 'Academic not found, please try again.'), subDevMessage
+    }
     viewSubDev()
     populateFields()
     toggleButton(subDevSubmitButton, 'Delete Selection')
@@ -614,12 +643,12 @@ const addListeners = () =>{
     assignInstanceMainAcademicId.addEventListener('change', ()=>{fillAssignments('Main', assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth)})
     assignInstanceMainMonth.addEventListener('change', ()=>{populateInstances('Main', assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainYear1, assignInstanceMainYear2, assignInstanceMainYear3, assignInstanceMainAcademicId)})
     assignInstanceMainYear.addEventListener('change', ()=>{populateInstances('Main', assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainYear1, assignInstanceMainYear2, assignInstanceMainYear3, assignInstanceMainAcademicId)})
-    assignInstanceMainButton.addEventListener('click', ()=>{assignInstances(assignInstanceMainButton, assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth, 'Main')})
+    assignInstanceMainButton.addEventListener('click', ()=>{assignInstances(assignInstanceMainButton, assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainMessage, 'Main')})
 
     assignInstanceSupportAcademicId.addEventListener('change', ()=>{fillAssignments('Support', assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth)})
     assignInstanceSupportMonth.addEventListener('change', ()=>{populateInstances('Support', assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportYear1, assignInstanceSupportYear2, assignInstanceSupportYear3, assignInstanceSupportAcademicId)})
     assignInstanceSupportYear.addEventListener('change', ()=>{populateInstances('Support', assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportYear1, assignInstanceSupportYear2, assignInstanceSupportYear3, assignInstanceSupportAcademicId)})
-    assignInstanceSupportButton.addEventListener('click', ()=>{assignInstances(assignInstanceSupportButton, assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth, 'Support')})
+    assignInstanceSupportButton.addEventListener('click', ()=>{assignInstances(assignInstanceSupportButton, assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportMessage, 'Support')})
     //view sub dev 
     subDevAcademicId.addEventListener('change', viewSubDev)
     //available academics
