@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "connect-mssql-v2": "^3.1.4",
@@ -8,7 +8,6 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "mssql": "^9.1.1",
-    "nodemon": "^2.0.22",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0"
   }
