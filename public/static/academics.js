@@ -23,7 +23,7 @@ const assignInstanceSupportMessage = document.querySelector('#assignInstanceSupp
 const subDevAcademicId = document.querySelector('#subDevAcademicId');
 const subDevContainer = document.querySelector('.subDevContainer');
 const subDevSubmitButton = document.querySelector('#subDevSubmitButton');
-const subDevMessage = document.querySelector('#subDevSubmitMessage');
+const subDevMessage = document.querySelector('#subDevMessage');
 //available academics elements
 const availableAcademicsQual = document.querySelector('#availableAcademicsQual');
 const availableAcademicsYear = document.querySelector('#availableAcademicsYear');
@@ -160,14 +160,12 @@ const populateYears = ()=>{
 //called upon change of academic 
 const fillQuals = async ()=>{
     const chosenAcademic = editOldAcademicId.value;
-    console.log(chosenAcademic)
     document.querySelectorAll('.editAcademicQualsCheckbox').forEach((checkbox)=>{
         checkbox.checked = false;
     })
     if(chosenAcademic){
         if(academicNames.includes(chosenAcademic)){
             const quals = (await axios.get(`/didasko/academics/quals/${chosenAcademic}`)).data
-            console.log(quals)
             subjectValues.forEach((subject)=>{
                 if(quals.some((qual)=>{if(qual.subId==subject.id){return true;}})){
                     document.querySelector(`#editAcademic_${subject.id}`).checked = true;
@@ -312,6 +310,10 @@ const populateFields = async ()=>{
     //populates instance options for assign instance form
     populateInstances('Main', assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainYear1, assignInstanceMainYear2, assignInstanceMainYear3, assignInstanceMainAcademicId)
     populateInstances('Support', assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportYear1, assignInstanceSupportYear2, assignInstanceSupportYear3, assignInstanceMainAcademicId)
+
+    fillAssignments('Main', assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth)
+    fillAssignments('Support', assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth)
+    fillQuals()
 }
 
 //display logic for the available academics form
@@ -473,13 +475,19 @@ const addAcademic = async ()=>{
     document.querySelectorAll('input.newAcademicQualsCheckbox[type="checkbox"]:checked').forEach((checkbox)=>{
         quals.push(checkbox.id.substring(12))
     })
+    var body = {id: chosenAcademic, quals: quals};
+
     try{
-        var response = (await axios.post('/didasko/academics', {id: chosenAcademic, quals: quals}))
+        var response = (await axios.post('/didasko/academics', body))
         if(response.status<300 && response.status>199){
             showMessage(false, true, 'Academic created successfully.', newAcademicMessage)
         }
     }catch(err){
-        showMessage(true, false, `There was an error, error code: ${err}`, err, newAcademicMessage)
+        if(err.response.data.message.substring(0, 35)==='Violation of PRIMARY KEY constraint'){
+            showMessage(true, false, `Cannot add create duplicate record, ${body.id} already exists`, newAcademicMessage)
+        }else{
+            showMessage(true, false, `There was an error, error code: ${err}`, newAcademicMessage)
+        }
     }
     populateFields()
     toggleButton(newAcademicButton, 'Add')
@@ -487,7 +495,6 @@ const addAcademic = async ()=>{
 const editAcademic = async ()=>{
     toggleButton(editAcademicButton)
     const chosenAcademic = editOldAcademicId.value;
-    console.log(chosenAcademic)
     if(chosenAcademic && academicNames.includes(chosenAcademic)){
         
         var quals = [];
@@ -502,7 +509,7 @@ const editAcademic = async ()=>{
         }        
         
         try{
-            var response = (await axios.patch(`/didasko/academics/${chosenAcademic}`, {id: editNewAcademicId.value, quals: quals}))
+            var response = (await axios.patch(`/didasko/academics/${chosenAcademic}`, body))
             if(response.status<300 && response.status>199){
                 showMessage(false, true, 'Academic saved successfully.', editAcademicMessage)
             }
@@ -510,7 +517,12 @@ const editAcademic = async ()=>{
             editOldAcademicId.value = '';
             fillQuals()
         }catch(err){
-            showMessage(true, false, `There was an error, error code: ${err}`, err, editAcademicMessage)
+            if(err.response.data.message.substring(0, 35)==='Violation of PRIMARY KEY constraint'){
+                showMessage(true, false, `Cannot add create duplicate record, ${body.id} already exists`, editAcademicMessage)
+            }else{
+                showMessage(true, false, `There was an error, ${err.response.data.message}`, editAcademicMessage)
+            }
+            fillQuals()
         }
     }else{
         showMessage(true, false, `Academic not found, please try again.`, editAcademicMessage)
@@ -563,10 +575,25 @@ const assignInstances = async (button, academicId, yearField, monthField, errorF
         try{
             var response = (await axios.patch(`/didasko/assignments/${chosenAcademic}`, body))
             if(response.status<300 && response.status>199){
-                showMessage(false, true, 'Instances assign successfully.', errorField)
+                if(response.data.unqualified){
+                    var alertString = `${chosenAcademic} was not qualified to teach all selected instances. The following instances were not assigned:\n`;
+                    response.data.unqualified.forEach((unQual)=>{
+                        alertString += `\n${unQual}`;
+                    })
+                    window.alert(alertString)
+                }
+                if(response.data.load>7){
+                    showMessage(true, false, `Assignment successful.\n${chosenAcademic} is over the max load in ${startDate.getFullYear()} ${months[startDate.getMonth()]}, load: ${response.data.load.toFixed(1)}`, errorField)    
+                }else{
+                showMessage(false, true, 'Assignment successful.', errorField)
+                }
             }
         }catch(err){
-            showMessage(true, false, `There was an error, error code: ${err}`, errorField)
+            if(err.response.data.message.substring(0, 35)==='Violation of PRIMARY KEY constraint'){
+                showMessage(true, false, `Error: Cannot add create duplicate record.`, errorField)
+            }else{
+                showMessage(true, false, `There was an error: ${err}`, errorField)
+            }            
         }
     }else{
         showMessage(true, false, 'Academic not found, please try again.', errorField)
@@ -584,14 +611,29 @@ const addSubDev = async ()=>{
         var endDate = new Date(`${newSubDevEndYear.value}-${indexToISOMonthString(months.findIndex((month)=>{if(month===newSubDevEndMonth.value){return true;}}))}-01`)
     
         var body = {startDate: startDate.toISOString(),endDate: endDate.toISOString()}
-        if(startDate<endDate){
+        if(startDate<=endDate){
             try{
                 var response = (await axios.post(`/didasko/subDev/${chosenAcademic}/${chosenSubject}`, body))
                 if(response.status<300 && response.status>199){
-                    showMessage(false, true, 'Subject development added successfully.', newSubDevMessage)
+                    if(response.data.overload){
+                        console.log('')
+                        var overloadString = `Subject development added successfully.\nNote: ${chosenAcademic} is over max load in:\n`;
+                        response.data.overloadMonths.forEach((overload)=>{
+                            overloadMonth = new Date(overload)
+
+                            overloadString+= `${months[overloadMonth.getMonth()]} ${overloadMonth.getFullYear()}\n`
+                        })
+                        showMessage(true, false, overloadString, newSubDevMessage)    
+                    }else{
+                        showMessage(false, true, 'Subject development added successfully.', newSubDevMessage)
+                    }
                 }
             }catch(err){
-                showMessage(true, false, `There was an error, error code: ${err}`, newSubDevMessage)
+                if(err.response.data.message.substring(0, 35)==='Violation of PRIMARY KEY constraint'){
+                    showMessage(true, false, `Error: Cannot add create duplicate record, ${chosenAcademic} is already assigned subject development for ${chosenSubject}.`, newSubDevMessage)
+                }else{
+                    showMessage(true, false, `There was an error: ${err}`, newSubDevMessage)
+                }
             }
         }else{
             showMessage(true, false, 'The start date must be after the end date.', newSubDevMessage)
@@ -626,10 +668,10 @@ const deleteSubDev = async ()=>{
                 showMessage(true, false, `There was an error, error code: ${err}`, subDevMessage)
             }
         }else{
-            showMessage(true, true, 'No subject development selection supplied, click a subject to select it.'), subDevMessage
+            showMessage(true, true, 'No subject development selection supplied, click a subject to select it.', subDevMessage)
         }
     }else{
-        showMessage(true, false, 'Academic not found, please try again.'), subDevMessage
+        showMessage(true, false, 'Academic not found, please try again.', subDevMessage)
     }
     viewSubDev()
     populateFields()
@@ -637,18 +679,6 @@ const deleteSubDev = async ()=>{
 }
 
 const addListeners = () =>{
-    //instanceInfo listener
-    //presentation listeners
-    //assign main instances
-    assignInstanceMainAcademicId.addEventListener('change', ()=>{fillAssignments('Main', assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth)})
-    assignInstanceMainMonth.addEventListener('change', ()=>{populateInstances('Main', assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainYear1, assignInstanceMainYear2, assignInstanceMainYear3, assignInstanceMainAcademicId)})
-    assignInstanceMainYear.addEventListener('change', ()=>{populateInstances('Main', assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainYear1, assignInstanceMainYear2, assignInstanceMainYear3, assignInstanceMainAcademicId)})
-    assignInstanceMainButton.addEventListener('click', ()=>{assignInstances(assignInstanceMainButton, assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainMessage, 'Main')})
-
-    assignInstanceSupportAcademicId.addEventListener('change', ()=>{fillAssignments('Support', assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth)})
-    assignInstanceSupportMonth.addEventListener('change', ()=>{populateInstances('Support', assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportYear1, assignInstanceSupportYear2, assignInstanceSupportYear3, assignInstanceSupportAcademicId)})
-    assignInstanceSupportYear.addEventListener('change', ()=>{populateInstances('Support', assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportYear1, assignInstanceSupportYear2, assignInstanceSupportYear3, assignInstanceSupportAcademicId)})
-    assignInstanceSupportButton.addEventListener('click', ()=>{assignInstances(assignInstanceSupportButton, assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportMessage, 'Support')})
     //view sub dev 
     subDevAcademicId.addEventListener('change', viewSubDev)
     //available academics
@@ -658,7 +688,7 @@ const addListeners = () =>{
     //view instance Info
     insInfoName.addEventListener('change', insInfo)
     //populate edit academic qualifications
-    editOldAcademicId.addEventListener('change', fillQuals)
+    editOldAcademicId.addEventListener('input', fillQuals)
 
     //form submission listeners
     //add new academic form
@@ -671,7 +701,19 @@ const addListeners = () =>{
     newSubDevButton.addEventListener('click', addSubDev)
     //delete sub Dev form
     subDevSubmitButton.addEventListener('click', deleteSubDev)
+    //assign main role
+    assignInstanceMainAcademicId.addEventListener('input', ()=>{fillAssignments('Main', assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth)})
+    assignInstanceMainMonth.addEventListener('change', ()=>{populateInstances('Main', assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainYear1, assignInstanceMainYear2, assignInstanceMainYear3, assignInstanceMainAcademicId)})
+    assignInstanceMainYear.addEventListener('change', ()=>{populateInstances('Main', assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainYear1, assignInstanceMainYear2, assignInstanceMainYear3, assignInstanceMainAcademicId)})
+    assignInstanceMainButton.addEventListener('click', ()=>{assignInstances(assignInstanceMainButton, assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainMessage, 'Main')})
+    //assign support role
+    assignInstanceSupportAcademicId.addEventListener('input', ()=>{fillAssignments('Support', assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth)})
+    assignInstanceSupportMonth.addEventListener('change', ()=>{populateInstances('Support', assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportYear1, assignInstanceSupportYear2, assignInstanceSupportYear3, assignInstanceSupportAcademicId)})
+    assignInstanceSupportYear.addEventListener('change', ()=>{populateInstances('Support', assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportYear1, assignInstanceSupportYear2, assignInstanceSupportYear3, assignInstanceSupportAcademicId)})
+    assignInstanceSupportButton.addEventListener('click', ()=>{assignInstances(assignInstanceSupportButton, assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportMessage, 'Support')})
 }
 
 populateFields()
 addListeners()
+
+

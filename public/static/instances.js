@@ -27,6 +27,7 @@ const viewAllocButton = document.querySelector('#viewAllocButton')
 const viewAllocMessage = document.querySelector('#viewAllocMessage')
 //instance info elements
 const insInfoName = document.querySelector('#insInfoName')
+const insInfoButton = document.querySelector('#insInfoButton')
 const insInfoMain = document.querySelector('#insInfoMain')
 const insInfoSupport = document.querySelector('#insInfoSupport')
 const insInfoEnrolments = document.querySelector('#insInfoEnrolments')
@@ -147,6 +148,7 @@ const populateCombos = async ()=>{
 
 //display logic for the View Instance Info form - called from event listener
 const insInfo = ()=>{
+    toggleButton(insInfoButton)
     const input = insInfoName.value;
     var mainListHTML = ``;
     var supportListHTML = ``;
@@ -177,9 +179,11 @@ const insInfo = ()=>{
             }
         });
     }
+    toggleButton(insInfoButton, 'Search')
 }
 //display logic for the view instance allocation form - called from event listener
 const viewInsAllocation = async ()=>{
+    toggleButton(viewAllocButton)
     var chosenAcademic = viewAllocAcademic.value
     const chosenMonthIndex = months.findIndex((element=>{if(element===`${viewAllocMonth.value}`)return true}))
     const chosenYear = viewAllocYear.value
@@ -241,6 +245,7 @@ const viewInsAllocation = async ()=>{
     if(load){
         viewAllocLoad.innerHTML=load.result.toFixed(1)
     }
+    toggleButton(viewAllocButton, 'Search')
 }
 const newInstance = async () =>{
     toggleButton(newInsButton)
@@ -251,20 +256,26 @@ const newInstance = async () =>{
             var startMonth = indexToISOMonthString(startMonthIndex)
             try{
                 var body = {id: instanceId, subId: newInsSub.value, startDate:`${newInsYear.value}-${startMonth}-01`}
+                
                 if(newInsEnrolments.value && (newInsEnrolments.value>=0 && newInsEnrolments.value<400)){
                     body.enrolments=newInsEnrolments.value;
                 }else{
-                    body.enrolments=0; var enforcedEnrolments = true;}
+                    body.enrolments=0; var enforcedEnrolments = true;
+                }
                 var response = (await axios.post('/didasko/instances/', body))
                 if(response.status<300 && response.status>199){
                     if(enforcedEnrolments){
-                        showMessage(false, true, 'Instance added successfully.\nEnrolments must be between 0 and 399, enrolments were set to 0.', newInsMessage)
+                        showMessage(false, true, 'Instance added successfully.\nEnrolments were set to 0.', newInsMessage)
                     }else{
                         showMessage(false, true, 'Instance added successfully', newInsMessage)
                     }
                 }
             }catch(err){
-                showMessage(true, false, `There was an error, error code: ${err}`, newInsMessage)
+                if(err.response.data.message.substring(0, 35)==='Violation of PRIMARY KEY constraint'){
+                    showMessage(true, false, `Cannot add duplicate record, ${body.id} already exists`, newInsMessage)
+                }else{
+                    showMessage(true, false, `There was an error, error code: ${err}`, newInsMessage)
+                }
             }
         }else{
             showMessage(true, false, 'The instance name does not match the required format, e.g. CSE1ITX_2000_January.', newInsMessage)
@@ -297,19 +308,15 @@ const editInstance = async () =>{
         if(insRegex.test(instanceId)){
             var newInstanceMonthIndex = months.findIndex((element)=>{if(element===`${editInsNewMonth.value}`)return true})
             var startMonth = indexToISOMonthString(newInstanceMonthIndex)
-            var newInstance = {id: instanceId, subId: subId, startDate: `${editInsNewYear.value}-${startMonth}-01`}
+            var body = {id: instanceId, subId: subId, startDate: `${editInsNewYear.value}-${startMonth}-01`}
 
-            if(editInsEnrolments.value){
-                newInstance.enrolments = editInsEnrolments.value
-            }
-
-            if(editInsEnrolments.value && (editInsEnrolments.value>=0 && editInsEnrolments.value>400)){
-                newInstance.enrolments=editInsEnrolments.value;
+            if(editInsEnrolments.value && (editInsEnrolments.value>=0 && editInsEnrolments.value<400)){
+                body.enrolments=editInsEnrolments.value;
             }else{
-                newInstance.enrolments=0; var enforcedEnrolments = true;}
+                body.enrolments=0; var enforcedEnrolments = true;}
 
             try{
-                var response = (await axios.patch(`/didasko/instances/${editInsOldIns.value}`, newInstance))
+                var response = (await axios.patch(`/didasko/instances/${editInsOldIns.value}`, body))
                 if(response.status<300 && response.status>199){
                     var successText = 'Instance saved successfully';
                     if(noSubId){
@@ -322,7 +329,11 @@ const editInstance = async () =>{
                     showMessage(false, true, successText, editInsMessage)
                 }
             }catch(err){
-                showMessage(true, false, `There was an error, error code: ${err}`, editInsMessage)
+                if(err.response.data.message.substring(0, 35)==='Violation of PRIMARY KEY constraint'){
+                    showMessage(true, false, `Cannot add duplicate record, ${body.id} already exists`, editInsMessage)
+                }else{
+                    showMessage(true, false, `There was an error, error code: ${err}`, editInsMessage)
+                }
             }
         }
         else{
@@ -364,7 +375,7 @@ const addListeners = () =>{
     editInsButton.addEventListener('click', editInstance)
     deleteButton.addEventListener('click', deleteInstance)
     viewAllocButton.addEventListener('click', viewInsAllocation)
-    insInfoName.addEventListener('change', insInfo)
+    insInfoButton.addEventListener('click', insInfo)
 }
 
 populateCombos()

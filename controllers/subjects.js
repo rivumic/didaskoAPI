@@ -1,5 +1,6 @@
 const sql = require('mssql')
 const queries = require('../db/queries')
+const subRegex = new RegExp("CSE[123][A-Z][A-Z]X")
 
 const getAllSubjects = async (req, res) => {
     queries.getAll('subjects', req ,res)
@@ -7,28 +8,51 @@ const getAllSubjects = async (req, res) => {
 }
 const newSubject = async (req, res) => {
     try{
-        if(!req.body.id){
-            throw new Error('No subject id supplied.')
+        if(!req.body.id || !req.body.yearLevel){
+            return res.status(400).json({message: "incomplete information supplied, subject id and year level must be supplied"})    
         }
-        var query = await sql.query(`insert into subjects(id, yearLevel) values(\'${req.body.id}\', ${req.body.yearLevel})`)
-        res.status(201).json(query)
+        if(subRegex.test(req.body.id)){
+            if(req.body.id.substring(3, 4)===req.body.yearLevel){
+                var query = await sql.query(`insert into subjects(id, yearLevel) values(\'${req.body.id}\', ${req.body.yearLevel})`);
+                return res.status(201).json(query);
+            }else{
+                return res.status(400).json({message: "year level must match subject id"})
+            }
+        }else{
+            return res.status(400).json({message: "incorrect subject id format"})    
+        }
+        
     }catch(err){
-        res.status(500).json({message: err.message})
+        if(err.message.substring(0, 35)=='Violation of PRIMARY KEY constraint'){
+            return res.status(400).json({message: err.message})
+        }        
+        return res.status(500).json({message: err.message})
     }
 }
 const updateSubject = async (req, res) => {
     try{
-        if(!req.body.yearLevel){
-            return res.status(400).json({message: "No year level provided"})
+        if(!req.body.yearLevel || !req.body.id){
+            return res.status(400).json({message: "incomplete information supplied, subject id and year level must be supplied"})
         }
-        var queryString = `update subjects set id=\'${req.body.id}\', yearLevel=${req.body.yearLevel} where id=\'${req.params.id}\'`
-        var query = await sql.query(queryString)
-        if(query.rowsAffected[0]===0){
-            return res.status(404).json({message:'No record found with that name'})
+        if(subRegex.test(req.body.id)){
+            if(req.body.id.substring(3, 4)){
+                var queryString = `update subjects set id=\'${req.body.id}\', yearLevel=${req.body.yearLevel} where id=\'${req.params.id}\'`
+                var query = await sql.query(queryString)
+                if(query.rowsAffected[0]===0){
+                    return res.status(404).json({message:'No record found with that name'})
+                }
+            }else{
+                return res.status(400).json({message: "year level must match subject id"})
+            }
+        }else{
+            return res.status(400).json({message: "incorrect subject id format"})
         }
         return res.status(200).json(query)
     }
     catch(err){
+        if(err.message.substring(0, 35)=='Violation of PRIMARY KEY constraint'){
+            return res.status(400).json({message: err.message})
+        }
         return res.status(500).json({message: err.message})
     }
 }

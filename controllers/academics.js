@@ -23,6 +23,9 @@ const createAcademic = async(req, res) =>{
         }
         return res.status(200).json({query})
     }catch(err){
+        if(err.message.substring(0, 35)=='Violation of PRIMARY KEY constraint'){
+            return res.status(400).json({message: err.message})
+        }
         return res.status(500).json({message: err.message})
     }
 }
@@ -37,9 +40,23 @@ const updateAcademic = async(req, res) =>{
             name=req.body.id;
         }
         if(req.body.quals){
+            var assignedSubjects = (await sql.query(`select subId from assignments join instances on instanceId = instances.id where academicId = '${req.params.id}' group by subId;`)).recordset
+            var quals=req.body.quals;
+            var isUnqualInstance = false;
+            console.log('assigned Subjects: \n', assignedSubjects,'\nproposed qualification list: ', quals)
+            assignedSubjects.forEach((subject)=>{
+
+                if(!quals.includes(subject.subId)){
+                    isUnqualInstance = true;
+                }
+            })
+            if(isUnqualInstance){
+                return res.status(400).json({message: "Cannot remove qualification if instance is currently assigned for that subject."})
+            }
             var deleteQuals = `delete from qualifications where academicId='${name}';`
             var query = await sql.query(deleteQuals)
-            var quals=req.body.quals;
+
+            
             var insert = '';
             quals.forEach((subId)=>{
                 insert+=`insert into qualifications values('${subId}', '${name}');`
@@ -49,6 +66,9 @@ const updateAcademic = async(req, res) =>{
         }
         return res.status(200).json({results})
     }catch(err){
+        if(err.message.substring(0, 35)=='Violation of PRIMARY KEY constraint'){
+            return res.status(400).json({message: err.message})
+        }
         return res.status(500).json({message: err.message})
     }
 }
@@ -59,7 +79,7 @@ const getOneLoad = async (req, res) =>{
     try{
         const yearMonth = `${req.params.year}-${req.params.month}-01`
         //subDev
-        const subDevCountQuery = `select * from subDev where academicId = '${req.params.id}' and ('${yearMonth}' BETWEEN startDate and endDate)`
+        const subDevCountQuery = `select * from subDev where academicId = '${req.params.id}' and ('${yearMonth}' BETWEEN startDate and endDate);`
         const subDevCount = (await sql.query(subDevCountQuery)).recordset
         var load = 0;
         if(subDevCount){
@@ -75,8 +95,10 @@ const getOneLoad = async (req, res) =>{
         const instanceInfoByAssignQuery = `select id, academicId, main, enrolments, startDate
         from assignments join instances on instanceId=id 
         where academicId='${req.params.id}' and (startDate between dateadd(month, -2, '${yearMonth}')and '${yearMonth}');`;
+        
         instanceAssignCount = (await sql.query(instanceAssignCountQuery)).recordset
         instanceInfoByAssign = (await sql.query(instanceInfoByAssignQuery)).recordset
+        
         if(instanceAssignCount&&instanceInfoByAssign){
             instanceMap = new Map()
             instanceAssignCount.forEach((row)=>{

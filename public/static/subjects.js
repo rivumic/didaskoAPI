@@ -47,9 +47,7 @@ const showMessage = (isError, isFade, text, targetElement)=>{
 
 const setCombos = async ()=>{
     comboValues = (await axios.get('/didasko/subjects')).data
-    console.log(comboValues)
     if(document.querySelector('#subjectList')!=null){
-        console.log('in the if')
         document.querySelector('#subjectList').remove()
     }
     var subjectList = document.createElement('datalist')
@@ -70,12 +68,17 @@ const addEventListeners = ()=>{
             if(subRegex.test(addSubId.value)){
                 if(addSubId.value.substring(3,4)===addYear.value){
                     try{
-                        var response = (await axios.post('/didasko/subjects', {id: addSubId.value, yearLevel: addYear.value}))
+                        var body = {id: addSubId.value, yearLevel: addYear.value};
+                        var response = (await axios.post('/didasko/subjects', body))
                         if(response.status<300 && response.status>199){
                             showMessage(false, true, 'Subject added successfully', addMessage);
                         }
                     }catch(err){
-                        showMessage(true, false, `There was an error, error code: ${err}`, addMessage)
+                        if(err.response.data.message.substring(0, 35)==='Violation of PRIMARY KEY constraint'){
+                            showMessage(true, false, `Cannot create duplicate record, ${body.id} already exists`, addMessage)
+                        }else{
+                            showMessage(true, false, `There was an error: "${err.message}"`, addMessage)
+                        }
                     }
                 }else{
                     showMessage(true, false, 'Year in subject name and year level do not match.', addMessage)
@@ -99,12 +102,17 @@ const addEventListeners = ()=>{
             if(subRegex.test(editNewSubId.value)){
                 if(editNewSubId.value.substring(3,4)===editYear.value){
                     try{
-                        var response = (await axios.patch(`/didasko/subjects/${editOldSubId.value}`, {id: editNewSubId.value, yearLevel: editYear.value}))
+                        var body = {id: editNewSubId.value, yearLevel: editYear.value}
+                        var response = (await axios.patch(`/didasko/subjects/${editOldSubId.value}`, body))
                         if(response.status<300 && response.status>199){
                             showMessage(false, true, 'Subject edited successfully', editMessage);
                         }
                     }catch(err){
-                        showMessage(true, false, `There was an error, error code: ${err}`, editMessage)
+                        if(err.response.data.message.substring(0, 35)==='Violation of PRIMARY KEY constraint'){
+                            showMessage(true, false, `Cannot create duplicate record, ${body.id} already exists`, editMessage)
+                        }else{
+                            showMessage(true, false, `There was an error, ${err}`, editMessage)
+                        }
                     }
                 }else{showMessage(true, false, 'Year level in subject name and year level do not match.', editMessage)}
             }else{showMessage(true, false, 'New subject name does not match the required format, e.g. CSE1ITX.', editMessage)}
