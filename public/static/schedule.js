@@ -78,7 +78,6 @@ const yearOptions = (years)=>{
 //takes url for data download and destination listID to populate with said data
 //can optionally take list in which will be used in place of data pulled using url
 const setCombo = (data, listName)=>{
-    console.log('called setCombo')
     if(document.querySelector(`#${listName}`)){document.querySelector(`#${listName}`).remove()};
     var comboList = document.createElement('datalist');
     comboList.id = listName;
@@ -250,7 +249,6 @@ const loadSchedule = async ()=>{
         instancesSchedule = data[1].data;
         assignments = data[2].data;
         subjects = data[3].data;
-        console.log(academics, instancesSchedule, assignments, subjects)
         
     for (var o = 0;o<instancesSchedule.length;o++){
             if(!byYear.has(instancesSchedule[o].year)){
@@ -293,7 +291,8 @@ const loadSchedule = async ()=>{
         })
         table.insertAdjacentHTML("beforeend", tableHTML)
         setScheduleView()
-        
+        setCombo(academics, 'academicList')        
+        setCombo(instancesSchedule, 'instanceList')
     }catch(err){
         console.log(err)
     }
