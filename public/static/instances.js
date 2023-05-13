@@ -112,7 +112,7 @@ const populateYears = ()=>{
 //refreshes comboBox values
 const populateCombos = async ()=>{
 
-    const data = Promise.all([axios.get('/didasko/subjects'),
+    const data = await Promise.all([axios.get('/didasko/subjects'),
     axios.get('/didasko/instances/schedule'),
     axios.get('/didasko/academics'),
     axios.get('/didasko/assignments')]);

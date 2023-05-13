@@ -271,10 +271,11 @@ const populateFields = async ()=>{
         //sets year fields in new and edit instance forms
     populateYears()
     
-    const data = Promise.all([axios.get('/didasko/subjects'),
+    const data = await Promise.all([axios.get('/didasko/subjects'),
     axios.get('/didasko/instances/schedule'),
     axios.get('/didasko/academics'),
     axios.get('/didasko/assignments')])
+    console.log(data)
 
     subjectValues = data[0].data
     instanceValues = data[1].data
