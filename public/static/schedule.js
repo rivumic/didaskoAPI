@@ -22,7 +22,7 @@ const mainAllocations = document.querySelector('#mainAllocations')
 const supportAllocations = document.querySelector('#supportAllocations')
 var enrolments = document.getElementById('enrolments');
 
-
+var subjects;
 var assignments;
 var instancesSchedule;
 var academics = [];
@@ -77,25 +77,37 @@ const yearOptions = (years)=>{
 }
 //takes url for data download and destination listID to populate with said data
 //can optionally take list in which will be used in place of data pulled using url
-const setCombo = async (url, listId, list)=>{
-    if (list){
-        var comboValues=list;
-    }else{
-        var comboValues = ((await axios.get(url)).data)
-        if(listId==='academicList'){
-            comboValues.forEach((element)=>{
-                academics.push(element.id)
-            })}
-    }
+const setCombo = (data, listName)=>{
+    console.log('called setCombo')
+    if(document.querySelector(`#${listName}`)){document.querySelector(`#${listName}`).remove()};
     var comboList = document.createElement('datalist');
-    comboList.id = `${listId}`;
-    comboValues.forEach((comboValue) =>{
-    var option = document.createElement('option');
-    option.innerHTML = comboValue.id;
-    comboList.appendChild(option);
+    comboList.id = listName;
+    document.querySelector('.container').appendChild(comboList);
+    data.forEach((value)=>{
+        var option = document.createElement('option');
+        option.innerHTML=value.id;
+        comboList.appendChild(option);
     })
-    document.body.appendChild(comboList);
 }
+// const setCombo = async (url, listId, list)=>{
+//     if (list){
+//         var comboValues=list;
+//     }else{
+//         try{
+//             var comboValues = ((await axios.get(url)).data)
+//         }catch(err){
+//             console.log(err)
+//         }
+//     }
+//     var comboList = document.createElement('datalist');
+//     comboList.id = `${listId}`;
+//     comboValues.forEach((comboValue) =>{
+//     var option = document.createElement('option');
+//     option.innerHTML = comboValue.id;
+//     comboList.appendChild(option);
+//     })
+//     document.body.appendChild(comboList);
+// }
 //sets the schedule to the currently chosen settings, called via eventListener
 const setScheduleView = ()=>{
     const selectedYear = scheduleYearPicker.value
@@ -226,11 +238,21 @@ const addListeners = ()=>{
 }
 const loadSchedule = async ()=>{
     try{
-        const subjects = (await axios.get('/didasko/subjects')).data
-        instancesSchedule = (await axios.get('/didasko/instances/schedule')).data
-        assignments = (await axios.get('/didasko/assignments')).data
+        // academics = await axios.get('/didasko/academics').data;
+        
+        const data = await Promise.all([
+            axios.get('/didasko/academics'),
+            axios.get('/didasko/instances/schedule'),
+            axios.get('/didasko/assignments'),
+            axios.get('/didasko/subjects')]);
 
-        for (var o = 0;o<instancesSchedule.length;o++){
+        academics = data[0].data;
+        instancesSchedule = data[1].data;
+        assignments = data[2].data;
+        subjects = data[3].data;
+        console.log(academics, instancesSchedule, assignments, subjects)
+        
+    for (var o = 0;o<instancesSchedule.length;o++){
             if(!byYear.has(instancesSchedule[o].year)){
                 byYear.set(instancesSchedule[o].year, new Map())
             }
@@ -271,7 +293,7 @@ const loadSchedule = async ()=>{
         })
         table.insertAdjacentHTML("beforeend", tableHTML)
         setScheduleView()
-    
+        
     }catch(err){
         console.log(err)
     }
@@ -279,5 +301,3 @@ const loadSchedule = async ()=>{
 
 loadSchedule();
 addListeners();
-setCombo('/didasko/academics', 'academicList');
-setCombo('/didasko/instances', 'instanceList');

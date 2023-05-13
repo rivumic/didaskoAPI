@@ -111,10 +111,15 @@ const populateYears = ()=>{
 }
 //refreshes comboBox values
 const populateCombos = async ()=>{
-    subjectValues = (await axios.get('/didasko/subjects')).data
-    instanceValues = (await axios.get('/didasko/instances/schedule')).data
-    academicValues = (await axios.get('/didasko/academics')).data
-    assignmentValues = (await axios.get('/didasko/assignments')).data
+
+    const data = Promise.all([axios.get('/didasko/subjects'),
+    axios.get('/didasko/instances/schedule'),
+    axios.get('/didasko/academics'),
+    axios.get('/didasko/assignments')]);
+    subjectValues = data[0].data;
+    instanceValues = data[1].data;
+    academicValues = data[2].data;
+    assignmentValues = data[3].data;
 
     academicValues.forEach((academic)=>{
         academicNames.push(academic.id)

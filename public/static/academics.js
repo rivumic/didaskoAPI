@@ -267,10 +267,19 @@ const populateInstances = (assignType, year, month, year1, year2, year3, academi
 }
 //refreshes comboBox values
 const populateFields = async ()=>{
-    subjectValues = (await axios.get('/didasko/subjects')).data
-    instanceValues = (await axios.get('/didasko/instances/schedule')).data
-    academicValues = (await axios.get('/didasko/academics')).data
-    assignmentValues = (await axios.get('/didasko/assignments')).data
+    try{
+        //sets year fields in new and edit instance forms
+    populateYears()
+    
+    const data = Promise.all([axios.get('/didasko/subjects'),
+    axios.get('/didasko/instances/schedule'),
+    axios.get('/didasko/academics'),
+    axios.get('/didasko/assignments')])
+
+    subjectValues = data[0].data
+    instanceValues = data[1].data
+    academicValues = data[2].data
+    assignmentValues = data[3].data
 
     academicNames = [];
     academicValues.forEach((academic)=>{
@@ -294,8 +303,7 @@ const populateFields = async ()=>{
         assignmentMapByMonth.get(assignment.instanceId.substring(8)).push(assignment)
     })
 
-    //sets year fields in new and edit instance forms
-    populateYears()
+    
     //sets year field in view instance allocation
     yearOptions(byYear.keys())
 
@@ -314,6 +322,10 @@ const populateFields = async ()=>{
     fillAssignments('Main', assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth)
     fillAssignments('Support', assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth)
     fillQuals()
+    }catch(err){
+        console.log(err)
+    }
+    
 }
 
 //display logic for the available academics form
