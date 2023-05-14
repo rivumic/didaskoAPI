@@ -133,7 +133,9 @@ const viewInsAllocation = async ()=>{
     const chosenYear = insAllocYear.value
     var subDevs;
     var load;
-    if(academics.includes(academicValue)){
+    if(academics.some((academic)=>{
+        if(academic.id==academicValue){return true;}
+    })){
         try{
             subDevs = (await axios.get(`/didasko/subDev/${academicValue}`)).data
             load = (await axios.get(`/didasko/academics/load/${academicValue}/${chosenYear}/${chosenMonthIndex+1}`)).data
