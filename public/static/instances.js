@@ -31,7 +31,6 @@ const viewAllocButton = document.querySelector('#viewAllocButton')
 const viewAllocMessage = document.querySelector('#viewAllocMessage')
 //instance info elements
 const insInfoName = document.querySelector('#insInfoName')
-const insInfoButton = document.querySelector('#insInfoButton')
 const insInfoMain = document.querySelector('#insInfoMain')
 const insInfoSupport = document.querySelector('#insInfoSupport')
 const insInfoEnrolments = document.querySelector('#insInfoEnrolments')
@@ -157,7 +156,6 @@ const populateCombos = async ()=>{
 
 //display logic for the View Instance Info form - called from event listener
 const insInfo = ()=>{
-    toggleButton(insInfoButton)
     const input = insInfoName.value;
     var mainListHTML = ``;
     var supportListHTML = ``;
@@ -188,7 +186,6 @@ const insInfo = ()=>{
             }
         });
     }
-    toggleButton(insInfoButton, 'Search')
 }
 //display logic for the view instance allocation form - called from event listener
 const viewInsAllocation = async ()=>{
@@ -407,7 +404,7 @@ const addListeners = () =>{
     editInsButton.addEventListener('click', editInstance)
     deleteButton.addEventListener('click', deleteInstance)
     viewAllocButton.addEventListener('click', viewInsAllocation)
-    insInfoButton.addEventListener('click', insInfo)
+    insInfoName.addEventListener('change', insInfo)
 }
 
 populateCombos()
