@@ -420,6 +420,7 @@ const viewSubDev = async ()=>{
 
 //display logic for the view instance allocation form - called from event listener
 const viewInsAllocation = async ()=>{
+    toggleButton(viewAllocButton)
     var chosenAcademic = viewAllocAcademic.value
     const chosenMonthIndex = monthIndexes.get(viewAllocMonth.value);
     const chosenYear = viewAllocYear.value
@@ -504,6 +505,7 @@ const viewInsAllocation = async ()=>{
     if(load){
         viewAllocLoad.innerHTML=load.result.toFixed(1)
     }
+    toggleButton(viewAllocButton, "Search")
 }
 
 /*Logic for form submission:*/
