@@ -1,6 +1,11 @@
-//schedule elements
+//month references
 const months = [ "January", "February", "March", "April", "May", "June", 
 "July", "August", "September", "October", "November", "December" ];
+var monthIndexes = new Map();
+months.forEach((month, index)=>{
+    monthIndexes.set(month, index);
+})
+//schedule elements
 const scheduleYearPicker = document.querySelector('#scheduleYearPicker')
 const yearPickers = document.querySelectorAll('.yearPicker')
 const radioButtons = document.querySelectorAll('.radio')
@@ -160,6 +165,29 @@ const viewInsAllocation = async ()=>{
             }
         }
         return false;
+    })
+    allocations.sort((a, b)=>{
+        if(a.instanceId.substring(3,4)<b.instanceId.substring(3,4)){
+            return -1;
+        }else{
+            if(a.instanceId.substring(3,4)>b.instanceId.substring(3,4)){
+                return 1;
+            }else{
+                if(a.instanceId.substring(4,6)<b.instanceId.substring(4,6)){
+                    return -1;
+                }else{
+                    if(a.instanceId.substring(4,6)>b.instanceId.substring(4,6)){
+                        return 1;
+                    }else{
+                        if(monthIndexes.get(a.instanceId.substring(13))<monthIndexes.get(b.instanceId.substring(13))){
+                            return -1;
+                        }else{
+                            return 1;
+                        }
+                    }
+                }
+            }
+        }
     })
     allocations.forEach((allocation)=>{
         if(allocation.main){

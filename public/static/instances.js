@@ -1,5 +1,9 @@
 const months = [ "January", "February", "March", "April", "May", "June", 
 "July", "August", "September", "October", "November", "December" ];
+var monthIndexes = new Map();
+months.forEach((month, index)=>{
+    monthIndexes.set(month, index);
+})
 //new Instance elements
 const newInsSub = document.querySelector('#newInsSub')
 const newInsYear = document.querySelector('#newInsYear')
@@ -190,7 +194,7 @@ const insInfo = ()=>{
 const viewInsAllocation = async ()=>{
     toggleButton(viewAllocButton)
     var chosenAcademic = viewAllocAcademic.value
-    const chosenMonthIndex = months.findIndex((element=>{if(element===`${viewAllocMonth.value}`)return true}))
+    const chosenMonthIndex = monthIndexes.get(viewAllocMonth.value)
     const chosenYear = viewAllocYear.value
     var subDevs;
     var load;
@@ -219,6 +223,29 @@ const viewInsAllocation = async ()=>{
             }
         }
         return false;
+    })
+    allocations.sort((a, b)=>{
+        if(a.instanceId.substring(3,4)<b.instanceId.substring(3,4)){
+            return -1;
+        }else{
+            if(a.instanceId.substring(3,4)>b.instanceId.substring(3,4)){
+                return 1;
+            }else{
+                if(a.instanceId.substring(4,6)<b.instanceId.substring(4,6)){
+                    return -1;
+                }else{
+                    if(a.instanceId.substring(4,6)>b.instanceId.substring(4,6)){
+                        return 1;
+                    }else{
+                        if(monthIndexes.get(a.instanceId.substring(13))<monthIndexes.get(b.instanceId.substring(13))){
+                            return -1;
+                        }else{
+                            return 1;
+                        }
+                    }
+                }
+            }
+        }
     })
     allocations.forEach((allocation)=>{
         if(allocation.main){
@@ -254,7 +281,7 @@ const viewInsAllocation = async ()=>{
 }
 const newInstance = async () =>{
     toggleButton(newInsButton)
-    var startMonthIndex = months.findIndex((element)=>{if(element===`${newInsMonth.value}`)return true})
+    var startMonthIndex = monthIndexes.get(newInsMonth.value)
     if(subjectValues.some((subject)=>{if(subject.id==newInsSub.value){return true;}})){
         var instanceId = `${newInsSub.value}_${newInsYear.value}_${newInsMonth.value}`
         if(insRegex.test(instanceId)){
@@ -311,7 +338,7 @@ const editInstance = async () =>{
         }
         
         if(insRegex.test(instanceId)){
-            var newInstanceMonthIndex = months.findIndex((element)=>{if(element===`${editInsNewMonth.value}`)return true})
+            var newInstanceMonthIndex = monthIndexes.get(editInsNewMonth.value);
             var startMonth = indexToISOMonthString(newInstanceMonthIndex)
             var body = {id: instanceId, subId: subId, startDate: `${editInsNewYear.value}-${startMonth}-01`}
 

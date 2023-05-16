@@ -1,6 +1,11 @@
+//month references;
 const months = ["January", "February", "March", 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 const shortMonths = ["Jan", "Feb", "March", "April", "May", "June", 
 "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var monthIndexes = new Map();
+months.forEach((month, index)=>{
+    monthIndexes.set(month, index);
+})
 //assign instance elements
 const assignInstanceMainAcademicId = document.querySelector('#assignInstanceMainAcademicId');
 const assignInstanceMainYear = document.querySelector('#assignInstanceMainYear');
@@ -331,7 +336,7 @@ const populateFields = async ()=>{
 //display logic for the available academics form
 const availableAcademics = async ()=>{
     toggleButton(availableAcademicsButton)
-    var chosenMonth = indexToISOMonthString(months.findIndex((element)=>{if(element===`${availableAcademicsMonth.value}`){return true;}}))
+    var chosenMonth = indexToISOMonthString(monthIndexes.get(availableAcademicsMonth.value))
     if(availableAcademicsQual.value){
         var chosenQual = subjectValues.find((subject)=>{
             if(availableAcademicsQual.value === subject.id){
@@ -416,7 +421,7 @@ const viewSubDev = async ()=>{
 //display logic for the view instance allocation form - called from event listener
 const viewInsAllocation = async ()=>{
     var chosenAcademic = viewAllocAcademic.value
-    const chosenMonthIndex = months.findIndex((element=>{if(element===`${viewAllocMonth.value}`)return true}))
+    const chosenMonthIndex = monthIndexes.get(viewAllocMonth.value);
     const chosenYear = viewAllocYear.value
     var subDevs;
     var load;
@@ -446,6 +451,29 @@ const viewInsAllocation = async ()=>{
             }
         }
         return false;
+    })
+    allocations.sort((a, b)=>{
+        if(a.instanceId.substring(3,4)<b.instanceId.substring(3,4)){
+            return -1;
+        }else{
+            if(a.instanceId.substring(3,4)>b.instanceId.substring(3,4)){
+                return 1;
+            }else{
+                if(a.instanceId.substring(4,6)<b.instanceId.substring(4,6)){
+                    return -1;
+                }else{
+                    if(a.instanceId.substring(4,6)>b.instanceId.substring(4,6)){
+                        return 1;
+                    }else{
+                        if(monthIndexes.get(a.instanceId.substring(13))<monthIndexes.get(b.instanceId.substring(13))){
+                            return -1;
+                        }else{
+                            return 1;
+                        }
+                    }
+                }
+            }
+        }
     })
     allocations.forEach((allocation)=>{
         if(allocation.main){
@@ -582,7 +610,7 @@ const assignInstances = async (button, academicId, yearField, monthField, errorF
         document.querySelectorAll(`input.assignInstance${assignType}Checkbox[type="checkbox"]:checked`).forEach((checkbox)=>{
             selectedInstances.push({instanceId: `${checkbox.id.substring(checkbox.id.length-7)}_${year}_${month}`, academicId: chosenAcademic, main: isMain})
         })
-        var startDate = new Date(`${year}-${indexToISOMonthString(months.findIndex((monthName)=>{if(monthName===`${month}`){return true;}}))}-01`)
+        var startDate = new Date(`${year}-${indexToISOMonthString(monthIndexes.get(month))}-01`)
         const body = {startDate: startDate, isMainUpdate: isMain, assignments: selectedInstances}
         try{
             var response = (await axios.patch(`/didasko/assignments/${chosenAcademic}`, body))
@@ -619,8 +647,8 @@ const addSubDev = async ()=>{
     const chosenAcademic = newSubDevAcademicId.value;
     const chosenSubject = newSubDevSubject.value;
     if(academicNames.includes(chosenAcademic) && subjectValues.some((subject)=>{if(subject.id==chosenSubject) return true;})){
-        var startDate = new Date(`${newSubDevStartYear.value}-${indexToISOMonthString(months.findIndex((month)=>{if(month===`${newSubDevStartMonth.value}`){return true;}}))}-01`)
-        var endDate = new Date(`${newSubDevEndYear.value}-${indexToISOMonthString(months.findIndex((month)=>{if(month===newSubDevEndMonth.value){return true;}}))}-01`)
+        var startDate = new Date(`${newSubDevStartYear.value}-${indexToISOMonthString(monthIndexes.get(newSubDevStartMonth.value))}`)
+        var endDate = new Date(`${newSubDevEndYear.value}-${indexToISOMonthString(monthIndexes.get(newSubDevEndMonth.value))}`)
     
         var body = {startDate: startDate.toISOString(),endDate: endDate.toISOString()}
         if(startDate<=endDate){
