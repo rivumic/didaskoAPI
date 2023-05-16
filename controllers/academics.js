@@ -97,7 +97,7 @@ const getOneLoad = async (req, res) =>{
         where academicId='${req.params.id}' and (startDate between dateadd(month, -2, '${yearMonth}')and '${yearMonth}');`;
         
 
-        const data = Promise.all([await sql.query(instanceAssignCountQuery), await sql.query(instanceInfoByAssignQuery)])
+        const data = await Promise.all([await sql.query(instanceAssignCountQuery), await sql.query(instanceInfoByAssignQuery)])
         var instanceAssignCount = data[0].recordset;
         var instanceInfoByAssign = data[1].recordset;
         
@@ -161,7 +161,7 @@ const getLoad = async(req, res) =>{
         where academicId IN (select academicId from qualifications where subid='${req.params.subId}') 
         and (startDate between dateadd(month, -2, '${yearMonth}') and '${yearMonth}');`;
 
-        const data = Promise.all([await sql.query(instanceAssignCountQuery), await sql.query(instanceInfoByAssignQuery)])
+        const data = await Promise.all([await sql.query(instanceAssignCountQuery), await sql.query(instanceInfoByAssignQuery)])
         const instanceAssignCount = data[0].recordset
         const instanceInfoByAssign = data[1].recordset
 
