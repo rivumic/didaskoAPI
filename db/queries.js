@@ -49,8 +49,10 @@ const getAcademicLoad = async (academicId, yearMonth)=>{
     from assignments join instances on instanceId=id 
     where academicId='${academicId}' and (startDate between dateadd(month, -2, '${yearMonth}')and '${yearMonth}');`;
 
-    instanceAssignCount = (await sql.query(instanceAssignCountQuery)).recordset
-    instanceInfoByAssign = (await sql.query(instanceInfoByAssignQuery)).recordset
+    const data = Promise.all([await sql.query(instanceAssignCountQuery),await sql.query(instanceInfoByAssignQuery)])
+
+    instanceAssignCount = data[0].recordset
+    instanceInfoByAssign = data[1].recordset
 
     if(instanceAssignCount&&instanceInfoByAssign){
         instanceMap = new Map()

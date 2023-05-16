@@ -160,8 +160,10 @@ const getLoad = async(req, res) =>{
         from assignments join instances on instanceId=id 
         where academicId IN (select academicId from qualifications where subid='${req.params.subId}') 
         and (startDate between dateadd(month, -2, '${yearMonth}') and '${yearMonth}');`;
-        const instanceAssignCount = (await sql.query(instanceAssignCountQuery)).recordset
-        const instanceInfoByAssign = (await sql.query(instanceInfoByAssignQuery)).recordset
+
+        const data = Promise.all([await sql.query(instanceAssignCountQuery), await sql.query(instanceInfoByAssignQuery)])
+        const instanceAssignCount = data[0].recordset
+        const instanceInfoByAssign = data[1].recordset
 
         var instanceMap = new Map()
         instanceAssignCount.forEach((row)=>{
