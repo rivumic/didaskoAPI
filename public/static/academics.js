@@ -590,7 +590,11 @@ const deleteAcademic = async ()=>{
                     showMessage(true, false, `There was an error, error code: ${err}`, deleteAcademicMessage)
                 }
             }
+        }else{
+            showMessage(true, false, 'Academic deletion cancelled.', deleteAcademicMessage)    
         }
+    }else{
+        showMessage(true, false, 'Academic not found, please refresh and try again.', deleteAcademicMessage)
     }
     populateFields()
     toggleButton(deleteAcademicButton, 'Delete')

@@ -10,7 +10,8 @@ const createAcademic = async(req, res) =>{
         if(!req.body.id){
             throw new Error('no id supplied')
         }else{
-            var name=req.body.id.trim()
+            var name=req.body.id.trim().replace(/\s+/g, ' ');
+            console.log(name);
             var data= await sql.query(`insert into academics values ('${name}')`)
             if(req.body.quals.length){
             var quals=req.body.quals;

@@ -21,7 +21,7 @@ const conditionalGet = async (table, field, req, res)=>{
 }
 const deleteRow = async (table, field, req, res) =>{
     try{
-        var query = await sql.query(`delete from ${table} where ${field}='${req.params.id}'`)
+        var query = await sql.query(`delete from ${table} where ${field}='${req.params.id.trim().replace('/  +/g', ' ')}'`)
         if(query.rowsAffected[0]===0){
             return res.status(404).json({message:'No record found with that name'})
         }
