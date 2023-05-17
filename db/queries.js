@@ -36,7 +36,9 @@ const getQuals = async (academicId)=>{
     return quals;
 }
 const getAcademicLoad = async (academicId, yearMonth)=>{
-    const subDevCount = (await sql.query(`select * from subDev where academicId = '${academicId}' and ('${yearMonth}' BETWEEN startDate and endDate);`)).recordset
+    return new Promise(async (resolve, reject)=>{
+      try{
+        const subDevCount = (await sql.query(`select * from subDev where academicId = '${academicId}' and ('${yearMonth}' BETWEEN startDate and endDate);`)).recordset
     var load = 0;
     if(subDevCount){
         load = subDevCount.length*3;
@@ -72,6 +74,11 @@ const getAcademicLoad = async (academicId, yearMonth)=>{
         })
     }
 
-    return load;
+    resolve(load);
+      }catch(err){
+        reject(err)
+      } 
+    })
+    
 }
 module.exports = {getAll, conditionalGet, deleteRow, getQuals, getAcademicLoad}

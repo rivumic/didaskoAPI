@@ -19,20 +19,22 @@ const createSubDev = async (req, res) =>{
 
         const result = await sql.query(`insert into subDev values('${req.params.subId}','${req.params.academicId}','${req.body.startDate}','${req.body.endDate}')`)
         var dateCounter = startDate;
-        var overloadMonths = [];
-        var load = [];
-        while(dateCounter<=endDate){
-            var monthLoad = (await queries.getAcademicLoad(req.params.academicId, dateCounter.toISOString()));
-            if(monthLoad>7){
-                console.log(dateCounter.getFullYear(), dateCounter.getMonth(), 'load: ', monthLoad)
-                console.log(dateCounter.toISOString())
-                load.push(monthLoad)
-                overloadMonths.push(dateCounter.toISOString())
-            }
+        var dateStrings = [];
+        while (dateCounter<=endDate){
+            dateStrings.push(dateCounter.toISOString());
             dateCounter.setMonth(dateCounter.getMonth()+1);
         }
+
+        var overloadMonths = [];
+
+        const loads = await Promise.all(dateStrings.map(async (date)=>{
+            const load = await queries.getAcademicLoad(req.params.academicId, date);
+            if(load>7){overloadMonths.push(date)}
+            return load;
+        }))
+
         if(overloadMonths.length>0){
-            return res.status(201).json({result: result, overload: true, overloadMonths: overloadMonths, load: load})
+            return res.status(201).json({result: result, overload: true, overloadMonths: overloadMonths, load: loads})
         }else{
             return res.status(201).json({result: result})
         }

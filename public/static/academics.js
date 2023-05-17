@@ -607,25 +607,39 @@ const assignInstances = async (button, academicId, yearField, monthField, errorF
     const chosenAcademic = academicId.value;
     const year = yearField.value;
     const month = monthField.value;
+
+
     if(academicNames.includes(chosenAcademic)){
         selectedInstances = [];
         document.querySelectorAll(`input.assignInstance${assignType}Checkbox[type="checkbox"]:checked`).forEach((checkbox)=>{
             selectedInstances.push({instanceId: `${checkbox.id.substring(checkbox.id.length-7)}_${year}_${month}`, academicId: chosenAcademic, main: isMain})
         })
+
+
         var startDate = new Date(`${year}-${indexToISOMonthString(monthIndexes.get(month))}-01`)
         const body = {startDate: startDate, isMainUpdate: isMain, assignments: selectedInstances}
+
+
         try{
             var response = (await axios.patch(`/didasko/assignments/${chosenAcademic}`, body))
+
             if(response.status<300 && response.status>199){
                 if(response.data.unqualified){
                     var alertString = `${chosenAcademic} was not qualified to teach all selected instances. The following instances were not assigned:\n`;
+                    
                     response.data.unqualified.forEach((unQual)=>{
                         alertString += `\n${unQual}`;
                     })
                     window.alert(alertString)
                 }
-                if(response.data.load>7){
-                    showMessage(true, false, `Assignment successful.\n${chosenAcademic} is over the max load in ${startDate.getFullYear()} ${months[startDate.getMonth()]}, load: ${response.data.load.toFixed(1)}`, errorField)    
+
+                if(response.data.overloadMonths){
+                    var overloadString = `Assignment successful.\nNote: ${chosenAcademic} is over max load in:\n`;
+                    response.data.overloadMonths.forEach((overload)=>{
+                        overloadMonth = new Date(overload)
+                        overloadString+= `${months[overloadMonth.getMonth()]} ${overloadMonth.getFullYear()}\n`
+                    })
+                    showMessage(true, false, overloadString, errorField)    
                 }else{
                 showMessage(false, true, 'Assignment successful.', errorField)
                 }

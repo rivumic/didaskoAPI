@@ -35,7 +35,6 @@ const updateAssignments = async(req, res) =>{
         var insert = '';
         //builds query to enter all desired assignments
         if(assignments.length>0){
-            console.log(assignments)
             assignments.forEach((assignment)=>{
                 if(qualsMap.has(assignment.instanceId.substring(0,7))){
                     if(assignment.main){
@@ -54,15 +53,40 @@ const updateAssignments = async(req, res) =>{
         //if string has been built/array not empty, query is run
         if (insert.length>0){var insertData = await sql.query(insert)}
         
-        var load = await queries.getAcademicLoad(req.params.id, req.body.startDate);
+        const startDate = new Date(req.body.startDate)
+        const endDate = new Date(startDate)
+        endDate.setMonth(endDate.getMonth()+2);
+
+        var dateCounter = startDate;
+        var dateStrings = [];
+        while (dateCounter<=endDate){
+            dateStrings.push(dateCounter.toISOString())
+            dateCounter.setMonth(dateCounter.getMonth()+1);
+        }
+        console.log(dateStrings)
+
+        var overloadMonths = [];
+
+        const loads = await Promise.all(dateStrings.map(async (date)=>{
+            const load = await queries.getAcademicLoad(req.params.id, date);
+            if(load>7){overloadMonths.push(date)}
+            return load;
+        }))
+        console.log('loads: ',loads,'overloadmonths: ', overloadMonths)
+        overloadMonths.sort();
+
         const results = [{deleteData},{insertData}]
 
+        var response = {results: results}
+
         if(unQualAssignments.length>0){
-            console.log(unQualAssignments)
-            res.status(200).json({results: results, unqualified: unQualAssignments, load: load})
-        }else{
-            res.status(200).json({results: results, load: load})
+            response.unqualified = unQualAssignments;
         }
+        if(overloadMonths.length>0){
+            response.overloadMonths = overloadMonths;
+            response.load = loads;
+        }
+        return res.status(200).json(response)
         
     }catch(err){
         if(err.message.substring(0, 35)=='Violation of PRIMARY KEY constraint'){

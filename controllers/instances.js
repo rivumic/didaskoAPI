@@ -37,7 +37,6 @@ const newInstance = async(req, res) =>{
             var enrolments = 0
         }else{
             var enrolments = parseInt(req.body.enrolments, 10)
-            console.log(enrolments)
         }
         if(subRegex.test(req.body.subId) && insRegex.test(req.body.id)){
             if(req.body.subId === req.body.id.substring(0, 7)){
@@ -59,7 +58,6 @@ const newInstance = async(req, res) =>{
             return res.status(400).json({message: "subject id and instance id do not match the required format"})
         }
     }catch(err){
-        console.log(err)
         if(err.message.substring(0, 35)=='Violation of PRIMARY KEY constraint'){
             return res.status(400).json({message: err.message})
         } 
