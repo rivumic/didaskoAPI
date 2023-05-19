@@ -3,7 +3,7 @@ const passport = require('passport')
 const auth = require('../auth/authMiddleware')
 const router = express.Router();
 
-//controllers
+//import controllers
 const {getLogin, logout, showSchedule, manageSubjects, manageAcademics, manageInstances, loginFailure, error401, error403
 } = require('../controllers/pages')
 

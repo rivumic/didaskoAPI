@@ -1,13 +1,17 @@
+//see documentation for expected request structure
 const sql = require('mssql')
 const queries = require('../db/queries')
 
+//retrieves all academic-instance assignments
 const getAllAssignments = async (req, res) => {
     queries.getAll('assignments', req, res)
 }
+//retrieves assignments for a given academic
 const getSomeAssignments = async (req, res) =>{
     queries.conditionalGet('assignments', 'academicId', req, res)
 }
 
+//updates assignments for a given academic
 const updateAssignments = async(req, res) =>{
     try{
         //load in qualifications
@@ -33,7 +37,7 @@ const updateAssignments = async(req, res) =>{
         const assignments = req.body.assignments
         var unQualAssignments = [];
         var insert = '';
-        //builds query to enter all desired assignments
+        //builds query to enter all desired assignments and checks whether the academic is qualified for all stipulated subjects
         if(assignments.length>0){
             assignments.forEach((assignment)=>{
                 if(qualsMap.has(assignment.instanceId.substring(0,7))){
@@ -49,7 +53,6 @@ const updateAssignments = async(req, res) =>{
             })
         }
         
-        
         //if string has been built/array not empty, query is run
         if (insert.length>0){var insertData = await sql.query(insert)}
         
@@ -57,6 +60,7 @@ const updateAssignments = async(req, res) =>{
         const endDate = new Date(startDate)
         endDate.setMonth(endDate.getMonth()+2);
 
+        //load validation
         var dateCounter = startDate;
         var dateStrings = [];
         while (dateCounter<=endDate){
@@ -79,6 +83,7 @@ const updateAssignments = async(req, res) =>{
 
         var response = {results: results}
 
+        //if unqualified for any instances or over load in relevant months, returns relevant data
         if(unQualAssignments.length>0){
             response.unqualified = unQualAssignments;
         }

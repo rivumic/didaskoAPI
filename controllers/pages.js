@@ -1,3 +1,5 @@
+//sends html pages
+
 const path = require('node:path')
 const getLogin = (req, res)=>{
     try{
@@ -7,6 +9,7 @@ const getLogin = (req, res)=>{
     }
 }
 const logout = (req, res, next)=>{
+    //passport supplied logout function
     req.logout((err)=>{
         if(err){
             console.log(err)

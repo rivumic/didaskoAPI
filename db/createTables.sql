@@ -1,3 +1,4 @@
+-- expected schema for table creation
 create table academics(
     id varchar(60),
     constraint PK_id primary key (id));

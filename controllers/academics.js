@@ -1,9 +1,12 @@
+//see documentation for expected request structure
 const sql = require('mssql')
 const queries = require('../db/queries')
 
+//retrieves all academic info
 const getAllAcademics = async(req, res) =>{
     queries.getAll('academics', req, res)
 }
+//creates an academic
 const createAcademic = async(req, res) =>{
     try{
         
@@ -30,6 +33,7 @@ const createAcademic = async(req, res) =>{
         return res.status(500).json({message: err.message})
     }
 }
+//updates academic id and qualifications
 const updateAcademic = async(req, res) =>{
     try{
         var results= [];
@@ -73,54 +77,17 @@ const updateAcademic = async(req, res) =>{
         return res.status(500).json({message: err.message})
     }
 }
+//deletes an academic
 const deleteAcademic = async(req, res) =>{
     queries.deleteRow('academics', 'id', req, res)    
 }
+
+//retrieves academic load for given year month
 const getOneLoad = async (req, res) =>{
     try{
         const yearMonth = `${req.params.year}-${req.params.month}-01`
-        //subDev
-        const subDevCountQuery = `select * from subDev where academicId = '${req.params.id}' and ('${yearMonth}' BETWEEN startDate and endDate);`
-        const subDevCount = (await sql.query(subDevCountQuery)).recordset
-        var load = 0;
-        if(subDevCount){
-            subDevCount.forEach(()=>{
-                load+=3
-            }) 
-        }
-        //instance Load
-        const instanceAssignCountQuery = `select instanceId, count(assignments.instanceId) as assignedAcademics 
-        from assignments where instanceid IN(select id from instances 
-        where (startDate between dateadd(month, -2, '${yearMonth}') and '${yearMonth}') 
-        and id IN(select instanceId from assignments where academicId ='${req.params.id}')) group by instanceId;`
-        const instanceInfoByAssignQuery = `select id, academicId, main, enrolments, startDate
-        from assignments join instances on instanceId=id 
-        where academicId='${req.params.id}' and (startDate between dateadd(month, -2, '${yearMonth}')and '${yearMonth}');`;
-        
+        const load = await queries.getAcademicLoad(req.params.id, yearMonth);
 
-        const data = await Promise.all([await sql.query(instanceAssignCountQuery), await sql.query(instanceInfoByAssignQuery)])
-        var instanceAssignCount = data[0].recordset;
-        var instanceInfoByAssign = data[1].recordset;
-        
-        if(instanceAssignCount&&instanceInfoByAssign){
-            instanceMap = new Map()
-            instanceAssignCount.forEach((row)=>{
-                instanceMap.set(row.instanceId, row.assignedAcademics);
-            })
-    
-            instanceInfoByAssign.forEach((row)=>{
-                var instanceLoad = (1+((parseInt(row.enrolments/20))*.2))/instanceMap.get(row.id);
-                if (row.main<1){
-                    if(instanceLoad<1){
-                    instanceLoad=1
-                    }
-                }else{
-                    if(instanceLoad<.2){instanceLoad=.3}
-                }
-            load+=instanceLoad;
-            })
-        }
-        
         var result = {result: load}
         return res.status(200).json(result)
         
@@ -129,9 +96,11 @@ const getOneLoad = async (req, res) =>{
         res.status(500).json({message: err.message})
     }
 }
+//retrieves qualifications for a given academic
 const getQuals = async(req, res) =>{
     queries.conditionalGet('qualifications', 'academicId', req, res)
 }
+//retrieves load for academics of a given qualification in a given month
 const getLoad = async(req, res) =>{
     try{
         const yearMonth = `${req.params.year}-${req.params.month}-01`;

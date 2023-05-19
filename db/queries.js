@@ -1,4 +1,6 @@
+//helper functions to simplify controller code
 const sql = require('mssql')
+//gets all records from a supplied table
 const getAll = async (table, req, res) =>{
     try{
         var query = `select * from ${table}`;
@@ -9,6 +11,7 @@ const getAll = async (table, req, res) =>{
         res.status(500).json({message: err.message})
     }
 }
+//gets all records from a table contingent on a single field/value pair
 const conditionalGet = async (table, field, req, res)=>{
     try{
         var query = `select * from ${table} where ${field}='${req.params.id}'`
@@ -19,6 +22,7 @@ const conditionalGet = async (table, field, req, res)=>{
         res.status(500).json({message: err.message})
     }
 }
+//deletes row/s from a table filtered by a field/value pair
 const deleteRow = async (table, field, req, res) =>{
     try{
         var query = await sql.query(`delete from ${table} where ${field}='${req.params.id.trim().replace('/  +/g', ' ')}'`)
@@ -31,10 +35,14 @@ const deleteRow = async (table, field, req, res) =>{
         return res.status(500).json({message: err.message})
     }
 }
+
+//for internal validation:
+//gets all qualifications for a given academic
 const getQuals = async (academicId)=>{
     quals = (await sql.query(`select * from qualifications where academicId='${academicId}'`)).recordset;
     return quals;
 }
+//gets load for an academic in a given yearMonth
 const getAcademicLoad = async (academicId, yearMonth)=>{
     return new Promise(async (resolve, reject)=>{
       try{

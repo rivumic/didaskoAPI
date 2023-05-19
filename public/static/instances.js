@@ -1,3 +1,4 @@
+//month references
 const months = [ "January", "February", "March", "April", "May", "June", 
 "July", "August", "September", "October", "November", "December" ];
 var monthIndexes = new Map();
@@ -39,9 +40,12 @@ const deleteIns = document.querySelector('#deleteIns')
 const deleteButton = document.querySelector('#deleteButton')
 const deleteMessage = document.querySelector('#deleteMessage')
 
+//subject and instance name validation regex
 const subRegex = new RegExp("CSE[123][A-Z][A-Z]X")
 const insRegex = new RegExp("CSE[123][A-Z][A-Z]X_20[0-9][0-9]_(January|February|March|April|May|June|July|August|September|October|November|December)")
 
+
+//store information pulled from db
 var subjectValues;
 var instanceValues;
 var byYear = new Map();
@@ -112,7 +116,7 @@ const populateYears = ()=>{
         editInsNewYear.innerHTML += `<option>${date.getFullYear()+i}</option>`;
     }
 }
-//refreshes comboBox values
+//refreshes with updated data values
 const populateCombos = async ()=>{
 
     const data = await Promise.all([axios.get('/didasko/subjects'),
@@ -138,7 +142,6 @@ const populateCombos = async ()=>{
     populateYears()
     //sets year field in view instance allocation
     yearOptions(byYear.keys())
-
 
     if(document.querySelector('#subjectList')){
         document.querySelector('#subjectList').remove()
@@ -197,8 +200,10 @@ const viewInsAllocation = async ()=>{
     var load;
     if(academicNames.includes(chosenAcademic)){
         try{
-            subDevs = (await axios.get(`/didasko/subDev/${chosenAcademic}`)).data
-            load = (await axios.get(`/didasko/academics/load/${chosenAcademic}/${chosenYear}/${chosenMonthIndex+1}`)).data
+            var data = Promise.all([await axios.get(`/didasko/subDev/${chosenAcademic}`),
+             await axios.get(`/didasko/academics/load/${chosenAcademic}/${chosenYear}/${chosenMonthIndex+1}`)])
+            subDevs = data[0].data;
+            load = data[1].data;
         }catch(err){
             showMessage(true, false, `There was an error, error code ${err}`, viewAllocMessage)
         }
@@ -211,8 +216,7 @@ const viewInsAllocation = async ()=>{
         yearMonths.set(`_${chosenYear}_${months[i]}`, i)
     }
     
-    var viewAllocMainHTML = ``;
-    var viewAllocSuppHTML = ``;
+    
     const allocations = assignmentValues.filter((assignment)=>{
         if(assignment.academicId===chosenAcademic){
             if (yearMonths.has(assignment.instanceId.substring(7))){
@@ -221,6 +225,8 @@ const viewInsAllocation = async ()=>{
         }
         return false;
     })
+
+    //sorts instance allocations by year, subject, month
     allocations.sort((a, b)=>{
         if(a.instanceId.substring(3,4)<b.instanceId.substring(3,4)){
             return -1;
@@ -244,6 +250,10 @@ const viewInsAllocation = async ()=>{
             }
         }
     })
+
+    var viewAllocMainHTML = ``;
+    var viewAllocSuppHTML = ``;
+
     allocations.forEach((allocation)=>{
         if(allocation.main){
             viewAllocMainHTML += `<li>${allocation.instanceId}</li>`;
@@ -276,6 +286,7 @@ const viewInsAllocation = async ()=>{
     }
     toggleButton(viewAllocButton, 'Search')
 }
+//new instance form submission
 const newInstance = async () =>{
     toggleButton(newInsButton)
     var startMonthIndex = monthIndexes.get(newInsMonth.value)
@@ -315,6 +326,7 @@ const newInstance = async () =>{
     populateCombos()
     toggleButton(newInsButton, 'Add')
 }
+//edit instance form submission
 const editInstance = async () =>{
     toggleButton(editInsButton)
     var chosenInstance = instanceValues.find((instance)=>{
@@ -374,6 +386,7 @@ const editInstance = async () =>{
     populateCombos()
     toggleButton(editInsButton, 'Save')
 }
+//delete instance form submission
 const deleteInstance = async () =>{
     toggleButton(deleteButton)
     var chosenInstance = instanceValues.find((instance)=>{
@@ -401,9 +414,13 @@ const deleteInstance = async () =>{
 const addListeners = () =>{
     //instanceInfo listener
     newInsButton.addEventListener('click', newInstance)
+    //edit instance
     editInsButton.addEventListener('click', editInstance)
+    //delete instance
     deleteButton.addEventListener('click', deleteInstance)
+    //view allocation search
     viewAllocButton.addEventListener('click', viewInsAllocation)
+    //instance info search
     insInfoName.addEventListener('change', insInfo)
 }
 

@@ -1,3 +1,6 @@
+//middleware functions that check for various levels of user privilege
+
+//checks if authenticated at all (base level)
 const isAuth = (req, res, next) => {
     if (req.isAuthenticated()) {
         next();

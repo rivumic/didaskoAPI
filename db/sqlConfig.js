@@ -1,4 +1,5 @@
 require('dotenv').config()
+//sql server connection config
 const sqlConfig = {
     user: process.env.user,
     password: process.env.password,
@@ -10,7 +11,7 @@ const sqlConfig = {
       idleTimeoutMillis: 30000
     },
     options: {
-      encrypt: false, // for azure
+      encrypt: false, // set to true for azure
       trustServerCertificate: false // change to true for local dev / self-signed certs
     }
   }

@@ -17,8 +17,10 @@ const instances = require('./routes/instances')
 const academics = require('./routes/academics')
 const assignments = require('./routes/assignments')
 const subDev = require('./routes/subDev')
-//
+
+//main logic
 const app = express()
+
 //session middleware
 app.use(session({
     secret: 'supersecret',
@@ -34,10 +36,11 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-//passport middleware
+//authentication middleware
 require('./auth/passport.js')
 app.use(passport.initialize());
 app.use(passport.session());
+
 //routes
 app.use(express.static('./public/static'));
 app.use('/', pages)
@@ -47,7 +50,7 @@ app.use('/didasko/academics', academics)
 app.use('/didasko/assignments', assignments)
 app.use('/didasko/subDev', subDev)
 
-//start
+//start server
 const port = process.env.PORT || 5000;
 
 const start = async()=>{

@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router();
 const auth = require('../auth/authMiddleware')
-//controllers
+
+//import controllers
 const {getAllSubDev, getSomeSubDev, createSubDev, deleteSubDev} = require('../controllers/subDev')
+
 //routes
 router.route('/').get(auth.isAuth, getAllSubDev).patch(auth.isManager, deleteSubDev)
 router.route('/:id').get(auth.isAuth, getSomeSubDev)

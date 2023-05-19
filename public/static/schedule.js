@@ -93,26 +93,8 @@ const setCombo = (data, listName)=>{
         comboList.appendChild(option);
     })
 }
-// const setCombo = async (url, listId, list)=>{
-//     if (list){
-//         var comboValues=list;
-//     }else{
-//         try{
-//             var comboValues = ((await axios.get(url)).data)
-//         }catch(err){
-//             console.log(err)
-//         }
-//     }
-//     var comboList = document.createElement('datalist');
-//     comboList.id = `${listId}`;
-//     comboValues.forEach((comboValue) =>{
-//     var option = document.createElement('option');
-//     option.innerHTML = comboValue.id;
-//     comboList.appendChild(option);
-//     })
-//     document.body.appendChild(comboList);
-// }
-//sets the schedule to the currently chosen settings, called via eventListener
+
+//sets the view of the schedule based on user-selected year and subject level
 const setScheduleView = ()=>{
     const selectedYear = scheduleYearPicker.value
     var selectedLevel = document.querySelector('input[name="Level"]:checked').value;
@@ -142,8 +124,10 @@ const viewInsAllocation = async ()=>{
         if(academic.id==academicValue){return true;}
     })){
         try{
-            subDevs = (await axios.get(`/didasko/subDev/${academicValue}`)).data
-            load = (await axios.get(`/didasko/academics/load/${academicValue}/${chosenYear}/${chosenMonthIndex+1}`)).data
+            var data = Promise.all([await axios.get(`/didasko/subDev/${chosenAcademic}`),
+             await axios.get(`/didasko/academics/load/${chosenAcademic}/${chosenYear}/${chosenMonthIndex+1}`)])
+            subDevs = data[0].data;
+            load = data[1].data;
         }catch(err){
             showMessage(true, false, `There was an error, error code ${err}`, viewAllocMessage)
         }
@@ -156,8 +140,6 @@ const viewInsAllocation = async ()=>{
         yearMonths.set(`_${chosenYear}_${months[i]}`, i)
     }
     
-    var mainAllocationsHTML = ``;
-    var supportAllocationsHTML = ``;
     const allocations = assignments.filter((assignment)=>{
         if(assignment.academicId===academicValue){
             if (yearMonths.has(assignment.instanceId.substring(7))){
@@ -166,6 +148,7 @@ const viewInsAllocation = async ()=>{
         }
         return false;
     })
+    //sorts instance allocations by year, subject, month
     allocations.sort((a, b)=>{
         if(a.instanceId.substring(3,4)<b.instanceId.substring(3,4)){
             return -1;
@@ -189,6 +172,10 @@ const viewInsAllocation = async ()=>{
             }
         }
     })
+    
+    var mainAllocationsHTML = ``;
+    var supportAllocationsHTML = ``;
+
     allocations.forEach((allocation)=>{
         if(allocation.main){
             mainAllocationsHTML += `<li>${allocation.instanceId}</li>`;
@@ -258,17 +245,24 @@ const viewInsInfo = ()=>{
         });
 }
 const addListeners = ()=>{
+    //year field of schedule
     scheduleYearPicker.addEventListener('change', setScheduleView)
+
+    //assigns event listeners for schedule level selection
     for (var i = 0;i<radioButtons.length;i++){
         radioButtons[i].addEventListener('change', setScheduleView)
     }
+
+    //check instance allocation search
     instAllButton.addEventListener('click', viewInsAllocation)
+    //check instance info search
     insInfo.addEventListener('change', viewInsInfo)
 }
+
+//loads data and calls setScheduleView() on page load
+//also loads data for other form controls in order to parallelise db calls and calls setCombo()
 const loadSchedule = async ()=>{
-    try{
-        // academics = await axios.get('/didasko/academics').data;
-        
+    try{        
         const data = await Promise.all([
             axios.get('/didasko/academics'),
             axios.get('/didasko/instances/schedule'),

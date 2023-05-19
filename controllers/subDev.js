@@ -1,12 +1,18 @@
+//see documentation for expected request structure
+
 const sql = require('mssql')
 const queries = require('../db/queries')
 
+//retrieves all subject development workload workloads
 const getAllSubDev = async (req, res) =>{
     queries.getAll('subDev', req, res)
 }
+//retrieves subject development workload workloads for a given academic
 const getSomeSubDev = async (req, res)=>{
     queries.conditionalGet('subDev', 'academicId', req, res)
 }
+
+//creates a new subject development workload
 const createSubDev = async (req, res) =>{
     try{
         if(!req.body.startDate || !req.body.endDate){
@@ -18,6 +24,8 @@ const createSubDev = async (req, res) =>{
         if(startDate>endDate){throw new Error('The start date cannot be before the end date')}
 
         const result = await sql.query(`insert into subDev values('${req.params.subId}','${req.params.academicId}','${req.body.startDate}','${req.body.endDate}')`)
+        
+        //academic load validation
         var dateCounter = startDate;
         var dateStrings = [];
         while (dateCounter<=endDate){
@@ -33,6 +41,7 @@ const createSubDev = async (req, res) =>{
             return load;
         }))
 
+        //if over max load in any month return relevant data
         if(overloadMonths.length>0){
             return res.status(201).json({result: result, overload: true, overloadMonths: overloadMonths, load: loads})
         }else{
@@ -47,6 +56,7 @@ const createSubDev = async (req, res) =>{
         return res.status(500).json({message: err.message})
     }
 }
+//deletes a subject development workload
 const deleteSubDev = async (req, res) =>{
     try{
         var deleteQuery = '';

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const auth = require('../auth/authMiddleware')
-//controllers
+//import controllers
 const {getAllInstances,
     getInstancesSchedule,
     getSomeInstances,
@@ -9,6 +9,7 @@ const {getAllInstances,
     updateInstance,
     deleteInstance
 } = require('../controllers/instances')
+
 //routes
 router.route('/').get(auth.isAuth, getAllInstances).post(auth.isManager, newInstance)
 router.route('/schedule').get(auth.isAuth, getInstancesSchedule)

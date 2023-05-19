@@ -1,11 +1,17 @@
+//see documentation for expected request structure
+
 const sql = require('mssql')
 const queries = require('../db/queries')
+
+//subject id validation regex
 const subRegex = new RegExp("CSE[123][A-Z][A-Z]X")
 
+//retrieves all subjects
 const getAllSubjects = async (req, res) => {
     queries.getAll('subjects', req ,res)
     
 }
+// creates a new subject
 const newSubject = async (req, res) => {
     try{
         if(!req.body.id || !req.body.yearLevel){
@@ -29,6 +35,7 @@ const newSubject = async (req, res) => {
         return res.status(500).json({message: err.message})
     }
 }
+//updates a subject
 const updateSubject = async (req, res) => {
     try{
         if(!req.body.yearLevel || !req.body.id){
@@ -56,6 +63,7 @@ const updateSubject = async (req, res) => {
         return res.status(500).json({message: err.message})
     }
 }
+//deletes a subject
 const deleteSubject = async (req, res) =>{
     queries.deleteRow('subjects', 'id', req, res)
 }

@@ -270,63 +270,65 @@ const populateInstances = (assignType, year, month, year1, year2, year3, academi
         fillAssignments(assignType, academicId, year, month)
     }
 }
-//refreshes comboBox values
+//refreshes comboBox, instance and qualification field values
 const populateFields = async ()=>{
     try{
         //sets year fields in new and edit instance forms
-    populateYears()
-    
-    const data = await Promise.all([axios.get('/didasko/subjects'),
-    axios.get('/didasko/instances/schedule'),
-    axios.get('/didasko/academics'),
-    axios.get('/didasko/assignments')])
+        populateYears()
+        
+        const data = await Promise.all([axios.get('/didasko/subjects'),
+        axios.get('/didasko/instances/schedule'),
+        axios.get('/didasko/academics'),
+        axios.get('/didasko/assignments')])
 
-    subjectValues = data[0].data
-    instanceValues = data[1].data
-    academicValues = data[2].data
-    assignmentValues = data[3].data
+        subjectValues = data[0].data
+        instanceValues = data[1].data
+        academicValues = data[2].data
+        assignmentValues = data[3].data
 
-    academicNames = [];
-    academicValues.forEach((academic)=>{
-        academicNames.push(academic.id)
-    })
+        academicNames = [];
+        academicValues.forEach((academic)=>{
+            academicNames.push(academic.id)
+        })
 
-    //sort instances into a map of arrays organising instances by start year
-    byYear = new Map();
-    for (var o = 0;o<instanceValues.length;o++){
-        if(!byYear.has(instanceValues[o].year)){
-            byYear.set(instanceValues[o].year, new Map())
+        //sort instances into a map of arrays grouped by start year
+        byYear = new Map();
+        for (var o = 0;o<instanceValues.length;o++){
+            if(!byYear.has(instanceValues[o].year)){
+                byYear.set(instanceValues[o].year, new Map())
+            }
+            byYear.get(instanceValues[o].year).set(instanceValues[o].id, instanceValues[o])
         }
-        byYear.get(instanceValues[o].year).set(instanceValues[o].id, instanceValues[o])
-    }
-    //sorts assignments into arrays by month, accessible by a key YYYY_monthName via a Map()
-    assignmentMapByMonth = new Map();
-    assignmentValues.forEach((assignment)=>{
-        if(!assignmentMapByMonth.has(assignment.instanceId.substring(8))){
-            assignmentMapByMonth.set(assignment.instanceId.substring(8), [])
-        }
-        assignmentMapByMonth.get(assignment.instanceId.substring(8)).push(assignment)
-    })
+        //sorts assignments into arrays by month, array key = YYYY_monthName
+        assignmentMapByMonth = new Map();
+        assignmentValues.forEach((assignment)=>{
+            if(!assignmentMapByMonth.has(assignment.instanceId.substring(8))){
+                assignmentMapByMonth.set(assignment.instanceId.substring(8), [])
+            }
+            assignmentMapByMonth.get(assignment.instanceId.substring(8)).push(assignment)
+        })
 
-    
-    //sets year field in view instance allocation
-    yearOptions(byYear.keys())
+        
+        //sets year field in view instance allocation
+        yearOptions(byYear.keys())
 
-    //set prefill options for combo boxes
-    setCombo(subjectValues, 'subjectList')
-    setCombo(instanceValues, 'instanceList')
-    setCombo(academicValues, 'academicList')
+        //set prefill options for combo boxes
+        setCombo(subjectValues, 'subjectList')
+        setCombo(instanceValues, 'instanceList')
+        setCombo(academicValues, 'academicList')
 
-    //populates subject selection for qualification in the new and edit academic forms
-    populateQuals('new')
-    populateQuals('edit')
-    //populates instance options for assign instance form
-    populateInstances('Main', assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainYear1, assignInstanceMainYear2, assignInstanceMainYear3, assignInstanceMainAcademicId)
-    populateInstances('Support', assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportYear1, assignInstanceSupportYear2, assignInstanceSupportYear3, assignInstanceMainAcademicId)
+        //populates subject selection for qualification in the new and edit academic forms
+        populateQuals('new')
+        populateQuals('edit')
 
-    fillAssignments('Main', assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth)
-    fillAssignments('Support', assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth)
-    fillQuals()
+        //populates instance options for assign instance form
+        populateInstances('Main', assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainYear1, assignInstanceMainYear2, assignInstanceMainYear3, assignInstanceMainAcademicId)
+        populateInstances('Support', assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportYear1, assignInstanceSupportYear2, assignInstanceSupportYear3, assignInstanceMainAcademicId)
+
+        //pre-selects currently assigned instances/qualifications
+        fillAssignments('Main', assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth)
+        fillAssignments('Support', assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth)
+        fillQuals()
     }catch(err){
         console.log(err)
     }
@@ -428,8 +430,10 @@ const viewInsAllocation = async ()=>{
     var load;
     if(academicNames.includes(chosenAcademic)){
         try{
-            subDevs = (await axios.get(`/didasko/subDev/${chosenAcademic}`)).data
-            load = (await axios.get(`/didasko/academics/load/${chosenAcademic}/${chosenYear}/${chosenMonthIndex+1}`)).data
+            var data = Promise.all([await axios.get(`/didasko/subDev/${chosenAcademic}`),
+             await axios.get(`/didasko/academics/load/${chosenAcademic}/${chosenYear}/${chosenMonthIndex+1}`)])
+            subDevs = data[0].data;
+            load = data[1].data;
         }catch(err){
             showMessage(true, false, `There was an error, error code ${err}`, viewAllocMessage)
         }
@@ -442,17 +446,15 @@ const viewInsAllocation = async ()=>{
         yearMonths.set(`_${chosenYear}_${months[i]}`, i)
     }
     
-    var viewAllocMainHTML = ``;
-    var viewAllocSuppHTML = ``;
     const allocations = assignmentValues.filter((assignment)=>{
         if(assignment.academicId===chosenAcademic){
             if (yearMonths.has(assignment.instanceId.substring(7))){
-                // console.log(assignment.instanceId.substring(7))
                 return true;
             }
         }
         return false;
     })
+    //sorts instance allocations by year, subject, month
     allocations.sort((a, b)=>{
         if(a.instanceId.substring(3,4)<b.instanceId.substring(3,4)){
             return -1;
@@ -476,6 +478,10 @@ const viewInsAllocation = async ()=>{
             }
         }
     })
+
+    var viewAllocMainHTML = ``;
+    var viewAllocSuppHTML = ``;
+
     allocations.forEach((allocation)=>{
         if(allocation.main){
             viewAllocMainHTML += `<li>${allocation.instanceId}</li>`;
@@ -509,7 +515,7 @@ const viewInsAllocation = async ()=>{
 }
 
 /*Logic for form submission:*/
-//add new academic
+//add new academic form submission
 const addAcademic = async ()=>{
     toggleButton(newAcademicButton)
     const chosenAcademic = newAcademicId.value;
@@ -534,6 +540,8 @@ const addAcademic = async ()=>{
     populateFields()
     toggleButton(newAcademicButton, 'Add')
 }
+
+//edit academic form submission
 const editAcademic = async ()=>{
     toggleButton(editAcademicButton)
     const chosenAcademic = editOldAcademicId.value;
@@ -572,6 +580,7 @@ const editAcademic = async ()=>{
     populateFields()
     toggleButton(editAcademicButton, 'Save')
 }
+//delete academic form submission
 const deleteAcademic = async ()=>{
     toggleButton(deleteAcademicButton, 'Delete')
     const chosenAcademic = deleteAcademicId.value;
@@ -599,7 +608,7 @@ const deleteAcademic = async ()=>{
     populateFields()
     toggleButton(deleteAcademicButton, 'Delete')
 }
-//assign support instance allocations
+//assign instance allocations (both main and support forms)
 const assignInstances = async (button, academicId, yearField, monthField, errorField, assignType)=>{
     toggleButton(button)
     var isMain;
@@ -661,7 +670,7 @@ const assignInstances = async (button, academicId, yearField, monthField, errorF
     populateFields();
     toggleButton(button, 'Save');
 }
-//adds subject development workload
+//add subject development workload
 const addSubDev = async ()=>{
     toggleButton(newSubDevButton, 'Add')
     const chosenAcademic = newSubDevAcademicId.value;
@@ -705,7 +714,7 @@ const addSubDev = async ()=>{
     populateFields();
     toggleButton(newSubDevButton, 'Add')
 }
-//send delete request for subject development workloads
+//delete subject development workloads
 const deleteSubDev = async ()=>{
     toggleButton(subDevSubmitButton, 'Delete Selection')
     const chosenAcademic = subDevAcademicId.value;
@@ -761,15 +770,17 @@ const addListeners = () =>{
     newSubDevButton.addEventListener('click', addSubDev)
     //delete sub Dev form
     subDevSubmitButton.addEventListener('click', deleteSubDev)
-    //assign main role
+    //assign main role dynamic form control update triggers
     assignInstanceMainAcademicId.addEventListener('input', ()=>{fillAssignments('Main', assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth)})
     assignInstanceMainMonth.addEventListener('change', ()=>{populateInstances('Main', assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainYear1, assignInstanceMainYear2, assignInstanceMainYear3, assignInstanceMainAcademicId)})
     assignInstanceMainYear.addEventListener('change', ()=>{populateInstances('Main', assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainYear1, assignInstanceMainYear2, assignInstanceMainYear3, assignInstanceMainAcademicId)})
+    //asign main role form submission
     assignInstanceMainButton.addEventListener('click', ()=>{assignInstances(assignInstanceMainButton, assignInstanceMainAcademicId, assignInstanceMainYear, assignInstanceMainMonth, assignInstanceMainMessage, 'Main')})
-    //assign support role
+    //assign support role dynamic form control update triggers
     assignInstanceSupportAcademicId.addEventListener('input', ()=>{fillAssignments('Support', assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth)})
     assignInstanceSupportMonth.addEventListener('change', ()=>{populateInstances('Support', assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportYear1, assignInstanceSupportYear2, assignInstanceSupportYear3, assignInstanceSupportAcademicId)})
     assignInstanceSupportYear.addEventListener('change', ()=>{populateInstances('Support', assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportYear1, assignInstanceSupportYear2, assignInstanceSupportYear3, assignInstanceSupportAcademicId)})
+    //assign support role submission
     assignInstanceSupportButton.addEventListener('click', ()=>{assignInstances(assignInstanceSupportButton, assignInstanceSupportAcademicId, assignInstanceSupportYear, assignInstanceSupportMonth, assignInstanceSupportMessage, 'Support')})
 }
 
