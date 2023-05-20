@@ -67,7 +67,6 @@ const updateAssignments = async(req, res) =>{
             dateStrings.push(dateCounter.toISOString())
             dateCounter.setMonth(dateCounter.getMonth()+1);
         }
-        console.log(dateStrings)
 
         var overloadMonths = [];
 
@@ -76,7 +75,6 @@ const updateAssignments = async(req, res) =>{
             if(load>7){overloadMonths.push(date)}
             return load;
         }))
-        console.log('loads: ',loads,'overloadmonths: ', overloadMonths)
         overloadMonths.sort();
 
         const results = [{deleteData},{insertData}]

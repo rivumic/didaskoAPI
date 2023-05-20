@@ -685,7 +685,6 @@ const addSubDev = async ()=>{
                 var response = (await axios.post(`/didasko/subDev/${chosenAcademic}/${chosenSubject}`, body))
                 if(response.status<300 && response.status>199){
                     if(response.data.overload){
-                        console.log('')
                         var overloadString = `Subject development added successfully.\nNote: ${chosenAcademic} is over max load in:\n`;
                         response.data.overloadMonths.forEach((overload)=>{
                             overloadMonth = new Date(overload)

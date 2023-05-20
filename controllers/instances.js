@@ -80,7 +80,6 @@ const updateInstance = async(req, res) =>{
             var enrolments = 0
         }else{
             var enrolments = parseInt(req.body.enrolments, 10)
-            console.log(enrolments)
         }
         if(subRegex.test(req.body.subId) && insRegex.test(req.body.id)){
             if(req.body.subId === req.body.id.substring(0, 7)){

@@ -14,7 +14,6 @@ const createAcademic = async(req, res) =>{
             throw new Error('no id supplied')
         }else{
             var name=req.body.id.trim().replace(/\s+/g, ' ');
-            console.log(name);
             var data= await sql.query(`insert into academics values ('${name}')`)
             if(req.body.quals.length){
             var quals=req.body.quals;
@@ -48,7 +47,6 @@ const updateAcademic = async(req, res) =>{
             var assignedSubjects = (await sql.query(`select subId from assignments join instances on instanceId = instances.id where academicId = '${req.params.id}' group by subId;`)).recordset
             var quals=req.body.quals;
             var isUnqualInstance = false;
-            console.log('assigned Subjects: \n', assignedSubjects,'\nproposed qualification list: ', quals)
             assignedSubjects.forEach((subject)=>{
 
                 if(!quals.includes(subject.subId)){

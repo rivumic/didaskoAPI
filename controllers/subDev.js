@@ -64,7 +64,6 @@ const deleteSubDev = async (req, res) =>{
         deleteList.forEach((subDev)=>{
             deleteQuery+=`delete from subDev where academicId='${subDev.academicId}' and subId='${subDev.subId}';`
         })
-        console.log(deleteQuery)
         const result = await sql.query(deleteQuery)
         res.status(204).json({result})
     }catch(err){
