@@ -430,8 +430,8 @@ const viewInsAllocation = async ()=>{
     var load;
     if(academicNames.includes(chosenAcademic)){
         try{
-            var data = Promise.all([await axios.get(`/didasko/subDev/${chosenAcademic}`),
-             await axios.get(`/didasko/academics/load/${chosenAcademic}/${chosenYear}/${chosenMonthIndex+1}`)])
+            var data = await Promise.all([axios.get(`/didasko/subDev/${chosenAcademic}`),
+             axios.get(`/didasko/academics/load/${chosenAcademic}/${chosenYear}/${chosenMonthIndex+1}`)])
             subDevs = data[0].data;
             load = data[1].data;
         }catch(err){
