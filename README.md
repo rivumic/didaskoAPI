@@ -16,3 +16,5 @@ Database Connection: "user", "password, "server", "database"
 Port: "PORT"
 
 The connected database should have a tables created according the to "createTables.sql" query in the "db" folder. Some sample data is included in the same folder.
+
+Written by Rama Nicholson
