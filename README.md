@@ -5,18 +5,10 @@ To run the project the environment must have Node.js installed/available, the pr
 
 Additionally, passwords must be supplied for the three user types and SQL Server connection information through the running environment. Additionally, a port number should be supplied otherwise the proejct will listen on port 5000.
 Environment variable names:
-Passwords:
-adminPass
-managerPass
-academicsPass
+Passwords: "adminPass","managerPass", "academicsPass"
 
-Database Connection:
-user
-password
-server
-database
+Database Connection: "user", "password, "server", "database"
 
-Port:
-PORT
+Port: "PORT"
 
 The connected database should have a tables created according the to "createTables.sql" query in the "db" folder.
