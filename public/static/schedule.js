@@ -124,12 +124,13 @@ const viewInsAllocation = async ()=>{
         if(academic.id==academicValue){return true;}
     })){
         try{
-            var data = Promise.all([await axios.get(`/didasko/subDev/${chosenAcademic}`),
-             await axios.get(`/didasko/academics/load/${chosenAcademic}/${chosenYear}/${chosenMonthIndex+1}`)])
+            var data = await Promise.all([await axios.get(`/didasko/subDev/${academicValue}`), 
+            axios.get(`/didasko/academics/load/${academicValue}/${chosenYear}/${chosenMonthIndex+1}`)])
             subDevs = data[0].data;
             load = data[1].data;
         }catch(err){
             showMessage(true, false, `There was an error, error code ${err}`, viewAllocMessage)
+            console.log(err)
         }
     }else{
         showMessage(true, true, 'Academic not found, please try again.', viewAllocMessage)
@@ -193,12 +194,10 @@ const viewInsAllocation = async ()=>{
     if(subDevs){
         var monthString = indexToISOMonthString(chosenMonthIndex);
         const currentMonth = new Date(`${chosenYear}-${monthString}-01`);
-        console.log('selected month: ', currentMonth.toISOString());
         var subDevListHTML = '';
         subDevs.forEach((row)=>{
             var startDate = new Date(row.startDate)
             var endDate = new Date(row.endDate)
-            console.log('start date of current subDev: ', startDate.toISOString(),'end date of current subDev: ', endDate.toISOString())
             if(startDate<=currentMonth && endDate>=currentMonth){
                 subDevListHTML+=`<li>${row.subId}</li>`
             }

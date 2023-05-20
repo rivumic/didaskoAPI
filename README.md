@@ -3,6 +3,8 @@ This program is a scheduling system for a university with unique month-to-month 
 
 To run the project the environment must have Node.js installed/available, the project was built on "Node.js v18.4.0". Ensure to run the required NPM packages.
 
+Either run the file "app.js" or run the start script with npm start.
+
 Additionally, passwords must be supplied for the three user types and SQL Server connection information through the running environment. Additionally, a port number should be supplied otherwise the project will listen on port 5000.
 
 Environment variable names:
